@@ -1,4 +1,3 @@
-"""Django settings for tagz project."""
 from unipath import Path
 
 DEBUG = True
@@ -10,7 +9,7 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-PROJECT_ROOT = Path(__file__).ancestor(3)
+PROJECT_ROOT = Path(__file__).ancestor(2)
 print("Proj root ", PROJECT_ROOT);
 print("db: ", PROJECT_ROOT.child("db").child("sqlite3.db"))
 
