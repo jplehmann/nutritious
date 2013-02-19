@@ -7,7 +7,9 @@ Tagging app for all kinds of things (books, quotes, persons).
 * [DONE] hosting with bitbucket
 * [DONE] rename the dirs
 * [DONE] load fixture data into database
+* setup virtualenv
 * [PARTIAL] get it deployed to heroku and working
+  * https://devcenter.heroku.com/articles/django
 * View: All Tags: for each show list of refs
   * View
   * Template
@@ -33,8 +35,9 @@ Future Features
 
 Future Tech Stories
 -------------------
-* find better python IDE
-* setup virtualenv
+* install sublime text2 and django plugins
+  * CurrentScope, Djaneiro, SublimeCodeIntel, and SublimeLinter 
+  * http://sontek.net/blog/detail/turning-vim-into-a-modern-python-ide#django
 * switch database to Postgres or MongoDB
 * deploy my support libs (Vtag, Bible libs)
 * create API for my support libs
