@@ -24,6 +24,7 @@ Questions
 
 Future Features
 ---------------
+* timestamps of modifications and history view
 * auto-complete style box for searching on tags/refs
 * integrate and style with bootstrap
 * authentication to require login
