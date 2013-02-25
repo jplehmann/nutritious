@@ -7,7 +7,8 @@ Tagging app for all kinds of things (books, quotes, persons).
 * [DONE] hosting with bitbucket
 * [DONE] rename the dirs
 * [DONE] load fixture data into database
-* setup virtualenv
+* [DONE] setup virtualenv: source ~/.venv/tagz/bin/activate
+* switch to postgres (for heroku)
 * [PARTIAL] get it deployed to heroku and working
   * https://devcenter.heroku.com/articles/django
 * View: All Tags: for each show list of refs
