@@ -8,7 +8,10 @@ Tagging app for all kinds of things (books, quotes, persons).
 * [DONE] rename the dirs
 * [DONE] load fixture data into database
 * [DONE] setup virtualenv: source ~/.venv/tagz/bin/activate
-* switch to postgres (for heroku)
+* [DONE] switch to postgres (for heroku)
+* setup DATABASE_URL correctly on Heroku and locally
+* load data into heroku
+* if I didn't specify Procfile web, would I have o started it manually?
 * [PARTIAL] get it deployed to heroku and working
   * https://devcenter.heroku.com/articles/django
 * View: All Tags: for each show list of refs
