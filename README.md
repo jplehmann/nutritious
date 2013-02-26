@@ -10,19 +10,24 @@ Tagging app for all kinds of things (books, quotes, persons).
 * [DONE] setup virtualenv: source ~/.venv/tagz/bin/activate
 * [DONE] switch to postgres (for heroku)
 * [DONE] setup DATABASE_URL correctly on Heroku 
-* [DONE] load data into heroku
 * [DONE] setup DATABASE_URL locally
+* [DONE] load data into heroku
 * [DONE] get it deployed to heroku and working
+* [DONE] timestamps for ref creation
 * customize the admin
-  * tags alphabetically
-  * references by ref
-    * index to get to refs to diff books
+  * [DONE] tags alphabetically
+  * [DONE] references by ref
+  * [DONE] index to get to refs to diff books
 * View: All Tags: for each show list of refs
   * View
   * Template
 * View: Single Tag: for each show other tags on that ref
   * View
   * Template
+* create a Bible sort order
+* show full book names not the abbreviations
+* add book type filters: OT/NT / Pauline, etc -- SimpleListFilter
+* [template??] make columns not so wide
 
 Questions
 ---------
