@@ -17,8 +17,8 @@ class Reference(models.Model):
   chapter = models.IntegerField()
   firstLine = models.IntegerField()
   lastLine = models.IntegerField()
-  #created_at = models.DateTimeField(auto_now_add=True, editable=False)
-  #updated_at = models.DateTimeField(auto_now=True, editable=False)
+  created_at = models.DateTimeField(auto_now_add=True, editable=False, null=True)
+  updated_at = models.DateTimeField(auto_now=True, editable=False, null=True)
 
   def __unicode__(self):
     return "%s @ %s %d:%d:%d" % (
