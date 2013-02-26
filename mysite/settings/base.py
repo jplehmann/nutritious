@@ -122,6 +122,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
 
     # third party apps
+    "south",
    
     # local apps
     "tagz",

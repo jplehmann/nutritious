@@ -12,10 +12,11 @@ Tagging app for all kinds of things (books, quotes, persons).
 * [DONE] setup DATABASE_URL correctly on Heroku 
 * [DONE] load data into heroku
 * [DONE] setup DATABASE_URL locally
-* where to set DATABASE_URL ?
-* if I didn't specify Procfile web, would I have o started it manually?
-* [PARTIAL] get it deployed to heroku and working
-  * https://devcenter.heroku.com/articles/django
+* [DONE] get it deployed to heroku and working
+* customize the admin
+  * tags alphabetically
+  * references by ref
+    * index to get to refs to diff books
 * View: All Tags: for each show list of refs
   * View
   * Template
@@ -25,6 +26,7 @@ Tagging app for all kinds of things (books, quotes, persons).
 
 Questions
 ---------
+* if I didn't specify Procfile web, would I have o started it manually?
 * how to deploy my support libs (Vtag, Bible libs)
 * how to organize HTML, css, javascript
 
