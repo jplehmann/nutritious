@@ -1,11 +1,16 @@
+from django.template import Context, loader
 from django.http import HttpResponse
-import tagz.Tag
-import tagz.Reference
+from tagz.models import Tag, Reference
 
 
 def tags(request):
   """ All tags. For each show all refs. """
-  return HttpResponse("Hello, world. You're at the tags index.")
+  all_tags = Tag.objects.all()
+  t = loader.get_template('tagz/tag_index.html')
+  c = Context({
+    'all_tags': all_tags,
+  })
+  return HttpResponse(t.render(c))
 
 
 def tag(request, tag_name):
@@ -15,4 +20,5 @@ def tag(request, tag_name):
 
 def refs(request):
   """ All refs. """
-  return HttpResponse("Hello, world. You're at the tags index.")
+  refs = Reference.objects.all()
+  return HttpResponse("Number of references found: %s" % refs.count())
