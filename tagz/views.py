@@ -1,7 +1,7 @@
 #from django.template import Context, loader
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponse
-from django.http import Http404
+#from django.http import Http404
 
 from tagz.models import Tag, Reference
 
@@ -14,10 +14,7 @@ def tags(request):
 
 def tag(request, tag_name):
   """ Single tag. For each show other tags on that ref."""
-  try:
-    t = Tag.objects.get(tag=tag_name)
-  except Tag.DoesNotExist:
-    raise Http404
+  t = get_object_or_404(Tag, tag=tag_name)
   return render_to_response('tagz/tag_detail.html', {'tag': t})
 
 
