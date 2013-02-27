@@ -21,10 +21,26 @@ class Reference(models.Model):
   updated_at = models.DateTimeField(auto_now=True, editable=False, null=True)
 
   def __unicode__(self):
-    return "%s @ %s %d:%d:%d" % (
-      self.tag, self.book, self.chapter, self.firstLine, self.lastLine)
-    
+    return "%s @ %s" % (self.tag, self.pretty_ref())
+
+  def pretty_ref(self):
+    """
+    A nice looking version of the reference.
+    """
+    s = "%s %d:%d" % (self.book.title().replace('_', ' '), self.chapter, self.firstLine)
+    if (self.firstLine == self.lastLine):
+      return s
+    else:
+      return s + "-" + str(self.lastLine)
+
   class Meta:
       ordering = ["book", "chapter", "firstLine", "tag", "lastLine"]
 
+
+def get_refs_with_tag(the_tag):
+  """
+  Return QuerySet with all references which have this tag. 
+  """
+  return Reference.objects.filter(tag=the_tag);
+    
 
