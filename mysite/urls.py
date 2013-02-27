@@ -10,7 +10,7 @@ urlpatterns = patterns('',
     #url(r'^tagz/', include('tagz.foo.urls')),
     url(r'^tagz/tags/$', 'tagz.views.tags'),
     url(r'^tagz/refs/$', 'tagz.views.refs'),
-    url(r'^tagz/tags/(?P<tag_name>[^/]+)/$', 'tagz.views.tag'),
+    url(r'^tagz/tags/(?P<tag_name>[^\/]+)/$', 'tagz.views.tag'),
 
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
