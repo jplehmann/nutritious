@@ -14,29 +14,30 @@ Tagging app for all kinds of things (books, quotes, persons).
 * [DONE] load data into heroku
 * [DONE] get it deployed to heroku and working
 * [DONE] timestamps for ref creation
-* customize the admin
-  * [DONE] tags alphabetically
-  * [DONE] references by ref
-  * [DONE] index to get to refs to diff books
-* View: All Tags: for each show list of refs
-  * View
-  * Template
-* View: Single Tag: for each show other tags on that ref
-  * View
-  * Template
-* create a Bible sort order
-* show full book names not the abbreviations
-* add book type filters: OT/NT / Pauline, etc -- SimpleListFilter
-* [template??] make columns not so wide
+* [DONE] customize the admin
+* [DONE] View: tags alphabetically
+* [DONE] View: references by ref
+* [DONE] View: index 
+* [DONE] View: All Tags: for each show list of refs
+* [DONE] View: Single Tag: for each show other tags on that ref
+* get views working on Heroku
+
 
 Questions
 ---------
+* what can be computed in a template?  
+  * (len(items))
+  * can I access a dictionary?  do i have to always zip?
 * if I didn't specify Procfile web, would I have o started it manually?
 * how to deploy my support libs (Vtag, Bible libs)
 * how to organize HTML, css, javascript
 
 Future Features
 ---------------
+* create a Bible sort order
+* show full book names not the abbreviations
+* add book type filters: OT/NT / Pauline, etc -- SimpleListFilter
+* [template??] so admin columns not so wide
 * timestamps of modifications and history view
 * auto-complete style box for searching on tags/refs
 * integrate and style with bootstrap

@@ -3,7 +3,10 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponse
 #from django.http import Http404
 
-from tagz.models import Tag, Reference, get_refs_with_tag
+from tagz.models import Tag
+from tagz.models import Reference
+from tagz.models import get_refs_with_tag
+from tagz.models import get_tags_for_ref
 
 
 def tags(request):
@@ -22,8 +25,12 @@ def tag(request, tag_name):
   """ Single tag. For each show other tags on that ref."""
   t = get_object_or_404(Tag, tag=tag_name)
   related_refs = get_refs_with_tag(t)
+  related_tags = []
+  for ref in related_refs: 
+    related_tags.append(get_tags_for_ref(ref))
+  related_refs_n_tags = zip(related_refs, related_tags)
   return render_to_response('tagz/tag_detail.html', 
-      {'tag': t, 'related_refs': related_refs})
+      {'tag': t, 'related_refs_n_tags': related_refs_n_tags})
 
 
 def refs(request):
