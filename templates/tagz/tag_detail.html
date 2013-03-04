@@ -1,9 +1,12 @@
 {% if related_refs_n_tags %}
-    <h2>References tagged with '{{tag.tag}}':</h2>
+    <h2>References tagged with '{{ tag.tag }}':</h2>
     <ul>
-    {% for ref, tags in related_refs_n_tags %}
-    <li>{{ ref.pretty_ref }}
+    {% for ref, tags, text in related_refs_n_tags %}
+    <li><a href="/tagz/refs/{{ ref.pretty_ref }}">{{ ref.pretty_ref }}</a>
       <ul>
+        <li>
+        {{ text }} 
+        </li
         <li>
       {% for rtag in tags %}
         <a href="/tagz/tags/{{ rtag }}/">{{ rtag }}</a>

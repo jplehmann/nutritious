@@ -20,7 +20,10 @@ Tagging app for all kinds of things (books, quotes, persons).
 * [DONE] View: index 
 * [DONE] View: All Tags: for each show list of refs
 * [DONE] View: Single Tag: for each show other tags on that ref
-* get views working on Heroku
+* [DONE] turn bible sources into a package
+* [DONE] show scripture on the tag page
+* [DONE] detail view for references
+* get views working on Heroku (also pybible)
 
 
 Questions
@@ -29,7 +32,6 @@ Questions
   * (len(items))
   * can I access a dictionary?  do i have to always zip?
 * if I didn't specify Procfile web, would I have o started it manually?
-* how to deploy my support libs (Vtag, Bible libs)
 * how to organize HTML, css, javascript
 
 Future Features
