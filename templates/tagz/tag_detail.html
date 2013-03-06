@@ -1,24 +1,33 @@
-{% if related_refs_n_tags %}
-    <h2>References tagged with '{{ tag.tag }}':</h2>
-    <ul>
-    {% for ref, tags, text in related_refs_n_tags %}
-    <li><a href="/tagz/refs/{{ ref.pretty_ref }}">{{ ref.pretty_ref }}</a>
+{% extends "base.html" %}
+
+{% block title %}{{ block.super }} - Index{% endblock %}
+
+{% block main_content %}
+
+  {% if related_refs_n_tags %}
+      <h2>References tagged with '{{ tag.tag }}':</h2>
       <ul>
-        <li>
-        {{ text }} 
-        </li
-        <li>
-      {% for rtag in tags %}
-        <a href="/tagz/tags/{{ rtag }}/">{{ rtag }}</a>
+      {% for ref, tags, text in related_refs_n_tags %}
+      <li><a href="/tagz/refs/{{ ref.pretty_ref }}">{{ ref.pretty_ref }}</a>
+        <ul>
+          <li>
+          {{ text }} 
+          </li
+          <li>
+        {% for rtag in tags %}
+          <a href="/tagz/tags/{{ rtag }}/">{{ rtag }}</a>
+        {% endfor %}
+          </li>
+        </ul>
+      </li>
       {% endfor %}
-        </li>
       </ul>
-    </li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>This tag is not used for any reference.</p>
-{% endif %}
-<p>
-<p>
-Return to <a href="/tagz/tags">all tags</a>.
+  {% else %}
+      <p>This tag is not used for any reference.</p>
+  {% endif %}
+  <p>
+  <p>
+  Return to <a href="/tagz/tags">all tags</a>.
+
+{{ block.super }}
+{% endblock main_content %}

@@ -1,24 +1,33 @@
-{% if ref_name %}
-    <h2>{{ ref_name }}</h2>
-    <div style="width:750px">
-      <blockquote>
-      <font size="+3">
-        <i> {{ text }} </i>
-      </font>
-      </blockquote>
-    </div>
-    {% if tags %}
-      <ul>
-      {% for rtag in tags %}
-      <li>
-        <a href="/tagz/tags/{{ rtag }}/">{{ rtag }}</a>
-      </li>
-      {% endfor %}
-      </ul>
-    {% endif %}
-{% else %}
-    <p>This reference was not known.</p>
-{% endif %}
-<p>
-<p>
-Return to <a href="/tagz/tags">all tags</a>.
+{% extends "base.html" %}
+
+{% block title %}{{ block.super }} - Index{% endblock %}
+
+{% block main_content %}
+
+  {% if ref_name %}
+      <h2>{{ ref_name }}</h2>
+      <div style="width:750px">
+        <blockquote>
+        <font size="+3">
+          <i> {{ text }} </i>
+        </font>
+        </blockquote>
+      </div>
+      {% if tags %}
+        <ul>
+        {% for rtag in tags %}
+        <li>
+          <a href="/tagz/tags/{{ rtag }}/">{{ rtag }}</a>
+        </li>
+        {% endfor %}
+        </ul>
+      {% endif %}
+  {% else %}
+      <p>This reference was not known.</p>
+  {% endif %}
+  <p>
+  <p>
+  Return to <a href="/tagz/tags">all tags</a>.
+
+{{ block.super }}
+{% endblock main_content %}
