@@ -24,6 +24,8 @@ Tagging app for all kinds of things (books, quotes, persons).
 * [DONE] create API for my support libs
 * [DONE] show scripture on the tag page
 * [DONE] detail view for references
+* [DONE] style views with CSS
+* [DONE] add bootstrap styling
 * get views working on Heroku (also pybible)
 
 
@@ -33,14 +35,12 @@ Questions
 Future Features
 ---------------
 * upgrade to django 1.5
-* style views with CSS
 * create a Bible sort order
 * show full book names not the abbreviations
 * add book type filters: OT/NT / Pauline, etc -- SimpleListFilter
 * [template??] so admin columns not so wide
 * timestamps of modifications and history view
 * auto-complete style box for searching on tags/refs
-* integrate and style with bootstrap
 * authentication to require login
 * multi-user: data stored separately for each user
 * restful paths to tags and references
