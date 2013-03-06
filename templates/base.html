@@ -9,8 +9,10 @@
         {% block extra_head %}{% endblock %}
     </head>
     <body>
-        {% block main_content %} {% endblock %}
-        {% block extra_body %}{% endblock %}
+        <div class="main-wrapper">
+          {% block main_content %} {% endblock %}
+          {% block extra_body %}{% endblock %}
+        </div>
     </body>
 
     <script src="{% static "lib/jquery-1.9.0.min.js" %}"></script>
