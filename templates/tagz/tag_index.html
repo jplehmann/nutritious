@@ -1,8 +1,8 @@
 {% if counted_tags %}
-<h2>Total number of tags: {{ count }}</h2>
+<h2>Total number of tags: {{ counted_tags|length }}</h2>
     <ul>
     {% for tag, count in counted_tags %}
-    <li><a href="/tagz/tags/{{ tag.tag }}/">{{ tag.tag }} ({{count}})</a></li>
+    <li><a href="/tagz/tags/{{ tag.tag }}/">{{ tag.tag }} ({{ count }})</a></li>
     {% endfor %}
     </ul>
 {% else %}

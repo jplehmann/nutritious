@@ -20,7 +20,8 @@ Tagging app for all kinds of things (books, quotes, persons).
 * [DONE] View: index 
 * [DONE] View: All Tags: for each show list of refs
 * [DONE] View: Single Tag: for each show other tags on that ref
-* [DONE] turn bible sources into a package
+* [DONE] turn bible sources into a package as a support lib
+* [DONE] create API for my support libs
 * [DONE] show scripture on the tag page
 * [DONE] detail view for references
 * get views working on Heroku (also pybible)
@@ -28,14 +29,12 @@ Tagging app for all kinds of things (books, quotes, persons).
 
 Questions
 ---------
-* what can be computed in a template?  
-  * (len(items))
-  * can I access a dictionary?  do i have to always zip?
-* if I didn't specify Procfile web, would I have o started it manually?
 * how to organize HTML, css, javascript
 
 Future Features
 ---------------
+* upgrade to django 1.5
+* style views with CSS
 * create a Bible sort order
 * show full book names not the abbreviations
 * add book type filters: OT/NT / Pauline, etc -- SimpleListFilter
@@ -55,9 +54,6 @@ Future Tech Stories
 * install sublime text2 and django plugins
   * CurrentScope, Djaneiro, SublimeCodeIntel, and SublimeLinter 
   * http://sontek.net/blog/detail/turning-vim-into-a-modern-python-ide#django
-* switch database to Postgres or MongoDB
-* deploy my support libs (Vtag, Bible libs)
-* create API for my support libs
 
 Way Future
 ----------

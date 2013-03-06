@@ -20,7 +20,7 @@ def tags(request):
     counts.append(refs.count())
   counted_tags = zip(all_tags, counts)
   return render_to_response('tagz/tag_index.html', 
-      {'counted_tags': counted_tags, 'count': len(counted_tags) })
+      {'counted_tags': counted_tags})
 
 
 def tag(request, tag_name):
