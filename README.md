@@ -29,7 +29,6 @@ Tagging app for all kinds of things (books, quotes, persons).
 
 Questions
 ---------
-* how to organize HTML, css, javascript
 
 Future Features
 ---------------

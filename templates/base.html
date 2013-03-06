@@ -1,0 +1,17 @@
+{% load static %}
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Strict//EN" 
+    "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <head>
+        <title>{% block title %}Tagz{% endblock %}</title>
+        <link rel="stylesheet" type="text/css" href="{% static "css/style.css" %}" />
+        {% block extra_head %}{% endblock %}
+    </head>
+    <body>
+        {% block main_content %} {% endblock %}
+        {% block extra_body %}{% endblock %}
+    </body>
+
+    <script src="{% static "lib/jquery-1.9.0.min.js" %}"></script>
+</html>
+
