@@ -26,27 +26,74 @@ Tagging app for all kinds of things (books, quotes, persons).
 * [DONE] detail view for references
 * [DONE] style views with CSS
 * [DONE] add bootstrap styling
-* get views working on Heroku (also pybible)
+* get it working on heroku
+  * database
+  * pybible
+  * views
+* create stylesheets for each page
+* add a header: Tags | References | Reference? | Search [ ... ]
+  * search: tag search, references, words in bible book?
+  * auto detect or have multiple search boxes?
+* should a large portion of scripture show tags contained
+  within it?
+* add next verse/chapter links
+* with and without verse number
+* verses on own line or not
+* search within book of the bible
+* modification views
+  * rename and delete tag
+  * remove a ref from a tag
+  ---
+  * remove a tag from a ref
+  * add a tag to a ref (allows creation of a new tag)
 
+Top priorities:
+- nav bar
+- modification features
+- search for tag (dropdown)
+- search through book in bible
+- navigate through 'references'
+- get it up on heroku
 
 Questions
 ---------
 
+Views
+-----
+* tags
+  * index
+  * detail
+* refs
+  * (index)
+  * detail
+
 Future Features
 ---------------
-* upgrade to django 1.5
-* create a Bible sort order
-* show full book names not the abbreviations
-* add book type filters: OT/NT / Pauline, etc -- SimpleListFilter
-* [template??] so admin columns not so wide
-* timestamps of modifications and history view
-* auto-complete style box for searching on tags/refs
-* authentication to require login
-* multi-user: data stored separately for each user
-* restful paths to tags and references
-* general search box that searches both tags and references, or one or the other
-* integrate/display scripture
-* generalize to (books, quotes, persons)
+* generalize to (bible, books, quotes, persons, webpages (page, video), gdocs)
+  * inefficiency of searching bible refs with aliases
+    * maybe one general ref endpoint takes guids but another specific one
+      (refs/bible/xxx) does alias lookups
+* plan/reorg around more apps (refs -> new app?)
+* come up with an initial design for the pages -- sketch it out
+  * plan create/modify views
+  * research: delicious
+---
+* UI
+  * auto-complete style box for searching on tags/refs
+  * general search box that searches both tags and references, or one or the other
+* Bible-specific
+  * create a Bible sort order
+  * show full book names not the abbreviations
+  * add book type filters: OT/NT / Pauline, etc -- SimpleListFilter
+* admin
+  * [template??] so admin columns not so wide
+* models
+  * timestamps of modifications and history view
+* system
+  * authentication to require login
+  * multi-user: data stored separately for each user
+* misc technical debt
+  * upgrade to django 1.5
 
 Future Tech Stories
 -------------------

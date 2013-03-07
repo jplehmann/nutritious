@@ -5,5 +5,7 @@ body {
 
 .main-wrapper {
   position: relative;
-  left: 20px;
+  top: 25px;
+  left: 100px;
+  width:900px;
 }
