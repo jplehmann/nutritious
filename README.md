@@ -57,6 +57,11 @@ Top priorities:
 
 Questions
 ---------
+* is it common to create stylesheets for each child page?
+* should I balance the columns dynamically or statically?
+* what kinds of widgets I should utlize
+  * navbar
+  * autocomplete
 
 Views
 -----
