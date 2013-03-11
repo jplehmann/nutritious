@@ -8,7 +8,7 @@ from tagz.models import Reference
 from tagz.models import get_refs_with_tag
 from tagz.models import get_tags_for_ref
 
-#from pybible import api
+from pybible import api
 
 
 def tags(request):
@@ -31,9 +31,7 @@ def tag(request, tag_name):
   texts = []
   for ref in related_refs: 
     related_tags.append(get_tags_for_ref(ref))
-    #text, cleanRef = api.getTextAndCleanReference(ref.pretty_ref())
-    # FIXME
-    text, cleanRef = "", ""
+    text, cleanRef = api.getTextAndCleanReference(ref.pretty_ref())
     texts.append(text)
   related_refs_n_tags = zip(related_refs, related_tags, texts)
   return render_to_response('tagz/tag_detail.html', 
@@ -44,9 +42,7 @@ def ref(request, ref_name):
   """ Single ref: show scripture and tags."""
   #ref = get_object_or_404(Reference, ref=ref_name)
   # 1. parse this ref 
-  # FIXME
-  # text, clean_ref = api.getTextAndCleanReference(ref_name)
-  text, clean_ref = "", ""
+  text, clean_ref = api.getTextAndCleanReference(ref_name)
   # 2. create a new reference object
   # 3. look up all tags that overlap
   #get_tags_for_ref(ref)
