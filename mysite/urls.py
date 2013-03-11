@@ -7,6 +7,7 @@ admin.autodiscover()
 urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'tagz.views.home', name='home'),
+    url(r'^/$', 'tagz.views.tags'), # redir to tags
     url(r'^tagz/$', 'tagz.views.tags'), # redir to tags
     url(r'^tagz/tags/$', 'tagz.views.tags'),
     url(r'^tagz/tags/(?P<tag_name>[^\/]+)/$', 'tagz.views.tag'),
