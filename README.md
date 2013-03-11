@@ -26,10 +26,10 @@ Tagging app for all kinds of things (books, quotes, persons).
 * [DONE] detail view for references
 * [DONE] style views with CSS
 * [DONE] add bootstrap styling
-* get it working on heroku
-  * database
-  * pybible
-  * views
+* [DONE] heroku: database migrated
+* [DONE] heroku: pybible: as git+https from a read only account on bitbucket installed as package data
+
+
 * create stylesheets for each page
 * add a header: Tags | References | Reference? | Search [ ... ]
   * search: tag search, references, words in bible book?
