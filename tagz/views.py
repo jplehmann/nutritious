@@ -1,7 +1,7 @@
 #from django.template import Context, loader
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponse
-#from django.http import Http404
+from django.http import Http404
 
 from tagz.models import Tag
 from tagz.models import Reference
@@ -9,10 +9,73 @@ from tagz.models import get_refs_with_tag
 from tagz.models import get_tags_for_ref
 
 from pybible import api
+from pybooks import library
+
+
+import pybooks.library
+library.load_resources()
+def lib(request):
+  """ Library root.
+  """
+  return render_to_response('tagz/tag_library.html', 
+      {'resources': library.list()})
+
+
+import traceback
+
+
+def lib_resource_search(res_name, ref_obj, query):
+  """ Search a resource given a query.
+  """
+  hits = ref_obj.search(query)
+  title = ("Search of '%s' for '%s' (%d hits)" % 
+      (ref_obj.pretty(), query, len(hits)))
+  return render_to_response('tagz/tag_library_resource.html', 
+      {'resource_name': res_name, 'title': title,
+       'show_child_text': True, 'children': hits,
+       'text': None})
+
+
+def lib_resource(request, res_name, ref_str=None):
+  """ Display a resource. If a reference is given within
+  that resource, then it shows that particular scope.
+  This handler is also used to front-end searches, which
+  are redirected to another handler.
+  """
+  try:
+    resource = library.get(res_name)
+    if ref_str:
+      ref_obj = resource.reference(ref_str)
+    else:
+      ref_obj = resource.top_reference()
+      print ref_obj.pretty()
+    # see if they want a search
+    query = request.GET.get('q', None)
+    if query:
+      return lib_resource_search(res_name, ref_obj, query)
+    # inspect if the children have text
+    show_child_text = (not ref_obj.children()[0].children()
+        if ref_obj.children() else False)
+    # inspect if the referene has children
+    children = ref_obj.children()
+    # get text if possible
+    try:
+      text = ref_obj.text()
+    except:
+      text = None
+    return render_to_response('tagz/tag_library_resource.html', 
+        {'resource_name': res_name, 'title': ref_obj.pretty(), 
+         'show_child_text': show_child_text, 'children': children,
+         'text': text})
+  except Exception as e:
+    print "Exception: " + str(e)
+    print traceback.format_exc()
+    raise Http404
 
 
 def tags(request):
-  """ All tags: for each show all refs. """
+  """ All tags: for each show all refs. 
+  """
   all_tags = Tag.objects.all()
   counts = []
   for t in all_tags:

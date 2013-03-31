@@ -6,6 +6,9 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     # Examples:
+    url(r'^tagz/lib/$', 'tagz.views.lib'),
+    url(r'^tagz/lib/(?P<res_name>[^\/]+)/(?P<ref_str>[^\/]+)?$', 
+          'tagz.views.lib_resource'),
     url(r'^tagz/tags/$', 'tagz.views.tags'),
     url(r'^tagz/tags/(?P<tag_name>[^\/]+)/$', 'tagz.views.tag'),
     url(r'^tagz/refs/$', 'tagz.views.refs'),

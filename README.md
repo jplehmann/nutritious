@@ -2,7 +2,52 @@ Tagz
 ====
 Tagging app for all kinds of things (books, quotes, persons).
 
-0.1: Vtag with a Web Frontend
+
+
+Questions
+---------
+* is it common to create stylesheets for each child page?
+* should I balance the columns dynamically or statically?
+* what kinds of widgets I should utlize
+  * navbar
+
+Todo
+----
+* more breadcrumbs (resource top, book, chapter links)
+* properly load library resources -- best place for that logic?
+*
+* create stylesheets for each page
+* add a header: Tags | References | Reference? | Search [ ... ]
+  * search: tag search, references, words in bible book?
+  * auto detect or have multiple search boxes?
+* should a large portion of scripture show tags contained
+  within it?
+* add next verse/chapter links
+* with and without verse number
+* verses on own line or not
+* search within book of the bible
+* modification views
+  * rename and delete tag
+  * remove a ref from a tag
+  ---
+  * remove a tag from a ref
+  * add a tag to a ref (allows creation of a new tag)
+
+Top priorities:
+- nav bar
+- modification features
+- search for tag (dropdown)
+- search through book in bible
+- navigate through 'references'
+
+
+0.2
+---
+* pybooks support with endpoints for resource and reference within
+  * can navigate to children
+  * can search
+
+0.1
 -----------------------------
 * [DONE] hosting with bitbucket
 * [DONE] rename the dirs
@@ -29,39 +74,6 @@ Tagging app for all kinds of things (books, quotes, persons).
 * [DONE] heroku: database migrated
 * [DONE] heroku: pybible: as git+https from a read only account on bitbucket installed as package data
 
-
-* create stylesheets for each page
-* add a header: Tags | References | Reference? | Search [ ... ]
-  * search: tag search, references, words in bible book?
-  * auto detect or have multiple search boxes?
-* should a large portion of scripture show tags contained
-  within it?
-* add next verse/chapter links
-* with and without verse number
-* verses on own line or not
-* search within book of the bible
-* modification views
-  * rename and delete tag
-  * remove a ref from a tag
-  ---
-  * remove a tag from a ref
-  * add a tag to a ref (allows creation of a new tag)
-
-Top priorities:
-- nav bar
-- modification features
-- search for tag (dropdown)
-- search through book in bible
-- navigate through 'references'
-- get it up on heroku
-
-Questions
----------
-* is it common to create stylesheets for each child page?
-* should I balance the columns dynamically or statically?
-* what kinds of widgets I should utlize
-  * navbar
-  * autocomplete
 
 Views
 -----

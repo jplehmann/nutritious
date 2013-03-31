@@ -5,3 +5,5 @@ dj-database-url==0.2.1
 South==0.7.6
 #../pybible
 git+https://jplehmann2:Au4QaIwY@bitbucket.org/jplehmann/pybible.git
+git+https://jplehmann2:Au4QaIwY@bitbucket.org/jplehmann/pybooks.git
+

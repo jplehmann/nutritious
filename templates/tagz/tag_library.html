@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}{{ block.super }} - Library{% endblock %}
+
+{% block main_content %}
+
+  <ul>
+  {% for resource in resources %}
+    <li><a href="/tagz/lib/{{resource}}">{{ resource }}</a></li>
+  {% endfor %}
+  </ul>
+
+{{ block.super }}
+{% endblock main_content %}
