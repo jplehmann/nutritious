@@ -2,6 +2,9 @@ Tagz
 ====
 Tagging app for all kinds of things (books, quotes, persons).
 
+Can search a reference scope with q=
+* Even regex support (encode + as %2b)
+  * http://127.0.0.1:8000/tagz/lib/NASB/Luke?q=hi\w%2bt
 
 
 Questions
