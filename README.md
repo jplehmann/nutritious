@@ -11,6 +11,8 @@ Questions
 ---------
 * is it common to create stylesheets for each child page?
 * should I balance the columns dynamically or statically?
+  - say 3 columns
+  - 1-N/3 , N/3 - 2N/3, 2N/3 - 3N/3
 * what kinds of widgets I should utlize
   * navbar
 

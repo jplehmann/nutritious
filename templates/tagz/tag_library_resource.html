@@ -17,10 +17,18 @@
   {% if children %}
     <ul>
     {% for child in children %}
-      <li><a href="/tagz/lib/{{resource_name}}/{{child.pretty}}">{{ child.pretty }}</a></li>
+      <li><a href="/tagz/lib/{{resource_name}}/{{child.pretty}}">{{ child.pretty }}</a>
       {% if show_child_text %}
         {{ child.text }}
+      {% else %}
+        : 
+        {% for child2 in child.children %}
+          {% with child2.pretty|cut:child.pretty as child2_short %}
+            <a href="/tagz/lib/{{resource_name}}/{{child2.pretty}}">{{ child2_short }}</a>
+          {% endwith %}
+        {% endfor %}
       {% endif %}
+      </li>
     {% endfor %}
     </ul>
   {% elif text %}
@@ -29,6 +37,9 @@
   {% else %}
     There were no results.
   {% endif %}
+
+  <br>
+  <br>
 
 {{ block.super }}
 {% endblock main_content %}
