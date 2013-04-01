@@ -15,22 +15,25 @@
 
   <h1> {{ title }}</h1>
   {% if children %}
-    <ul>
     {% for child in children %}
-      <li><a href="/tagz/lib/{{resource_name}}/{{child.pretty}}">{{ child.pretty }}</a>
-      {% if show_child_text %}
-        {{ child.text }}
-      {% else %}
-        : 
-        {% for child2 in child.children %}
-          {% with child2.pretty|cut:child.pretty as child2_short %}
-            <a href="/tagz/lib/{{resource_name}}/{{child2.pretty}}">{{ child2_short }}</a>
-          {% endwith %}
-        {% endfor %}
-      {% endif %}
-      </li>
+    <div class="row-fluid">
+      <div class="span2">
+        <a class= "main-ref" href="/tagz/lib/{{resource_name}}/{{child.pretty}}">{{ child.pretty }}</a>
+      </div>
+        {% if show_child_text %}
+          {{ child.text }}
+        {% else %}
+        <div class="span10">
+          {% for child2 in child.children %}
+            {% with child2.pretty|cut:child.pretty|cut:":" as child2_short %}
+              <a href="/tagz/lib/{{resource_name}}/{{child2.pretty}}">{{ child2_short }}</a>
+            {% endwith %}
+          {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+    <hr>
     {% endfor %}
-    </ul>
   {% elif text %}
     <p>
     {{ text }}

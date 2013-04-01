@@ -9,3 +9,11 @@ body {
   left: 100px;
   width:900px;
 }
+
+hr {
+  margin: 0;
+}
+
+.main-ref {
+  font-weight: bold;
+}
