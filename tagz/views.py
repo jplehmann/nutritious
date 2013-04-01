@@ -24,16 +24,17 @@ def lib(request):
 import traceback
 
 
-def lib_resource_search(res_name, ref_obj, query):
+def lib_resource_search(res_name, ref_obj, query, ref_str):
   """ Search a resource given a query.
   """
   hits = ref_obj.search(query)
+  print hits
   title = ("Search of '%s' for '%s' (%d hits)" % 
       (ref_obj.pretty(), query, len(hits)))
   return render_to_response('tagz/tag_library_resource.html', 
       {'resource_name': res_name, 'title': title,
        'show_child_text': True, 'children': hits,
-       'text': None})
+       'text': None, 'sub_ref': ref_str if ref_str else ""})
 
 
 def lib_resource(request, res_name, ref_str=None):
@@ -48,11 +49,10 @@ def lib_resource(request, res_name, ref_str=None):
       ref_obj = resource.reference(ref_str)
     else:
       ref_obj = resource.top_reference()
-      print ref_obj.pretty()
     # see if they want a search
     query = request.GET.get('q', None)
     if query:
-      return lib_resource_search(res_name, ref_obj, query)
+      return lib_resource_search(res_name, ref_obj, query, ref_str)
     # inspect if the children have text
     show_child_text = (not ref_obj.children()[0].children()
         if ref_obj.children() else False)
@@ -66,7 +66,7 @@ def lib_resource(request, res_name, ref_str=None):
     return render_to_response('tagz/tag_library_resource.html', 
         {'resource_name': res_name, 'title': ref_obj.pretty(), 
          'show_child_text': show_child_text, 'children': children,
-         'text': text})
+         'text': text, 'sub_ref': ref_str if ref_str else ""})
   except Exception as e:
     print "Exception: " + str(e)
     print traceback.format_exc()

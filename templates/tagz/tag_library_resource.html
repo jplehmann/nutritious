@@ -4,7 +4,16 @@
 
 {% block main_content %}
 
-<h1>{{ title }}</h1>
+<form action="/tagz/lib/{{resource_name}}/{{sub_ref}}" method="get" class="form-search">
+    <input class="search-query" type="text" name="q" placeholder="enter a query"/>
+<input type="submit" value="search" />
+<p>
+
+  {% if resource_name != title %} 
+    <h3><a href="/tagz/lib/{{resource_name}}">{{ resource_name }}</a></h3> 
+  {% endif %} 
+
+  <h1> {{ title }}</h1>
   {% if children %}
     <ul>
     {% for child in children %}
@@ -14,8 +23,11 @@
       {% endif %}
     {% endfor %}
     </ul>
-  {% else %}
+  {% elif text %}
+    <p>
     {{ text }}
+  {% else %}
+    There were no results.
   {% endif %}
 
 {{ block.super }}
