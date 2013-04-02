@@ -9,22 +9,72 @@ Can search a reference scope with q=
 
 Questions
 ---------
-* is it common to create stylesheets for each child page?
-* should I balance the columns dynamically or statically?
-  - say 3 columns
-  - 1-N/3 , N/3 - 2N/3, 2N/3 - 3N/3
-* what kinds of widgets I should utlize
-  * navbar
+
+
+Priorities?
+-----------
+Higher:
+1. integrate tagz into references
+  - show tags on references
+  - tags pages go to references
+2. ability to add/edit a tag (same screen)
+3. search for a tag
+  - search with autocompletion
+
+
+* more important to stay general to do other kinds of books, or to 
+  be able to do more with this vertical?
+--> Seems fairly easy to generalize a bit, and then get books and quotes in here.
+    books: same a top level, just doesn't have any chapters
+      - so allow tags of top level resources
+    quotation:
+      - a 'bible' (volume?) would have a bunch of quote references
+      - like a book: author, date?, text
+
+* do we really need "resource" separate from the top level ref?
+--> this would simplify the implementation
+  - why not make it a ref as well?
+  - get rid of 
+  - then add reference as a method of the root reference class
+  * except for the Views implementation, we put a lot of logic at the top,
+    so would have to see if I can put that in the root reference..
+    (Maybe break them apart at this point)
+
+Study my view and see how many attributes it has... 
+  Each reference:
+    - has a displayable / pretty form
+    - is searchable
+    - might have children
+    - might have text
+
+TODO: Might be better to retrun None rather than throwing, as this would make
+it easier to inspect hte refs dynamically...
+
+would like ability to get parents() including root reference()
+
+* add name, type to resource
 
 Todo
 ----
 * button to click for context (+/- 3): -> parent -> children, if current is indexed
 * tests for view/controllers: input mock resources and intercept template call
+* setup angular
+* setup LESS
+* select search highlights all 
+* widen context +-3 (say of single verse, or chapter and highlight)
+* think about how to represent books and quotes
+* style
+  * wider reference column
+  * how to handle when text spills over?
+  * put HR before first row as well
+  * streamline the left side references
+* how to layout for friendly copy-paste?
+* consider how to bring in topics / tagz??
+
 * more breadcrumbs (resource top, book, chapter links)
 * properly load library resources -- best place for that logic?
-*
 * create stylesheets for each page
-* add a header: Tags | References | Reference? | Search [ ... ]
+* add a header: Tags | Resources | History | Search [ ... ]
   * search: tag search, references, words in bible book?
   * auto detect or have multiple search boxes?
 * should a large portion of scripture show tags contained
@@ -40,19 +90,14 @@ Todo
   * remove a tag from a ref
   * add a tag to a ref (allows creation of a new tag)
 
-Top priorities:
-- nav bar
-- modification features
-- search for tag (dropdown)
-- search through book in bible
-- navigate through 'references'
-
 
 0.2
 ---
 * pybooks support with endpoints for resource and reference within
-  * can navigate to children
-  * can search
+  - [DONE] navigate through 'references'
+    * 2 dimensional indexes
+  - [DONE] search through book in bible
+* [DONE] search for reference first then query
 
 0.1
 -----------------------------
@@ -81,15 +126,6 @@ Top priorities:
 * [DONE] heroku: database migrated
 * [DONE] heroku: pybible: as git+https from a read only account on bitbucket installed as package data
 
-
-Views
------
-* tags
-  * index
-  * detail
-* refs
-  * (index)
-  * detail
 
 Future Features
 ---------------
