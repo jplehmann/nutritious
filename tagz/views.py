@@ -24,9 +24,16 @@ def lib(request):
 import traceback
 
 
-def lib_resource_search(res_name, ref_obj, query, ref_str):
+def lib_resource_search(resource, res_name, ref_obj, query, ref_str):
   """ Search a resource given a query.
   """
+  # first see if this is areference in this resource
+  try:
+    new_ref = resource.reference(query)
+    return lib_resource(None, res_name, new_ref.pretty())
+  except Exception as e:
+    print e
+    pass
   hits = ref_obj.search(query)
   print hits
   title = ("Search of '%s' for '%s' (%d hits)" % 
@@ -42,6 +49,8 @@ def lib_resource(request, res_name, ref_str=None):
   that resource, then it shows that particular scope.
   This handler is also used to front-end searches, which
   are redirected to another handler.
+  @param Request may be None in the case where search is calling back
+  to here, in order to display a reference.
   """
   try:
     resource = library.get(res_name)
@@ -50,14 +59,16 @@ def lib_resource(request, res_name, ref_str=None):
     else:
       ref_obj = resource.top_reference()
     # see if they want a search
-    query = request.GET.get('q', None)
-    if query:
-      return lib_resource_search(res_name, ref_obj, query, ref_str)
-    # inspect if the children have text
-    show_child_text = (not ref_obj.children()[0].children()
-        if ref_obj.children() else False)
+    if request:
+      query = request.GET.get('q', None)
+      if query:
+        return lib_resource_search(resource, res_name, ref_obj, query, ref_str)
     # inspect if the referene has children
+    # should return None if it doesn't have them. 
     children = ref_obj.children()
+    # inspect if the children have text
+    # show child text IF the children don't have children
+    show_child_text = (not children[0].children() if children else False)
     # get text if possible
     try:
       text = ref_obj.text()
