@@ -18,6 +18,8 @@ Questions
 
 Todo
 ----
+* button to click for context (+/- 3): -> parent -> children, if current is indexed
+* tests for view/controllers: input mock resources and intercept template call
 * more breadcrumbs (resource top, book, chapter links)
 * properly load library resources -- best place for that logic?
 *
