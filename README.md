@@ -7,6 +7,42 @@ Can search a reference scope with q=
   * http://127.0.0.1:8000/tagz/lib/NASB/Luke?q=hi\w%2bt
 
 
+Design Discussion
+-----------------
+* more important to stay general to do other kinds of books, or to 
+  be able to do more with this vertical?
+  - decision:  Seems fairly easy to generalize a bit, and then get books and
+    quotes in here.  If it's hard I won't do it.
+{{{
+    books: same a top level, just doesn't have any chapters
+      - need to allow tags of top level resources
+    quotation:
+      - a 'bible' (volume?) would have a bunch of quote references
+      - like a book: author, date?, text
+}}}
+* do we really need "resource" separate from the top level ref?
+{{{
+  - decision: this would simplify the implementation, but the benefits
+    won't outweight the drawbacks when I do need something stored there,
+    such as name and type.
+  - why not make it a ref as well?
+  - then add reference as a method of the root reference class
+  * except for the Views implementation, we put a lot of logic at the top,
+    so would have to see if I can put that in the root reference..
+    (Maybe break them apart at this point)
+}}}
+Study my view and see how many attributes it has... 
+  Each reference:
+    - has a displayable / pretty form
+    - is searchable
+    - might have children
+    - might have text
+
+- would like ability to get parents() including root reference()
+* add name, type to resource
+  - why name?  what's wrong with the top reference's name?
+
+
 Questions
 ---------
 
@@ -22,44 +58,14 @@ Higher:
   - search with autocompletion
 
 
-* more important to stay general to do other kinds of books, or to 
-  be able to do more with this vertical?
---> Seems fairly easy to generalize a bit, and then get books and quotes in here.
-    books: same a top level, just doesn't have any chapters
-      - so allow tags of top level resources
-    quotation:
-      - a 'bible' (volume?) would have a bunch of quote references
-      - like a book: author, date?, text
-
-* do we really need "resource" separate from the top level ref?
---> this would simplify the implementation
-  - why not make it a ref as well?
-  - get rid of 
-  - then add reference as a method of the root reference class
-  * except for the Views implementation, we put a lot of logic at the top,
-    so would have to see if I can put that in the root reference..
-    (Maybe break them apart at this point)
-
-Study my view and see how many attributes it has... 
-  Each reference:
-    - has a displayable / pretty form
-    - is searchable
-    - might have children
-    - might have text
-
-TODO: Might be better to retrun None rather than throwing, as this would make
-it easier to inspect hte refs dynamically...
-
-would like ability to get parents() including root reference()
-
-* add name, type to resource
-
 Todo
 ----
 * button to click for context (+/- 3): -> parent -> children, if current is indexed
 * tests for view/controllers: input mock resources and intercept template call
 * setup angular
 * setup LESS
+- return None rather than throwing, for easier dynamic 
+  /inspection  (text and children)
 * select search highlights all 
 * widen context +-3 (say of single verse, or chapter and highlight)
 * think about how to represent books and quotes
