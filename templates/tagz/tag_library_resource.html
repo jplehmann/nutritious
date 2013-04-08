@@ -10,7 +10,17 @@
 <p>
 
   {% if resource_name != title %} 
-    <h3><a href="/tagz/lib/{{resource_name}}">{{ resource_name }}</a></h3> 
+  <ul class="inline">
+    <li><a href="{{resource_path}}">{{ resource_name }}</a></li> 
+    <li><a href="{{resource_path}}/{{parent_ref}}">Up</a></li> 
+    {% if previous_ref %}
+    <li><a href="{{resource_path}}/{{previous_ref}}">Previous</a></li> 
+    {% endif %}
+    {% if next_ref %}
+    <li><a href="{{resource_path}}/{{next_ref}}">Next</a></li> 
+    {% endif %}
+  </ul>
+
   {% endif %} 
 
   <h1> {{ title }}</h1>
@@ -18,7 +28,7 @@
     {% for child in children %}
     <div class="row-fluid">
       <div class="span2">
-        <a class= "main-ref" href="/tagz/lib/{{resource_name}}/{{child.pretty}}">{{ child.pretty }}</a>
+        <a class= "main-ref" href="{{resource_path}}/{{child.pretty}}">{{ child.pretty }}</a>
       </div>
         {% if show_child_text %}
         <span {% if child.pretty in highlights %}class='highlighted'{% endif %}>
@@ -28,7 +38,7 @@
         <div class="span10">
           {% for child2 in child.children %}
             {% with child2.pretty|cut:child.pretty|cut:":" as child2_short %}
-              <a href="/tagz/lib/{{resource_name}}/{{child2.pretty}}">{{ child2_short }}</a>
+              <a href="{{resource_path}}/{{child2.pretty}}">{{ child2_short }}</a>
             {% endwith %}
           {% endfor %}
         </div>
@@ -39,6 +49,8 @@
   {% elif text %}
     <p>
     {{ text }}
+    <p>
+    <a href="{{resource_path}}/{{sub_ref}}?ctx=3">Context</a>
   {% else %}
     There were no results.
   {% endif %}

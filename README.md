@@ -7,6 +7,15 @@ Can search a reference scope with q=
   * http://127.0.0.1:8000/tagz/lib/NASB/Luke?q=hi\w%2bt
 
 
+Inbox
+-----
+1. Maybe references should have their own path inside them so I don't have
+to generate them.  Also resource has inconsistency because it turns
+out to be NASB/NASB.
+2. Make it responsive, and rendering in nice size fonts for mobile.  Also add features like dropdown beneath search with book names.
+
+
+
 Design Discussion
 -----------------
 * more important to stay general to do other kinds of books, or to 

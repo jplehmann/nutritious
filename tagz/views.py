@@ -87,9 +87,20 @@ def lib_resource(request, res_name, ref_str=None, highlights=None):
           return lib_resource(None, res_name, context.pretty(), [ref_obj.pretty()])
         except Exception as e:
           print e
-    # convert highlighted 
+    # navigation references
+    parent_ref, previous_ref, next_ref = (None, None, None)
+    if ref_obj:
+      parent_ref = ref_obj.parent().pretty() if ref_obj.parent() else None
+      previous_ref = ref_obj.previous().pretty() if ref_obj.previous() else None
+      print ref_obj.previous()
+      next_ref = ref_obj.next().pretty() if ref_obj.next() else None
+      print ref_obj.next()
+    res_path = "/tagz/lib/" + res_name
     return render_to_response('tagz/tag_library_resource.html', 
         {'resource_name': res_name, 'title': ref_obj.pretty(), 
+         'parent_ref': parent_ref, 
+         'previous_ref': previous_ref, 'next_ref': next_ref,
+         'resource_path': res_path,
          'show_child_text': show_child_text, 'children': children,
          'highlights': highlights,
          'text': text, 'sub_ref': ref_str if ref_str else ""})
