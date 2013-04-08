@@ -14,6 +14,11 @@ to generate them.  Also resource has inconsistency because it turns
 out to be NASB/NASB.
 2. Make it responsive, and rendering in nice size fonts for mobile.  Also add features like dropdown beneath search with book names.
 
+Bugs
+----
+
+- search then click on a ref link
+  http://tagly.herokuapp.com/Leviticus%204:1
 
 
 Design Discussion
