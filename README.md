@@ -57,6 +57,21 @@ Higher:
 3. search for a tag
   - search with autocompletion
 
+**** Is it reloading the resources/data every time???
+  - maybe just when i change source?
+
+How to add "context" link:
+- only shown on a page that doesn't already show context, so it shows
+  - text but only a little bit (line or line group)
+- get id, go to parent, get +/- N around i
+- what if searching?
+* maybe singles should show context by default?
+1. context option only if single line
+2. goes to parent and then grabs before and after
+3. render with highlight
+* lines need to know what # they are
+could use request parameter
+
 
 Todo
 ----
@@ -70,6 +85,19 @@ Todo
 * widen context +-3 (say of single verse, or chapter and highlight)
 * think about how to represent books and quotes
 * style
+
+* UI features
+  * select search highlights all (can bootstrap do this?)
+  * [2] friendly copy-paste: maybe button to copy? better layout/selecable
+  * navigation
+    * [1] widen context +-3 (say of single verse, or chapter and highlight)
+    * more breadcrumbs (resource top, book, chapter links)
+    * next/previous (child) links
+  * add a header: Tags | Resources | History | Search [ ... ]
+    * search: tag search, references, words in bible book?
+    * auto detect or have multiple search boxes?
+  * linerange should maybe return block of text instead?
+* Style
   * wider reference column
   * how to handle when text spills over?
   * put HR before first row as well
@@ -90,9 +118,16 @@ Todo
 * verses on own line or not
 * search within book of the bible
 * modification views
+  * should a large portion of scripture show tags contained within it?
+* Tech stories
+  * setup angular
+  * setup LESS
+* Design
+  * properly load library resources -- best place for that logic?
+  - return None rather than throwing, for easier inspection (text and children)
+* Modification views
   * rename and delete tag
   * remove a ref from a tag
-  ---
   * remove a tag from a ref
   * add a tag to a ref (allows creation of a new tag)
 

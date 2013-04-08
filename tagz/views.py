@@ -27,15 +27,13 @@ import traceback
 def lib_resource_search(resource, res_name, ref_obj, query, ref_str):
   """ Search a resource given a query.
   """
-  # first see if this is areference in this resource
+  # first see if this is a reference in this resource
   try:
     new_ref = resource.reference(query)
     return lib_resource(None, res_name, new_ref.pretty())
   except Exception as e:
     print e
-    pass
   hits = ref_obj.search(query)
-  print hits
   title = ("Search of '%s' for '%s' (%d hits)" % 
       (ref_obj.pretty(), query, len(hits)))
   return render_to_response('tagz/tag_library_resource.html', 
@@ -74,6 +72,19 @@ def lib_resource(request, res_name, ref_str=None):
       text = ref_obj.text()
     except:
       text = None
+    # requesting context is legal if there are no children, AND, it
+    # is a text-bearing reference
+    if text and not children:
+      context_size = safe_int(request.GET.get('ctx', 0))
+      # get the amount of context needed
+      if context_size and context_size > 0:
+        # get reference 
+        try:
+          context = ref_obj.context(context_size)
+          # TODO set the highlight on our center line
+          return lib_resource(None, res_name, context.pretty())
+        except Exception as e:
+          print e
     return render_to_response('tagz/tag_library_resource.html', 
         {'resource_name': res_name, 'title': ref_obj.pretty(), 
          'show_child_text': show_child_text, 'children': children,
@@ -129,3 +140,9 @@ def refs(request):
   """ All refs: simply show count."""
   refs = Reference.objects.all()
   return HttpResponse("Number of references found: %s" % refs.count())
+
+
+def safe_int(val):
+  return int(val) if val != None else val
+
+
