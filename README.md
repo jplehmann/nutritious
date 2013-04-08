@@ -84,17 +84,6 @@ could use request parameter
 
 Todo
 ----
-* button to click for context (+/- 3): -> parent -> children, if current is indexed
-* tests for view/controllers: input mock resources and intercept template call
-* setup angular
-* setup LESS
-- return None rather than throwing, for easier dynamic 
-  /inspection  (text and children)
-* select search highlights all 
-* widen context +-3 (say of single verse, or chapter and highlight)
-* think about how to represent books and quotes
-* style
-
 * UI features
   * select search highlights all (can bootstrap do this?)
   * [2] friendly copy-paste: maybe button to copy? better layout/selecable
@@ -111,23 +100,6 @@ Todo
   * how to handle when text spills over?
   * put HR before first row as well
   * streamline the left side references
-* how to layout for friendly copy-paste?
-* consider how to bring in topics / tagz??
-
-* more breadcrumbs (resource top, book, chapter links)
-* properly load library resources -- best place for that logic?
-* create stylesheets for each page
-* add a header: Tags | Resources | History | Search [ ... ]
-  * search: tag search, references, words in bible book?
-  * auto detect or have multiple search boxes?
-* should a large portion of scripture show tags contained
-  within it?
-* add next verse/chapter links
-* with and without verse number
-* verses on own line or not
-* search within book of the bible
-* modification views
-  * should a large portion of scripture show tags contained within it?
 * Tech stories
   * setup angular
   * setup LESS
@@ -139,6 +111,8 @@ Todo
   * remove a ref from a tag
   * remove a tag from a ref
   * add a tag to a ref (allows creation of a new tag)
+  * should a large portion of scripture show tags contained within it?
+* tests for view/controllers: input mock resources and intercept template call
 
 
 0.2
