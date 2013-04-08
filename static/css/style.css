@@ -17,3 +17,7 @@ hr {
 .main-ref {
   font-weight: bold;
 }
+
+.highlighted {
+  background:yellow;
+}

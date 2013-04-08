@@ -21,7 +21,9 @@
         <a class= "main-ref" href="/tagz/lib/{{resource_name}}/{{child.pretty}}">{{ child.pretty }}</a>
       </div>
         {% if show_child_text %}
+        <span {% if child.pretty in highlights %}class='highlighted'{% endif %}>
           {{ child.text }}
+        </span>
         {% else %}
         <div class="span10">
           {% for child2 in child.children %}

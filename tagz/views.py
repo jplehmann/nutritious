@@ -42,13 +42,15 @@ def lib_resource_search(resource, res_name, ref_obj, query, ref_str):
        'text': None, 'sub_ref': ref_str if ref_str else ""})
 
 
-def lib_resource(request, res_name, ref_str=None):
+def lib_resource(request, res_name, ref_str=None, highlights=None):
   """ Display a resource. If a reference is given within
   that resource, then it shows that particular scope.
   This handler is also used to front-end searches, which
   are redirected to another handler.
   @param Request may be None in the case where search is calling back
   to here, in order to display a reference.
+  @param highlights are reference strings which should be highlighted,
+  which should be 'sub-references' to make sense.
   """
   try:
     resource = library.get(res_name)
@@ -82,12 +84,14 @@ def lib_resource(request, res_name, ref_str=None):
         try:
           context = ref_obj.context(context_size)
           # TODO set the highlight on our center line
-          return lib_resource(None, res_name, context.pretty())
+          return lib_resource(None, res_name, context.pretty(), [ref_obj.pretty()])
         except Exception as e:
           print e
+    # convert highlighted 
     return render_to_response('tagz/tag_library_resource.html', 
         {'resource_name': res_name, 'title': ref_obj.pretty(), 
          'show_child_text': show_child_text, 'children': children,
+         'highlights': highlights,
          'text': text, 'sub_ref': ref_str if ref_str else ""})
   except Exception as e:
     print "Exception: " + str(e)
