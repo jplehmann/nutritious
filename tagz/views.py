@@ -116,7 +116,7 @@ def lib_resource(request, res_name, ref_str=None, highlights=None):
 
 
 def tags(request):
-  """ All tags: for each show all refs. 
+  """ All tags: for each show ref count.
   """
   all_tags = Tag.objects.all()
   counts = []
@@ -129,16 +129,19 @@ def tags(request):
 
 
 def tag(request, tag_name):
-  """ Single tag: for each show other tags on that ref."""
+  """ Single tag: show all references, and other tags on those refs."""
   t = get_object_or_404(Tag, tag=tag_name)
   related_refs = get_refs_with_tag(t)
   related_tags = []
   texts = []
+  ref_paths = []
   for ref in related_refs: 
     related_tags.append(get_tags_for_ref(ref))
     text, cleanRef = api.getTextAndCleanReference(ref.pretty_ref())
     texts.append(text)
-  related_refs_n_tags = zip(related_refs, related_tags, texts)
+    # FIXME: should not reference this resource directly!
+    ref_paths.append("/tagz/lib/NASB/" + ref.pretty_ref())
+  related_refs_n_tags = zip(related_refs, ref_paths, related_tags, texts)
   return render_to_response('tagz/tag_detail.html', 
       {'tag': t, 'related_refs_n_tags': related_refs_n_tags})
 

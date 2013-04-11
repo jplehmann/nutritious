@@ -8,15 +8,15 @@
       <h2>References tagged with '{{ tag.tag }}':</h2>
       <div style="width:750px">
       <ul>
-      {% for ref, tags, text in related_refs_n_tags %}
-      <li style="margin:10px 0px; list-style:none"><a style="font-size:1.2em" href="/tagz/refs/{{ ref.pretty_ref }}">{{ ref.pretty_ref }}</a>
+      {% for ref, ref_path, tags, text in related_refs_n_tags %}
+      <li style="margin:10px 0px; list-style:none"><a style="font-size:1.2em" href="{{ ref_path }}">{{ ref.pretty_ref }}</a>
         <ul>
           <li style="font-size:1.3em">
           {{ text }} 
           </li
           <li>
         {% for rtag in tags %}
-          <a href="/tagz/tags/{{ rtag }}/">{{ rtag }}</a>
+        <a href="/tagz/tags/{{ rtag }}/"><span class="label label-info">{{ rtag }}</span></a>
         {% endfor %}
           </li>
         </ul>

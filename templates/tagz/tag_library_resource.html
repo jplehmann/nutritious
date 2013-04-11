@@ -32,7 +32,7 @@
   </div>
   {% endif %} 
 
-  <h1> {{ title }}</h1>
+  <h2> {{ title }}</h2>
   {% if children %}
     {% for child in children %}
     <div class="row-fluid">
@@ -57,7 +57,11 @@
     {% endfor %}
   {% elif text %}
     <p>
-    {{ text }}
+      <div style="max-width:750px">
+        <blockquote>
+          <i style="font-size:2em; line-height:1.1em">{{ text }} </i>
+        </blockquote>
+    </div>
     <p>
     <a href="{{resource_path}}/{{sub_ref}}?ctx=3">Context</a>
   {% else %}
