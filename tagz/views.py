@@ -93,14 +93,14 @@ def lib_resource(request, res_name, ref_str=None, highlights=None):
         except Exception as e:
           print e
     # navigation references
-    parent_ref, previous_ref, next_ref = (None, None, None)
-    if ref_obj:
-      parent_ref = ref_obj.parent().pretty() if ref_obj.parent() else None
-      previous_ref = ref_obj.previous().pretty() if ref_obj.previous() else None
-      print ref_obj.previous()
-      next_ref = ref_obj.next().pretty() if ref_obj.next() else None
-      print ref_obj.next()
+    parent_ref, previous_ref, next_ref = None, None, None
     res_path = "/tagz/lib/" + res_name
+    if ref_obj:
+      def rel_url(rel_fct):
+        return res_path + '/' + rel_fct().pretty() if rel_fct() else None
+      parent_ref = rel_url(ref_obj.parent)
+      previous_ref = rel_url(ref_obj.previous)
+      next_ref = rel_url(ref_obj.next)
     return render_to_response('tagz/tag_library_resource.html', 
         {'resource_name': res_name, 'title': ref_obj.pretty(), 
          'resource_path': res_path,

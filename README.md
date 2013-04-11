@@ -9,79 +9,37 @@ Can search a reference scope with q=
 
 Inbox
 -----
-1. Maybe references should have their own path inside them so I don't have
-to generate them.  Also resource has inconsistency because it turns
-out to be NASB/NASB.
-2. Make it responsive, and rendering in nice size fonts for mobile.  Also add features like dropdown beneath search with book names.
 
 Bugs
 ----
-
-- search then click on a ref link
-  http://tagly.herokuapp.com/Leviticus%204:1
-
-
-Design Discussion
------------------
-* more important to stay general to do other kinds of books, or to 
-  be able to do more with this vertical?
-  - decision:  Seems fairly easy to generalize a bit, and then get books and
-    quotes in here.  If it's hard I won't do it.
-{{{
-    books: same a top level, just doesn't have any chapters
-      - need to allow tags of top level resources
-    quotation:
-      - a 'bible' (volume?) would have a bunch of quote references
-      - like a book: author, date?, text
-}}}
-* do we really need "resource" separate from the top level ref?
-{{{
-  - decision: this would simplify the implementation, but the benefits
-    won't outweight the drawbacks when I do need something stored there,
-    such as name and type.
-  - why not make it a ref as well?
-  - then add reference as a method of the root reference class
-  * except for the Views implementation, we put a lot of logic at the top,
-    so would have to see if I can put that in the root reference..
-    (Maybe break them apart at this point)
-}}}
-Study my view and see how many attributes it has... 
-  Each reference:
-    - has a displayable / pretty form
-    - is searchable
-    - might have children
-    - might have text
-
-- would like ability to get parents() including root reference()
-* add name, type to resource
-  - why name?  what's wrong with the top reference's name?
-
+- going up from a book is broken beccause links are inconsistent
 
 Questions
 ---------
 
 
-Priorities?
------------
-Higher:
-1. integrate tagz into references
-  - show tags on references
-  - tags pages go to references
-2. ability to add/edit a tag (same screen)
-3. search for a tag
-  - search with autocompletion
 
 Todo
 ----
+* [1] integrate tagz into references (both ways)
+  - show tags on references
+  - tags pages go to references
+* [1] Modification views
+  * add a tag to a ref (allows creation of a new tag)
+  * rename and delete tag
+  * remove a ref from a tag
+  * remove a tag from a ref
+  * should a large portion of scripture show tags contained within it?
+* [1] search for a tag
+  - search with autocompletion, like delicious plugin
 * UI features
-  * select search highlights all (can bootstrap do this?)
   * [2] friendly copy-paste: maybe button to copy? better layout/selecable
-  * navigation
-    * more breadcrumbs (resource top, book, chapter links)
-  * add a header: Tags | Resources | History | Search [ ... ]
+    * linerange should maybe return block of text instead?
+  * [3] select search highlights all (can bootstrap do this?)
+  * [3] navigation: more breadcrumbs (resource top, book, chapter links)
+  * [3] add a header: Tags | Resources | History | Search [ ... ]
     * search: tag search, references, words in bible book?
     * auto detect or have multiple search boxes?
-  * linerange should maybe return block of text instead?
 * Style
   * wider reference column
   * how to handle when text spills over?
@@ -93,14 +51,13 @@ Todo
 * Design
   * properly load library resources -- best place for that logic?
   - return None rather than throwing, for easier inspection (text and children)
-* Modification views
-  * rename and delete tag
-  * remove a ref from a tag
-  * remove a tag from a ref
-  * add a tag to a ref (allows creation of a new tag)
-  * should a large portion of scripture show tags contained within it?
 * tests for view/controllers: input mock resources and intercept template call
 
+1. Maybe references should have their own path inside them so I don't have
+to generate them.  Also resource has inconsistency because it turns
+out to be NASB/NASB.
+2. Make it responsive, and rendering in nice size fonts for mobile.  Also add features like dropdown beneath search with book names.
+3. Test quotes for new features, and need tests for this too... Put tests into simple and make sure quotes and bible use those.
 
 0.2
 ---
@@ -167,6 +124,41 @@ Future Features
   * multi-user: data stored separately for each user
 * misc technical debt
   * upgrade to django 1.5
+
+
+Design Discussion
+-----------------
+* more important to stay general to do other kinds of books, or to 
+  be able to do more with this vertical?
+  - decision:  Seems fairly easy to generalize a bit, and then get books and
+    quotes in here.  If it's hard I won't do it.
+{{{
+    books: same a top level, just doesn't have any chapters
+      - need to allow tags of top level resources
+    quotation:
+      - a 'bible' (volume?) would have a bunch of quote references
+      - like a book: author, date?, text
+}}}
+* do we really need "resource" separate from the top level ref?
+{{{
+  - decision: this would simplify the implementation, but the benefits
+    won't outweight the drawbacks when I do need something stored there,
+    such as name and type.
+  - why not make it a ref as well?
+  - then add reference as a method of the root reference class
+  * except for the Views implementation, we put a lot of logic at the top,
+    so would have to see if I can put that in the root reference..
+    (Maybe break them apart at this point)
+}}}
+Study my view and see how many attributes it has... 
+  Each reference:
+    - has a displayable / pretty form
+    - is searchable
+    - might have children
+    - might have text
+- would like ability to get parents() including root reference()
+* add name, type to resource
+  - why name?  what's wrong with the top reference's name?
 
 Future Tech Stories
 -------------------
