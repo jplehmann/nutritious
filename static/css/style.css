@@ -1,13 +1,15 @@
 
 body {
-  background: #FFF;
+  background: #eee;
 }
 
-.main-wrapper {
-  position: relative;
-  top: 25px;
-  left: 100px;
-  width:900px;
+.container {
+  width:800px;
+  background: #fff;
+}
+
+.content {
+  padding:1.0em;
 }
 
 hr {

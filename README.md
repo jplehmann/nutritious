@@ -16,7 +16,19 @@ Bugs
 
 Questions
 ---------
+- what open source do I have here to show?
+- tags integration
+  x change link to our refs endpoints
+    - update the style on the single ref page to be like the old one
+      I created (mostly larger font)
+    - be able to handle a line range?
+  x use bootstrap style for tags
+  - show tags on ALL scripture when browsing? this requires 
+    querying for all matching tags for each query result
 
+- name for this thing?
+- how to assign colors to tags?
+- figure out how to remove absolute paths
 
 
 Todo
@@ -34,7 +46,8 @@ Todo
   - search with autocompletion, like delicious plugin
 * UI features
   * [2] friendly copy-paste: maybe button to copy? better layout/selecable
-    * linerange should maybe return block of text instead?
+    * [1] option for linerange to return single block instead
+  * [2] context should work for a linerange too
   * [3] select search highlights all (can bootstrap do this?)
   * [3] navigation: more breadcrumbs (resource top, book, chapter links)
   * [3] add a header: Tags | Resources | History | Search [ ... ]
