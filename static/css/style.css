@@ -1,11 +1,20 @@
 
 body {
-  background: #eee;
+  background: #666;
+  /* for fixed navbar */
+  margin: 40px;
 }
 
 .container {
   width:800px;
   background: #fff;
+  border: 2px solid black;
+}
+
+.navbar {
+  width:800px;
+  margin: 0 auto;
+  border: 2px solid black;
 }
 
 .content {
