@@ -14,22 +14,34 @@
     {% for child in children %}
     <div class="row-fluid">
       {% if show_child_text %}
-        <!-- Child text -->
-        <div class="span12 child-text">
-          <a class= "main-ref" href="{{resource_path}}/{{child.pretty}}">
-            {{ child.short }}
-          </a>
-          <span {% if child.pretty in highlights %}class='highlighted'{% endif %}>
-            {{ child.text }}
-          </span>
-        </div>
+        {% if not long_refs %}
+          <!-- Child text -->
+          <div class="span12 child-text">
+            <a class= "main-ref" href="{{resource_path}}/{{child.pretty}}">
+              {{ child.short }}
+            </a>
+            <span {% if child.pretty in highlights %}class='highlighted'{% endif %}>
+              {{ child.text }}
+            </span>
+          </div>
+        {% else %}
+          <!-- Search results TODO: break it out to own page -->
+          <div class="span2">
+            <a class= "main-ref" href="{{resource_path}}/{{child.pretty}}">
+              {{ child.pretty }}
+            </a>
+          </div>
+          <div class="span10">
+            <span {% if child.pretty in highlights %}class='highlighted'{% endif %}>
+              {{ child.text }}
+            </span>
+          </div>
+        {% endif %}
       {% else %}
         <!-- Compact index -->
         <div class="span2">
           <a class= "main-ref" href="{{resource_path}}/{{child.pretty}}">
-            {% if long_refs %} {{ child.pretty }}
-            {% else %} {{ child.short }}
-            {% endif %}
+            {{ child.pretty }}
           </a>
         </div>
         <div class="span10">
