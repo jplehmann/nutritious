@@ -1,0 +1,21 @@
+
+<div class="navigation btn-group">
+
+  <a href="{{resource_path}}" class="btn btn-small">
+    <i class="icon-home"></i>
+    Top</a>
+
+  <a href="{{parent_ref|default_if_none:'javascript:;'}}" class="btn btn-small
+    {% if not parent_ref %} disabled {% endif %} ">
+    <i class="icon-arrow-up"></i>
+    Up</a>
+
+  <a href="{{previous_ref|default_if_none:'javascript:;'}}" class="btn btn-small
+    {% if not previous_ref %} disabled {% endif %} ">
+    <i class="icon-arrow-left"></i>
+    Previous</a>
+  <a href="{{next_ref|default_if_none:'javascript:;'}}" class="btn btn-small
+    {% if not next_ref %} disabled {% endif %} ">
+    <i class="icon-arrow-right"></i>
+    Next</a>
+</div>

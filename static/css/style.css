@@ -3,6 +3,7 @@ body {
   background: #666;
   /* for fixed navbar */
   margin: 40px;
+  background:url(../img/smoke-patches-black-dark.jpg) repeat left top;
 }
 
 .container {
@@ -15,6 +16,18 @@ body {
   width:800px;
   margin: 0 auto;
   border: 2px solid black;
+}
+
+.navbar-inverse .navbar-inner {
+  box-shadow: 0px 0px 3px #fff;
+  /* Maybe make this a gradient
+  background-color: #444;
+  background-image: none;
+  */
+}
+
+.navbar-search {
+  margin-right: 15px;
 }
 
 .content {
@@ -35,4 +48,8 @@ hr {
 
 .navigation {
   margin-top:5px;
+}
+
+.navbar-inverse .navbar-search .search-query {
+  background-color: #fff;
 }

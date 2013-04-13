@@ -9,13 +9,31 @@ Can search a reference scope with q=
 
 Inbox
 -----
+- maybe break into pages for different levels rather than 1 view for 3
+    - index view
+      - put the numbers on badges/buttons so they are bigger to click
+      - jump to detail or jump to within chapter view (internal anchor)?
+    - chapter view
+      - chapter view should not use 2 columns, but put refs by lines (even inline)
+    - detail view
+x use smoke background
+- need paragraph markers
+- do OSS analysis and decide if I shoudl break
+- resource could provide soem relative links for a navbar dropdown
+- remove book name from ref on left (short pretty ref)
+- divergences of ref simple ref and view ref, what to do? tests reflect actual
+  api while reference api has moved on
 
 Bugs
 ----
 - going up from a book is broken beccause links are inconsistent
+- search bar when not on a resource page breaks.. maybe this should
+go to a general search which can search tags too, but passes in context
+as a query param?
 
 Questions
 ---------
+* how to have div (non-table) view but have dynamic column width, according to the longest items?
 - what open source do I have here to show?
 - tags integration
   x change link to our refs endpoints

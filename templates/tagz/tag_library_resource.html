@@ -4,46 +4,31 @@
 
 {% block main_content %}
 
-<form action="/tagz/lib/{{resource_name}}/{{sub_ref}}" method="get" class="form-search">
-    <input class="search-query" type="text" name="q" placeholder="enter a reference or query"/>
-<input type="submit" value="search" />
-<p>
-
   {% if resource_name != title %} 
-  <div class="navigation btn-group">
-
-    <a href="{{resource_path}}" class="btn btn-small">
-      <i class="icon-home"></i>
-      Top</a>
-
-    <a href="{{parent_ref|default_if_none:'javascript:;'}}" class="btn btn-small
-      {% if not parent_ref %} disabled {% endif %} ">
-      <i class="icon-arrow-up"></i>
-      Up</a>
-
-    <a href="{{previous_ref|default_if_none:'javascript:;'}}" class="btn btn-small
-      {% if not previous_ref %} disabled {% endif %} ">
-      <i class="icon-arrow-left"></i>
-      Previous</a>
-    <a href="{{next_ref|default_if_none:'javascript:;'}}" class="btn btn-small
-      {% if not next_ref %} disabled {% endif %} ">
-      <i class="icon-arrow-right"></i>
-      Next</a>
-  </div>
+    {% include "tagz/resource_nav_buttons.html" %}
   {% endif %} 
 
   <h2> {{ title }}</h2>
+  <!-- List view -->
   {% if children %}
     {% for child in children %}
     <div class="row-fluid">
       <div class="span2">
-        <a class= "main-ref" href="{{resource_path}}/{{child.pretty}}">{{ child.pretty }}</a>
+      <!--<div class=" {% if long_refs %}span2{% else %}span1{% endif %}"> -->
+        <!-- Left reference column -->
+        <a class= "main-ref" href="{{resource_path}}/{{child.pretty}}">
+          {% if long_refs %} {{ child.pretty }}
+          {% else %} {{ child.short }}
+          {% endif %}
+        </a>
       </div>
+        <!-- Child text -->
         {% if show_child_text %}
         <span {% if child.pretty in highlights %}class='highlighted'{% endif %}>
           {{ child.text }}
         </span>
         {% else %}
+        <!-- Compact index -->
         <div class="span10">
           {% for child2 in child.children %}
             {% with child2.pretty|cut:child.pretty|cut:":" as child2_short %}
@@ -55,6 +40,7 @@
     </div>
     <hr>
     {% endfor %}
+  <!-- Detail text view -->
   {% elif text %}
     <p>
       <div style="max-width:750px">

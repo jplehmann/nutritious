@@ -44,7 +44,9 @@ def lib_resource_search(resource, res_name, ref_obj, query, ref_str):
        'resource_path': res_path,
        'parent_ref': ref_obj.pretty(), 
        'show_child_text': True, 'children': hits,
-       'text': None, 'sub_ref': ref_str if ref_str else ""})
+       'text': None, 'sub_ref': ref_str if ref_str else "",
+       'long_refs': True })
+
 
 def nasb(request):
   return lib_resource(request, "NASB")
