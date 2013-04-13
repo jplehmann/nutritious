@@ -32,6 +32,13 @@ body {
 
 .content {
   padding:1.0em;
+
+}
+
+.row-fluid .child-text {
+  font-size: 1.3em;
+  min-height: 0px;
+  margin: 2px;
 }
 
 hr {

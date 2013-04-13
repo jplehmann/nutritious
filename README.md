@@ -9,6 +9,7 @@ Can search a reference scope with q=
 
 Inbox
 -----
+- tagz root still goes to tags not home
 - maybe break into pages for different levels rather than 1 view for 3
     - index view
       - put the numbers on badges/buttons so they are bigger to click
