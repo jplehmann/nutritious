@@ -18,8 +18,7 @@
           <!-- Child text -->
           <div class="span12 child-text">
             <a class= "main-ref" href="{{resource_path}}/{{child.pretty}}">
-              {{ child.short }}
-            </a>
+              {{ child.short }}</a> <!-- no space after anchor -->
             <span {% if child.pretty in highlights %}class='highlighted'{% endif %}>
               {{ child.text }}
             </span>
