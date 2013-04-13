@@ -46,6 +46,9 @@ def lib_resource_search(resource, res_name, ref_obj, query, ref_str):
        'show_child_text': True, 'children': hits,
        'text': None, 'sub_ref': ref_str if ref_str else ""})
 
+def nasb(request):
+  return lib_resource(request, "NASB")
+
 
 def lib_resource(request, res_name, ref_str=None, highlights=None):
   """ Display a resource. If a reference is given within

@@ -13,7 +13,8 @@ urlpatterns = patterns('',
     url(r'^tagz/tags/(?P<tag_name>[^\/]+)/$', 'tagz.views.tag'),
     url(r'^tagz/refs/$', 'tagz.views.refs'),
     url(r'^tagz/refs/(?P<ref_name>[^\/]+)/$', 'tagz.views.ref'),
-    url(r'^tagz/$', 'tagz.views.tags'), # redir to tags
+    # home
+    url(r'^tagz/$', 'tagz.views.nasb'), # redir to tags
     url(r'^$', 'tagz.views.tags'), # redir to tags
 
     # Uncomment the next line to enable the admin:
