@@ -6,20 +6,18 @@ Can search a reference scope with q=
 * Even regex support (encode + as %2b)
   * http://127.0.0.1:8000/tagz/lib/NASB/Luke?q=hi\w%2bt
 
-
 Inbox
 -----
+- should search be case insensitive by default? (how could regex override?) -- might expect other normalization too, stemming
 
 Bugs
 ----
-- going up from a book is broken beccause links are inconsistent
-- search bar when not on a resource page breaks.. maybe this should
-go to a general search which can search tags too, but passes in context
-as a query param?
+- search bar when at library or tags is broken/unsupported
 
 Tech Questions
 ---------
 * how to have div (non-table) view but have dynamic column width, according to the longest items?
+  - seems impossible to do a row-based approach like this because the rows are independent.  Could do a column layout with fixed height instead perhaps, but this sounds even worse.
 
 Questions
 ---------
@@ -35,10 +33,7 @@ Questions
 Todo
 ----
 * [0] merge resource and top level reference for uniformity
-* [0] Maybe references should have their own path inside them so I don't have
-to generate them.  Also resource has inconsistency because it turns
-out to be NASB/NASB.
-* [0] remove absolute paths
+* [0] remove absolute paths (esp in view, try reverse())
 * [1] integrate tagz into references (both ways)
   - show tags on references
 * [1] Modification views
@@ -164,6 +159,8 @@ Future Tech Stories
 
 0.2
 ---
+* [DONE] going up from a book is broken beccause links are inconsistent
+* [DONE] let references generate their own full paths
 * [DONE] add a header: Tags | Resources | History | Search [ ... ]
 * [DONE] tags pages go to references
 * [DONE] re-done chapter view with refs "inline"
