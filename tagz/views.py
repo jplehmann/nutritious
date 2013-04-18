@@ -42,7 +42,7 @@ def lib_resource_search(resource, res_name, ref_obj, query, ref_str):
   return render_to_response('tagz/tag_library_resource.html', 
       {'resource_name': res_name, 'title': title,
        'resource_path': res_path,
-       'parent_ref': ref_obj.pretty(), 
+       'parent_ref': ref_obj.path(), 
        'show_child_text': True, 'children': hits,
        'text': None, 'sub_ref': ref_str if ref_str else "",
        'long_refs': True })
@@ -59,6 +59,7 @@ def lib_resource(request, res_name, ref_str=None, highlights=None):
   are redirected to another handler.
   @param Request may be None in the case where search is calling back
   to here, in order to display a reference.
+  @param ref_str from the path, if given
   @param highlights are reference strings which should be highlighted,
   which should be 'sub-references' to make sense.
   """
@@ -99,10 +100,11 @@ def lib_resource(request, res_name, ref_str=None, highlights=None):
           print e
     # navigation references
     parent_ref, previous_ref, next_ref = None, None, None
+    # TODO: remove this hardcoded path somehow (with reverse?)
     res_path = "/tagz/lib/" + res_name
     if ref_obj:
       def rel_url(rel_fct):
-        return res_path + '/' + rel_fct().pretty() if rel_fct() else None
+        return res_path + '/' + rel_fct().path() if rel_fct() else None
       parent_ref = rel_url(ref_obj.parent)
       previous_ref = rel_url(ref_obj.previous)
       next_ref = rel_url(ref_obj.next)
