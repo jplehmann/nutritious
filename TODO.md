@@ -2,9 +2,8 @@ Tagz
 ====
 Tagging app for all kinds of things (books, quotes, persons).
 
-Can search a reference scope with q=
-* Even regex support (encode + as %2b)
-  * http://127.0.0.1:8000/tagz/lib/NASB/Luke?q=hi\w%2bt
+Priorities
+----------
 
 Inbox
 -----
@@ -12,6 +11,8 @@ Inbox
 
 Bugs
 ----
+- going to chapter of book broken
+- IS 62 goes to detail and it shouldn't
 - search bar when at library or tags is broken/unsupported
 
 Tech Questions
@@ -155,6 +156,13 @@ Future Tech Stories
 * install sublime text2 and django plugins
   * CurrentScope, Djaneiro, SublimeCodeIntel, and SublimeLinter 
   * http://sontek.net/blog/detail/turning-vim-into-a-modern-python-ide#django
+
+
+Documentation
+-------------
+Can search a reference scope with q=
+* Even regex support (encode + as %2b)
+  * http://127.0.0.1:8000/tagz/lib/NASB/Luke?q=hi\w%2bt
 
 
 0.2
