@@ -1,6 +1,7 @@
 #from django.template import Context, loader
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponse
+from django.http import HttpResponseRedirect
 from django.http import Http404
 
 from tagz.models import Tag
@@ -49,7 +50,10 @@ def lib_resource_search(resource, res_name, ref_obj, query, ref_str):
 
 
 def nasb(request):
-  return lib_resource(request, "NASB")
+  """ Must redirect instead of simply serving the resource, otherwise
+      relative links built up will be wrong.
+  """
+  return HttpResponseRedirect("/tagz/lib/NASB")
 
 
 def lib_resource(request, res_name, ref_str=None, highlights=None):
