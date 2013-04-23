@@ -13,7 +13,6 @@ from pybible import api
 from pybooks import library
 
 
-import pybooks.library
 library.load_resources()
 def lib(request):
   """ Library root.
@@ -40,13 +39,12 @@ def lib_resource_search(resource, res_name, ref_obj, query, ref_str):
   # TODO keep this up to date with parameters in lib_resource
   # Let a test confirm this.
   res_path = "/tagz/lib/" + res_name
-  return render_to_response('tagz/resource.html', 
+  return render_to_response('tagz/ref_search_results.html', 
       {'resource_name': res_name, 'title': title,
        'resource_path': res_path,
        'parent_ref': ref_obj.path(), 
-       'show_child_text': True, 'children': hits,
-       'text': None, 'sub_ref': ref_str if ref_str else "",
-       'long_refs': True })
+       'children': hits,
+       'text': None, 'sub_ref': ref_str if ref_str else "" })
 
 
 def nasb(request):
@@ -98,7 +96,7 @@ def lib_resource(request, res_name, ref_str=None, highlights=None):
         # get reference 
         try:
           context = ref_obj.context(context_size)
-          # TODO set the highlight on our center line
+          # set the highlight on our center line
           return lib_resource(None, res_name, context.pretty(), [ref_obj.pretty()])
         except Exception as e:
           print e
@@ -112,14 +110,23 @@ def lib_resource(request, res_name, ref_str=None, highlights=None):
       parent_ref = rel_url(ref_obj.parent)
       previous_ref = rel_url(ref_obj.previous)
       next_ref = rel_url(ref_obj.next)
-    return render_to_response('tagz/resource.html', 
-        {'resource_name': res_name, 'title': ref_obj.pretty(), 
+    context = {
+         'resource_name': res_name, 'title': ref_obj.pretty(), 
          'resource_path': res_path,
          'parent_ref': parent_ref, 
          'previous_ref': previous_ref, 'next_ref': next_ref,
-         'show_child_text': show_child_text, 'children': children,
+         'children': children,
          'highlights': highlights,
-         'text': text, 'sub_ref': ref_str if ref_str else ""})
+         'text': text, 'sub_ref': ref_str if ref_str else ""
+    }
+    # determine which view to use
+    if children:
+      if show_child_text:
+        return render_to_response('tagz/ref_text_list.html', context)
+      else:
+        return render_to_response('tagz/ref_index.html', context)
+    else:
+      return render_to_response('tagz/ref_detail.html', context)
   except Exception as e:
     print "Exception: " + str(e)
     print traceback.format_exc()
@@ -157,23 +164,23 @@ def tag(request, tag_name):
       {'tag': t, 'related_refs_n_tags': related_refs_n_tags})
 
 
-def ref(request, ref_name):
-  """ Single ref: show scripture and tags."""
-  #ref = get_object_or_404(Reference, ref=ref_name)
-  # 1. parse this ref 
-  text, clean_ref = api.getTextAndCleanReference(ref_name)
-  # 2. create a new reference object
-  # 3. look up all tags that overlap
-  #get_tags_for_ref(ref)
-  tags = []
-  return render_to_response('tagz/ref_detail.html', 
-      {'ref_name': clean_ref, 'text': text, 'tags': tags})
-
-
-def refs(request):
-  """ All refs: simply show count."""
-  refs = Reference.objects.all()
-  return HttpResponse("Number of references found: %s" % refs.count())
+#def ref(request, ref_name):
+#  """ Single ref: show scripture and tags."""
+#  #ref = get_object_or_404(Reference, ref=ref_name)
+#  # 1. parse this ref 
+#  text, clean_ref = api.getTextAndCleanReference(ref_name)
+#  # 2. create a new reference object
+#  # 3. look up all tags that overlap
+#  #get_tags_for_ref(ref)
+#  tags = []
+#  return render_to_response('tagz/ref_detail.html', 
+#      {'ref_name': clean_ref, 'text': text, 'tags': tags})
+#
+#
+#def refs(request):
+#  """ All refs: simply show count."""
+#  refs = Reference.objects.all()
+#  return HttpResponse("Number of references found: %s" % refs.count())
 
 
 def safe_int(val):

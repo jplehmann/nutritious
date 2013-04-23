@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}{{ block.super }} - Library Resource{% endblock %}
+
+{% block main_content %}
+
+  {% if resource_name != title %} 
+    {% include "tagz/resource_nav_buttons.html" %}
+  {% endif %} 
+
+  <h2> {{ title }}</h2>
+  <!-- List view -->
+  {% if children %}
+    {% for child in children %}
+    <div class="row-fluid">
+      <!-- Child text -->
+      <div class="span12 child-text">
+        <a class= "main-ref" href="{{child.path}}">
+          {{ child.short }}</a> <!-- no space after anchor -->
+        <span {% if child.pretty in highlights %}class='highlighted'{% endif %}>
+          {{ child.text }}
+        </span>
+      </div>
+    </div>
+    <hr>
+    {% endfor %}
+  {% else %}
+    There were no results.
+  {% endif %}
+
+  <br>
+  <br>
+
+{{ block.super }}
+{% endblock main_content %}

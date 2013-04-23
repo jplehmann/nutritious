@@ -11,8 +11,8 @@ urlpatterns = patterns('tagz.views',
           'lib_resource'),
     url(r'^tagz/tags/$', 'tags'),
     url(r'^tagz/tags/(?P<tag_name>[^\/]+)/$', 'tag'),
-    url(r'^tagz/refs/$', 'tagz.views.refs'),
-    url(r'^tagz/refs/(?P<ref_name>[^\/]+)/$', 'ref'),
+    #url(r'^tagz/refs/$', 'tagz.views.refs'),
+    #url(r'^tagz/refs/(?P<ref_name>[^\/]+)/$', 'ref'),
     # home
     url(r'^tagz/$', 'nasb'), # redir to tags
     url(r'^$', 'nasb'), # redir to tags
