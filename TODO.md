@@ -127,13 +127,6 @@ Future Features
   like tags, except don't have a topic but do have a longer text portion.
 - Index Notes (say google docs), tagging references there and creating
   an index, so that you have footnotes into your own documents and studies.
-- break into pages for different levels rather than 1 view for ALL
-    - index view (the "grid" look)
-      - put the numbers on badges/buttons so they are bigger to click
-      - jump to detail or jump to within chapter view (internal anchor)?
-    - search view (2 columns: refs and text)
-    - chapter view (1 column of text)
-    - detail view (larger text, no inline refs)
 * UI
   * auto-complete style box for searching on tags/refs
   * general search box that searches both tags and references, or one or the other
@@ -197,23 +190,6 @@ Future Tech Stories
 
 
 
-0.2
----
-* [DONE] going up from a book is broken beccause links are inconsistent
-* [DONE] let references generate their own full paths
-* [DONE] add a header: Tags | Resources | History | Search [ ... ]
-* [DONE] tags pages go to references
-* [DONE] re-done chapter view with refs "inline"
-* [DONE] nav bar
-* [DONE] use smoke background
-* [DONE] next/previous (child) links
-* [DONE] [1] widen context +-3 (say of single verse, or chapter and highlight)
-* pybooks support with endpoints for resource and reference within
-  - [DONE] navigate through 'references'
-    * 2 dimensional indexes
-  - [DONE] search through book in bible
-* [DONE] search for reference first then query
-
 0.1
 -----------------------------
 * [DONE] hosting with bitbucket
@@ -241,5 +217,21 @@ Future Tech Stories
 * [DONE] heroku: database migrated
 * [DONE] heroku: pybible: as git+https from a read only account on bitbucket installed as package data
 
-
+0.2
+---
+* [DONE] break into pages for different levels rather than 1 view for ALL
+* [DONE] going up from a book is broken beccause links are inconsistent
+* [DONE] let references generate their own full paths
+* [DONE] add a header: Tags | Resources | History | Search [ ... ]
+* [DONE] tags pages go to references
+* [DONE] re-done chapter view with refs "inline"
+* [DONE] nav bar
+* [DONE] use smoke background
+* [DONE] next/previous (child) links
+* [DONE] [1] widen context +-3 (say of single verse, or chapter and highlight)
+* pybooks support with endpoints for resource and reference within
+  - [DONE] navigate through 'references'
+    * 2 dimensional indexes
+  - [DONE] search through book in bible
+* [DONE] search for reference first then query
 
