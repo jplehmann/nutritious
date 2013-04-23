@@ -18,7 +18,7 @@ library.load_resources()
 def lib(request):
   """ Library root.
   """
-  return render_to_response('tagz/tag_library.html', 
+  return render_to_response('tagz/library.html', 
       {'resources': library.list()})
 
 
@@ -40,7 +40,7 @@ def lib_resource_search(resource, res_name, ref_obj, query, ref_str):
   # TODO keep this up to date with parameters in lib_resource
   # Let a test confirm this.
   res_path = "/tagz/lib/" + res_name
-  return render_to_response('tagz/tag_library_resource.html', 
+  return render_to_response('tagz/resource.html', 
       {'resource_name': res_name, 'title': title,
        'resource_path': res_path,
        'parent_ref': ref_obj.path(), 
@@ -112,7 +112,7 @@ def lib_resource(request, res_name, ref_str=None, highlights=None):
       parent_ref = rel_url(ref_obj.parent)
       previous_ref = rel_url(ref_obj.previous)
       next_ref = rel_url(ref_obj.next)
-    return render_to_response('tagz/tag_library_resource.html', 
+    return render_to_response('tagz/resource.html', 
         {'resource_name': res_name, 'title': ref_obj.pretty(), 
          'resource_path': res_path,
          'parent_ref': parent_ref, 
