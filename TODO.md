@@ -1,9 +1,53 @@
-Tagz
-====
-Tagging app for all kinds of things (books, quotes, persons).
-
 Priorities
 ----------
+Essential
+* figure out what my open source goal is, and what todos that incurs (unknown)
+{{{
+  If I am planning on putting 15-25 more hours into this thing before
+  it's "done", what am I really getting out of it?  Is it worth it?
+  If I am not going to have something impressive to open source at the end
+  of it, then what changes should I make for this to be easier?
+
+}}}
+* And how much of this can I do now versus incrementally?  Should do any very hard stuff now.  OR, how can I do the easier thing now in a way that could be extensible later?
+  * What abstractions... is the key question
+
+* ability to create/edit tags tags (medium)
+  * requires authentication (medium/easy)
+* tags search (how tags will work across resources?) (medium)
+{{{
+  A. perform tags and ref search in same box?
+    No, this isn't possibel because we do regex serach too
+    Need to namespace the tags with t:
+
+  B. Compound searches?  ref + tag
+    Not now.
+
+  C. should tagz cross resource or are they unique?
+    They certainly need to store the resource name one way or another,
+    so I guess implementation can go either way (whether I show them
+    for all resources or not).  (Then again for the Bible, I don't have to tie
+    them a particular version.  Yet another generalization challenge.)
+
+  D. tag search should be scoped to whatever the current resource (if 
+    not referenc) context is
+}}}
+
+High Priority
+* friendly copy/paste (easy)
+* setup LESS for better ongoing design (easy)
+* more bible versions (easy) (and figure out copyright issue)
+* show tags on reference view (medium)
+
+Extra (could be future)
+* mutability for resources like quotes (hard)
+* autocomplete for tag search (medium) (AJAX query for tags)
+
+1 easy 1-2 hours
+3 medium 2-4 hours
+2 + 5*3 = 17 hours + 1 hard + 1 unknown
+
+That is a lot to get done in 5 weeks. Not realistic to get the quotes part done.  I really need to evaluate my goals, and determine what's most important.
 
 Inbox
 -----
@@ -11,8 +55,6 @@ Inbox
 
 Bugs
 ----
-- going to chapter of book broken
-- IS 62 goes to detail and it shouldn't
 - search bar when at library or tags is broken/unsupported
 
 Tech Questions
@@ -35,22 +77,17 @@ Todo
 ----
 * [0] merge resource and top level reference for uniformity
 * [0] remove absolute paths (esp in view, try reverse())
-* [1] integrate tagz into references (both ways)
-  - show tags on references
-* [1] Modification views
-  * add a tag to a ref (allows creation of a new tag)
-  * rename and delete tag
-  * remove a ref from a tag
-  * remove a tag from a ref
-  * should a large portion of scripture show tags contained within it?
-* [2] search for a tag (over all resources?)
-  - [3] search with autocompletion, like delicious plugin
+* [2] integrate tagz into references
+* [1] Modification view (create, rename, delete tags)
+  * [1] authentication
+* [1] search for a tag (over all resources?)
+  - [2] autocomplete search (angular for AJAX query to get tags?)
 * UI features
   * [2] friendly copy-paste: maybe button to copy? better layout/selecable
-    * [1] option for linerange to return single block instead
-    * [1] then user could select multiple lines in chapter view to get a
-          detail view with that range?
-  * [2] context should work for a linerange too
+    * option for linerange to return single block instead
+    * then user could select multiple lines in chapter view to get a
+      detail view with that range?
+  * [3] context should work for a linerange too
   * [3] select search highlights all (can bootstrap do this?)
   * [3] navigation: more breadcrumbs (book, chapter links)
   * Tag search: along with references, words in bible book?
@@ -62,7 +99,7 @@ Todo
   * streamline the left side references
 * Tech stories
   * setup angular
-  * setup LESS
+  * [2] setup LESS
 * Design
   * properly load library resources -- best place for that logic?
   * return None rather than throwing, for easier inspection (text and children)
@@ -71,6 +108,7 @@ Todo
 * could put library / resources in a navbar dropdown
 * resource could provide some relative links for a navbar dropdown (OT/NT)
 * Manually test quotes for new features, and need auto tests for this too... Put tests into simple and make sure quotes and bible use those.
+* Mutability for resources like Quotes
 
 Future Features
 ---------------
@@ -157,12 +195,6 @@ Future Tech Stories
   * CurrentScope, Djaneiro, SublimeCodeIntel, and SublimeLinter 
   * http://sontek.net/blog/detail/turning-vim-into-a-modern-python-ide#django
 
-
-Documentation
--------------
-Can search a reference scope with q=
-* Even regex support (encode + as %2b)
-  * http://127.0.0.1:8000/tagz/lib/NASB/Luke?q=hi\w%2bt
 
 
 0.2
