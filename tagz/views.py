@@ -1,16 +1,20 @@
 #from django.template import Context, loader
-from django.shortcuts import render_to_response, get_object_or_404
+from django.shortcuts import render_to_response, get_object_or_404, redirect
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.http import Http404
+#from django.core.exceptions import DoesNotExist
 
 from tagz.models import Tag
 from tagz.models import Reference
 from tagz.models import get_refs_with_tag
 from tagz.models import get_tags_for_ref
+from tagz.models import get_exact_tag
+from tagz.models import get_matching_tags
 
 from pybible import api
 from pybooks import library
+import traceback
 
 
 library.load_resources()
@@ -21,7 +25,41 @@ def lib(request):
       {'resources': library.list()})
 
 
-import traceback
+def search(request, res_name, ref_str):
+  """ Extract the query string and if it contains tag(s), execute a search
+      else if it is scoped to a bible reference redirect to that resource
+      to be searched.
+  """
+  # FIXME: I'd like to go straight to a view or view method, but, the
+  # path is set to /search/ and that needs to be removed.
+  #
+  query = request.GET.get('q', None)
+  if query:
+    # tag search: currently only supports a single tag, and must begin with #
+    query = query.strip()
+    if query.startswith("#"):
+      # search the tags
+      query = query[1:]
+      try:
+        # exact match
+        match = get_exact_tag(query)
+        return redirect('/tagz/tags/' + match.tag)
+      except:
+        # starts-with match
+        matches = get_matching_tags(query)
+        if matches:
+          # show the first
+          return redirect('/tagz/tags/' + matches[0].tag)
+    else:
+      if res_name:
+        # TODO: improve this approach which is necessary to get off the
+        # /search root, but is not DRY.
+        path = res_name if ref_str == None else res_name + "/" + ref_str
+        return redirect('/tagz/lib/' + path + "?q="+query, 
+            request, res_name, ref_str)
+      else:
+        pass
+  raise Http404("Couldn't find search matches or no query param.")
 
 
 def lib_resource_search(resource, res_name, ref_obj, query, ref_str):
@@ -30,7 +68,7 @@ def lib_resource_search(resource, res_name, ref_obj, query, ref_str):
   # first see if this is a reference in this resource
   try:
     new_ref = resource.reference(query)
-    return lib_resource(None, res_name, new_ref.pretty())
+    return resource(None, res_name, new_ref.pretty())
   except Exception as e:
     print e
   hits = ref_obj.search(query)
@@ -54,7 +92,7 @@ def nasb(request):
   return HttpResponseRedirect("/tagz/lib/NASB")
 
 
-def lib_resource(request, res_name, ref_str=None, highlights=None):
+def resource(request, res_name, ref_str=None, highlights=None):
   """ Display a resource. If a reference is given within
   that resource, then it shows that particular scope.
   This handler is also used to front-end searches, which
@@ -97,7 +135,7 @@ def lib_resource(request, res_name, ref_str=None, highlights=None):
         try:
           context = ref_obj.context(context_size)
           # set the highlight on our center line
-          return lib_resource(None, res_name, context.pretty(), [ref_obj.pretty()])
+          return resource(None, res_name, context.pretty(), [ref_obj.pretty()])
         except Exception as e:
           print e
     # navigation references

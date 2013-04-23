@@ -15,6 +15,9 @@ Essential
 * ability to create/edit tags tags (medium)
   * requires authentication (medium/easy)
 * tags search (how tags will work across resources?) (medium)
+  - Still TODO
+    - return multiple tag results rather than the first
+    - scoped tag search?
 {{{
   A. perform tags and ref search in same box?
     No, this isn't possibel because we do regex serach too
@@ -51,6 +54,7 @@ That is a lot to get done in 5 weeks. Not realistic to get the quotes part done.
 
 Inbox
 -----
+- shortcut key to do search
 - should search be case insensitive by default? (how could regex override?) -- might expect other normalization too, stemming
 
 Bugs
@@ -59,6 +63,7 @@ Bugs
 
 Tech Questions
 ---------
+- How to go straight to a view method but change the path? Is a redirect required?  Figute out the best way to write my search method which redirects back to a resource if one was provided. Or if we wanted to do a scoped search with a tag, how would that work? My goal was that search should centralize the searching... Maybe it also needs to handle searches over resources.
 * how to have div (non-table) view but have dynamic column width, according to the longest items?
   - seems impossible to do a row-based approach like this because the rows are independent.  Could do a column layout with fixed height instead perhaps, but this sounds even worse.
 

@@ -37,6 +37,19 @@ class Reference(models.Model):
       ordering = ["book", "chapter", "firstLine", "tag", "lastLine"]
 
 
+def get_exact_tag(query):
+  """ Raises DoesNotExist exception 
+  """
+  return Tag.objects.get(tag=query)
+
+
+def get_matching_tags(query):
+  """ If tag starts with the query.
+  """
+  return Tag.objects.filter(tag__istartswith=query)
+
+
+
 def get_refs_with_tag(tag):
   """
   Return QuerySet with all references which have this tag. 
@@ -64,3 +77,5 @@ def get_overlapping_refs(ref):
   return Reference.objects.filter(
       chapter=ref.chapter, book=ref.book, 
       firstLine__gte=ref.firstLine, lastLine__lte=ref.lastLine)
+
+
