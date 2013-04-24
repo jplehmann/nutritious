@@ -16,24 +16,16 @@ Essential
   * requires authentication (medium/easy)
 * tags search (how tags will work across resources?) (medium)
   - Still TODO
+    - get rid of /search endpoint and replace with a root /tagz
+      /tagz?q=xxx
+      /tagz/lib/NASB?q=xxx
     - return multiple tag results rather than the first
-    - scoped tag search?
 {{{
-  A. perform tags and ref search in same box?
-    No, this isn't possibel because we do regex serach too
-    Need to namespace the tags with t:
-
-  B. Compound searches?  ref + tag
-    Not now.
-
-  C. should tagz cross resource or are they unique?
-    They certainly need to store the resource name one way or another,
-    so I guess implementation can go either way (whether I show them
-    for all resources or not).  (Then again for the Bible, I don't have to tie
-    them a particular version.  Yet another generalization challenge.)
-
-  D. tag search should be scoped to whatever the current resource (if 
-    not referenc) context is
+  Summary:
+  - DONE: label tags with @ to distinguish between general terms
+  - TODO: tags need to store the resource they reference
+    - TODO: how to store refs to Bible when I don't care?
+  - FUTURE: scope tag search to current context (resource/reference)
 }}}
 
 High Priority
@@ -54,12 +46,14 @@ That is a lot to get done in 5 weeks. Not realistic to get the quotes part done.
 
 Inbox
 -----
+- click search should select all to replace
 - shortcut key to do search
 - should search be case insensitive by default? (how could regex override?) -- might expect other normalization too, stemming
 
 Bugs
 ----
 - search bar when at library or tags is broken/unsupported
+- anger tag has 0 John ref
 
 Tech Questions
 ---------

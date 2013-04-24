@@ -20,51 +20,43 @@ import traceback
 library.load_resources()
 def lib(request):
   """ Library root.
+      Also receives searches performed when no resource is selected.
   """
-  return render_to_response('tagz/library.html', 
-      {'resources': library.list()})
-
-
-def search(request, res_name, ref_str):
-  """ Extract the query string and if it contains tag(s), execute a search
-      else if it is scoped to a bible reference redirect to that resource
-      to be searched.
-  """
-  # FIXME: I'd like to go straight to a view or view method, but, the
-  # path is set to /search/ and that needs to be removed.
-  #
   query = request.GET.get('q', None)
-  if query:
-    # tag search: currently only supports a single tag, and must begin with #
-    query = query.strip()
-    if query.startswith("#"):
-      # search the tags
-      query = query[1:]
-      try:
-        # exact match
-        match = get_exact_tag(query)
-        return redirect('/tagz/tags/' + match.tag)
-      except:
-        # starts-with match
-        matches = get_matching_tags(query)
-        if matches:
-          # show the first
-          return redirect('/tagz/tags/' + matches[0].tag)
-    else:
-      if res_name:
-        # TODO: improve this approach which is necessary to get off the
-        # /search root, but is not DRY.
-        path = res_name if ref_str == None else res_name + "/" + ref_str
-        return redirect('/tagz/lib/' + path + "?q="+query, 
-            request, res_name, ref_str)
-      else:
-        pass
-  raise Http404("Couldn't find search matches or no query param.")
+  # generic library response
+  if not query:
+    return render_to_response('tagz/library.html', 
+        {'resources': library.list()})
+  else:
+    return tag_search(query)
+
+
+def tag_search(query):
+  # tag search: currently only supports a single tag, and must begin with #
+  query = query.strip()
+  if query.startswith("#"):
+    # search the tags
+    query = query[1:]
+    try:
+      # exact match
+      match = get_exact_tag(query)
+      return redirect('/tagz/tags/' + match.tag)
+    except:
+      # starts-with match
+      matches = get_matching_tags(query)
+      if matches:
+        # show the first
+        return redirect('/tagz/tags/' + matches[0].tag)
+  raise Http404 # ("Root search must contain only an #tag.")
 
 
 def lib_resource_search(resource, res_name, ref_obj, query, ref_str):
   """ Search a resource given a query.
   """
+  # temporarily redirect tag search to root
+  query = query.strip()
+  if query.startswith("#"):
+    return tag_search(query)
   # first see if this is a reference in this resource
   try:
     new_ref = resource.reference(query)
@@ -193,7 +185,10 @@ def tag(request, tag_name):
   ref_paths = []
   for ref in related_refs: 
     related_tags.append(get_tags_for_ref(ref))
-    text, cleanRef = api.getTextAndCleanReference(ref.pretty_ref())
+    try:
+      text, cleanRef = api.getTextAndCleanReference(ref.pretty_ref())
+    except Exception:
+      text, cleanRef = ('unknown', ref.pretty_ref())
     texts.append(text)
     # FIXME: should not reference this resource directly!
     ref_paths.append("/tagz/lib/NASB/" + ref.pretty_ref())
