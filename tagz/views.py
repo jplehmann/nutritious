@@ -180,19 +180,27 @@ def tag(request, tag_name):
   """ Single tag: show all references, and other tags on those refs."""
   t = get_object_or_404(Tag, tag=tag_name)
   related_refs = get_refs_with_tag(t)
+  clean_refs = []
   related_tags = []
   texts = []
   ref_paths = []
   for ref in related_refs: 
     related_tags.append(get_tags_for_ref(ref))
+    # FIXME: Assuming for now that this reference is from the Bible.
+    # In the future when we store the resource with the tag, use that
+    # to look up the text.
+    resource = "NASB"
     try:
-      text, cleanRef = api.getTextAndCleanReference(ref.pretty_ref())
+      pybook_ref = library.get(resource).reference(ref.pretty_ref())
+      text = pybook_ref.text()
+      clean_ref = pybook_ref.pretty()
     except Exception:
-      text, cleanRef = ('unknown', ref.pretty_ref())
+      print "Exception for " + ref.pretty_ref() + " = " + traceback.format_exc()
+      text, clean_ref = ('unknown', ref.pretty_ref())
+    clean_refs.append(clean_ref)
     texts.append(text)
-    # FIXME: should not reference this resource directly!
-    ref_paths.append("/tagz/lib/NASB/" + ref.pretty_ref())
-  related_refs_n_tags = zip(related_refs, ref_paths, related_tags, texts)
+    ref_paths.append("/tagz/lib/%s/%s" % (resource, ref.pretty_ref()))
+  related_refs_n_tags = zip(clean_refs, ref_paths, related_tags, texts)
   return render_to_response('tagz/tag_detail.html', 
       {'tag': t, 'related_refs_n_tags': related_refs_n_tags})
 

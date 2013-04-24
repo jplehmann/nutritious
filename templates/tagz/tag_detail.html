@@ -9,7 +9,7 @@
       <div style="width:750px">
       <ul>
       {% for ref, ref_path, tags, text in related_refs_n_tags %}
-      <li style="margin:10px 0px; list-style:none"><a style="font-size:1.2em" href="{{ ref_path }}">{{ ref.pretty_ref }}</a>
+      <li style="margin:10px 0px; list-style:none"><a style="font-size:1.2em" href="{{ ref_path }}">{{ ref }}</a>
         <ul>
           <li style="font-size:1.3em">
           {{ text }} 
