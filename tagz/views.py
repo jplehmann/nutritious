@@ -3,6 +3,7 @@ from django.shortcuts import render_to_response, get_object_or_404, redirect
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.http import Http404
+from django.utils.http import urlquote
 #from django.core.exceptions import DoesNotExist
 
 from tagz.models import Tag
@@ -31,38 +32,21 @@ def lib(request):
     return tag_search(query)
 
 
-def tag_search(query):
-  # tag search: currently only supports a single tag, and must begin with #
-  query = query.strip()
-  if query.startswith("#"):
-    # search the tags
-    query = query[1:]
-    try:
-      # exact match
-      match = get_exact_tag(query)
-      return redirect('/tagz/tags/' + match.tag)
-    except:
-      # starts-with match
-      matches = get_matching_tags(query)
-      if matches:
-        # show the first
-        return redirect('/tagz/tags/' + matches[0].tag)
-  raise Http404 # ("Root search must contain only an #tag.")
-
-
 def lib_resource_search(resource, res_name, ref_obj, query, ref_str):
   """ Search a resource given a query.
   """
   # temporarily redirect tag search to root
   query = query.strip()
   if query.startswith("#"):
-    return tag_search(query)
+    return redirect('/tagz/tags?q=' + urlquote(query))
+    #return tag_search(query)
   # first see if this is a reference in this resource
-  try:
+  #try:
     new_ref = resource.reference(query)
     return resource(None, res_name, new_ref.pretty())
-  except Exception as e:
-    print e
+  #except Exception as e:
+  #  print traceback.format_exc()
+  #  print e
   hits = ref_obj.search(query)
   title = ("Search of '%s' for '%s' (%d hits)" % 
       (ref_obj.pretty(), query, len(hits)))
@@ -163,10 +147,32 @@ def resource(request, res_name, ref_str=None, highlights=None):
     raise Http404
 
 
-def tags(request):
-  """ All tags: for each show ref count.
+def tag_search(query):
+  # tag search: currently only supports a single tag, and must begin with #
+  query = query.strip()
+  if query.startswith("#"):
+    # search the tags
+    query = query[1:]
+    try:
+      # exact match
+      match = get_exact_tag(query)
+      return redirect('/tagz/tags/' + match.tag)
+    except:
+      # starts-with match
+      matches = get_matching_tags(query)
+      if matches:
+        return tags(None, matches)
+  raise Http404 # ("Root search must contain only an #tag.")
+
+
+def tags(request, tags=None):
+  """ Show tags. If no tags are provided, shows all tags.
   """
-  all_tags = Tag.objects.all()
+  if request:
+    query = request.GET.get('q', None)
+    if query:
+      return tag_search(query)
+  all_tags = Tag.objects.all() if tags == None else tags
   counts = []
   for t in all_tags:
     refs = get_refs_with_tag(t)

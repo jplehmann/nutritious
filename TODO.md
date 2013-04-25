@@ -52,12 +52,16 @@ Inbox
 
 Bugs
 ----
+- AttributeError: BibleResource instance has no __call__ method
 - search bar when at library or tags is broken/unsupported
 - anger tag has 0 John ref
 
 Tech Questions
 ---------
-- How to go straight to a view method but change the path? Is a redirect required?  Figute out the best way to write my search method which redirects back to a resource if one was provided. Or if we wanted to do a scoped search with a tag, how would that work? My goal was that search should centralize the searching... Maybe it also needs to handle searches over resources.
+- How to go straight to a view method but change the path? Is a redirect required?  
+  - For example how to in /lib?q=#tags go to /tagz/tags/... -- preferrably not with a redirect because I already have the list of things I want to show, I've done the serach at this point.  
+  - so this problem occurs when an intermediate URL needs to do some of the work, and we dont want to redo that work.
+  - Figute out the best way to write my search method which redirects back to a resource if one was provided. Or if we wanted to do a scoped search with a tag, how would that work? My goal was that search should centralize the searching... Maybe it also needs to handle searches over resources.
 * how to have div (non-table) view but have dynamic column width, according to the longest items?
   - seems impossible to do a row-based approach like this because the rows are independent.  Could do a column layout with fixed height instead perhaps, but this sounds even worse.
 
