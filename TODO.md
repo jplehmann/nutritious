@@ -12,8 +12,18 @@ Essential
 * And how much of this can I do now versus incrementally?  Should do any very hard stuff now.  OR, how can I do the easier thing now in a way that could be extensible later?
   * What abstractions... is the key question
 
+I think that i can release both "Nutricious" and "Textbites" to github.
+Key things to do before I do release is documentation!!
+1. both need a readme
+2. rename
+3. open source book -- pride and prejudice, NKJV
+  - maybe another book that I would actually want to look at and tag
+  - quotes <-- esp if they have topics to begin with
+  - import some document from the web
+
 * ability to create/edit tags tags (medium)
-  * requires authentication (medium/easy)
+  * requires authentication (medium/easy) <-- not essential
+
 * tags search (how tags will work across resources?) (medium)
   - Still TODO
     - get rid of /search endpoint and replace with a root /tagz
@@ -46,6 +56,7 @@ That is a lot to get done in 5 weeks. Not realistic to get the quotes part done.
 
 Inbox
 -----
+- rename library to resources  res
 - click search should select all to replace
 - shortcut key to do search
 - should search be case insensitive by default? (how could regex override?) -- might expect other normalization too, stemming

@@ -2,6 +2,9 @@ Tagz
 ====
 Tagging app for all kinds of things (books, quotes, persons).
 
+- currently only supports static documents
+- doesn't include authentication or accounts
+
 
 Features
 --------
