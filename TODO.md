@@ -1,65 +1,5 @@
-Priorities
-----------
-Essential
-* figure out what my open source goal is, and what todos that incurs (unknown)
-{{{
-  If I am planning on putting 15-25 more hours into this thing before
-  it's "done", what am I really getting out of it?  Is it worth it?
-  If I am not going to have something impressive to open source at the end
-  of it, then what changes should I make for this to be easier?
-
-}}}
-* And how much of this can I do now versus incrementally?  Should do any very hard stuff now.  OR, how can I do the easier thing now in a way that could be extensible later?
-  * What abstractions... is the key question
-
-I think that i can release both "Nutricious" and "Textbites" to github.
-Key things to do before I do release is documentation!!
-1. both need a readme
-2. rename
-3. open source book -- pride and prejudice, NKJV
-  - maybe another book that I would actually want to look at and tag
-  - quotes <-- esp if they have topics to begin with
-  - import some document from the web
-
-* ability to create/edit tags tags (medium)
-  * requires authentication (medium/easy) <-- not essential
-
-* tags search (how tags will work across resources?) (medium)
-  - Still TODO
-    - get rid of /search endpoint and replace with a root /tagz
-      /tagz?q=xxx
-      /tagz/lib/NASB?q=xxx
-    - return multiple tag results rather than the first
-{{{
-  Summary:
-  - DONE: label tags with @ to distinguish between general terms
-  - TODO: tags need to store the resource they reference
-    - TODO: how to store refs to Bible when I don't care?
-  - FUTURE: scope tag search to current context (resource/reference)
-}}}
-
-High Priority
-* friendly copy/paste (easy)
-* setup LESS for better ongoing design (easy)
-* more bible versions (easy) (and figure out copyright issue)
-* show tags on reference view (medium)
-
-Extra (could be future)
-* mutability for resources like quotes (hard)
-* autocomplete for tag search (medium) (AJAX query for tags)
-
-1 easy 1-2 hours
-3 medium 2-4 hours
-2 + 5*3 = 17 hours + 1 hard + 1 unknown
-
-That is a lot to get done in 5 weeks. Not realistic to get the quotes part done.  I really need to evaluate my goals, and determine what's most important.
-
 Inbox
 -----
-- rename library to resources  res
-- click search should select all to replace
-- shortcut key to do search
-- should search be case insensitive by default? (how could regex override?) -- might expect other normalization too, stemming
 
 Bugs
 ----
@@ -67,45 +7,43 @@ Bugs
 - search bar when at library or tags is broken/unsupported
 - anger tag has 0 John ref
 
-Tech Questions
----------
-- How to go straight to a view method but change the path? Is a redirect required?  
-  - For example how to in /lib?q=#tags go to /tagz/tags/... -- preferrably not with a redirect because I already have the list of things I want to show, I've done the serach at this point.  
-  - so this problem occurs when an intermediate URL needs to do some of the work, and we dont want to redo that work.
-  - Figute out the best way to write my search method which redirects back to a resource if one was provided. Or if we wanted to do a scoped search with a tag, how would that work? My goal was that search should centralize the searching... Maybe it also needs to handle searches over resources.
-* how to have div (non-table) view but have dynamic column width, according to the longest items?
-  - seems impossible to do a row-based approach like this because the rows are independent.  Could do a column layout with fixed height instead perhaps, but this sounds even worse.
 
-Questions
----------
-- do OSS analysis and decide if I should break -- what open source do I have
-  here to show?
-- divergences of ref simple ref and view ref, what to do? tests reflect actual
-  api while reference api has moved on
-- what to name this thing?
-- how to assign colors to tags?
-- if making a mutable resource (quotes), is that a django project, and where to
-  put code? If not in pybooks, does this make testing hard?
 
 Todo
 ----
-* [0] merge resource and top level reference for uniformity
-* [0] remove absolute paths (esp in view, try reverse())
-* [2] integrate tagz into references
-* [1] Modification view (create, rename, delete tags)
-  * [1] authentication
-* [1] search for a tag (over all resources?)
-  - [2] autocomplete search (angular for AJAX query to get tags?)
-* UI features
-  * [2] friendly copy-paste: maybe button to copy? better layout/selecable
-    * option for linerange to return single block instead
-    * then user could select multiple lines in chapter view to get a
-      detail view with that range?
-  * [3] context should work for a linerange too
-  * [3] select search highlights all (can bootstrap do this?)
-  * [3] navigation: more breadcrumbs (book, chapter links)
-  * Tag search: along with references, words in bible book?
-    * auto detect or have multiple search boxes?
+- rename projects "Nutricious" and "Textbites"
+- rename library to resources "res"
+- first pass documentation: both get a readme describing what they're for, what technology they use, where they're hosted? and features and todos?
+- open source resources -- pride and prejudice, NKJV, quotes, some web text where tagging makes sense
+* merge resource and top level reference for uniformity
+- move to github
+
+0.4
+---
+* create and edit tags (rename?)
+* authentication to protect writes
+- browser test would be really good at this point, lots of functionality
+- export tags database to xml/json
+* more bible versions (easy) (and figure out copyright issue)
+- should search be case insensitive by default? (how could regex override?) -- might expect other normalization too, stemming
+
+0.5
+---
+* remove absolute paths (esp in view, try reverse())
+* integrate tagz into references
+- click search should select all to replace
+- shortcut key to do search
+* autocomplete for tag search (medium) (AJAX query for tags)
+* friendly copy-paste: maybe button to copy? better layout/selecable (maybe linerange returns a single block, and let user select linerange)
+* add URLs as a resource type (export my delicious)
+
+1.0
+---
+* context should work for a linerange too
+* select search highlights all (can bootstrap do this?)
+* navigation: more breadcrumbs (book, chapter links)
+* Tag search: scope tags to certain resources/refs
+* auto detect or have multiple search boxes?
 * Style
   * wider reference column
   * how to handle when text spills over?
@@ -113,7 +51,7 @@ Todo
   * streamline the left side references
 * Tech stories
   * setup angular
-  * [2] setup LESS
+  * setup LESS
 * Design
   * properly load library resources -- best place for that logic?
   * return None rather than throwing, for easier inspection (text and children)
@@ -122,11 +60,11 @@ Todo
 * could put library / resources in a navbar dropdown
 * resource could provide some relative links for a navbar dropdown (OT/NT)
 * Manually test quotes for new features, and need auto tests for this too... Put tests into simple and make sure quotes and bible use those.
-* Mutability for resources like Quotes
 
-Future Features
----------------
-* Make it responsive, and rendering in nice size fonts for mobile.  Also add features like dropdown beneath search with book names.
+2.0
+---
+* Mutability for resources like Quotes
+* Responsiveness: rendering in nice size fonts for mobile.  Also add features like dropdown beneath search with book names.
 * generalize to (bible, books, quotes, persons, webpages (page, video), gdocs)
   * inefficiency of searching bible refs with aliases
     * maybe one general ref endpoint takes guids but another specific one
@@ -158,6 +96,25 @@ Future Features
   * upgrade to django 1.5
 * show related tags (lexically, semantically)
 * move bible-specific functionality into plugins
+
+
+Tech Questions
+---------
+- How to go straight to a view method but change the path? Is a redirect required?  
+  - For example how to in /lib?q=#tags go to /tagz/tags/... -- preferrably not with a redirect because I already have the list of things I want to show, I've done the serach at this point.  
+  - so this problem occurs when an intermediate URL needs to do some of the work, and we dont want to redo that work.
+  - Figute out the best way to write my search method which redirects back to a resource if one was provided. Or if we wanted to do a scoped search with a tag, how would that work? My goal was that search should centralize the searching... Maybe it also needs to handle searches over resources.
+* how to have div (non-table) view but have dynamic column width, according to the longest items?
+  - seems impossible to do a row-based approach like this because the rows are independent.  Could do a column layout with fixed height instead perhaps, but this sounds even worse.
+
+
+Questions
+---------
+- divergences of ref simple ref and view ref, what to do? tests reflect actual
+  api while reference api has moved on
+- how to assign colors to tags?
+- if making a mutable resource (quotes), is that a django project, and where to
+  put code? If not in pybooks, does this make testing hard?
 
 
 Design Discussion
@@ -247,5 +204,6 @@ Future Tech Stories
   - [DONE] navigate through 'references'
     * 2 dimensional indexes
   - [DONE] search through book in bible
-* [DONE] search for reference first then query
+* [DONE] search for tag reference first then query
+* [DONE] multiple tag results
 
