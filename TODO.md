@@ -1,21 +1,77 @@
 Inbox
 -----
 
+Modify
+------
+- restfully, where do I put the form input?
+  - it should be a get to the tag detail?
+  - does tag detail just stay at the sam eplace and return 
+    something differnet/ (not restful)
+
+  These endponits are for where you submit the data
+    C - post
+    R - get
+    U - put
+    D - delete
+
+  What can you change abotu a tag?
+  - what resource
+  - what reference(s)
+
+  Create new tags:
+    - resource + ref + tag name
+  Delete (easy)
+
+  Rename a tag
+  Delete all of a tag
+
+TAGS
+  read:
+    GET /tags/<tag>
+  create: (should just be implicit when a tagref is created)
+    POST /tags/
+  update: rename the tag (could collapse?) *FORM*
+    PUT /tags/<tag>
+  delete: remove all references
+    DEL /tags/<tag>
+
+TAGREFS
+  read:
+    GET /tags/<tag>/refs/<id>
+  create: associates a tag with a ref *FORM*
+    POST /tags/<tag>/refs/createform
+  update: -- dont allow this  --
+    (none)
+  delete: remove a reference
+    DEL /tags/<tag>/refs/<id>
+
+  Currently:
+    Reference has book/chp/first/last, tag
+    Change to: resource, reference
+
+  FORM for creation of a tagref:
+    tag name -- select OR new input field
+      - validte: confirm creation of new
+    resource: pick
+    reference: freeform text input (could look it up through/valdiate)
+      - validate: check if ref exists
+
+  todo:
+  - move get for tagref
+  - create tagref
+
 Bugs
 ----
 - AttributeError: BibleResource instance has no __call__ method
 - search bar when at library or tags is broken/unsupported
 - anger tag has 0 John ref
 
-
-
 Todo
 ----
-- rename projects "Nutricious" and "Textbites"
-- rename library to resources "res"
 - first pass documentation: both get a readme describing what they're for, what technology they use, where they're hosted? and features and todos?
+- rename packages "Nutricious" and "Textbites"
+- rename library to resources "res"
 - open source resources -- pride and prejudice, NKJV, quotes, some web text where tagging makes sense
-* merge resource and top level reference for uniformity
 - move to github
 
 0.4
@@ -33,7 +89,7 @@ Todo
 * integrate tagz into references
 - click search should select all to replace
 - shortcut key to do search
-* autocomplete for tag search (medium) (AJAX query for tags)
+* autocomplete for tag search (medium) (AJAX query for tags) angular UI select2 or "chosen" (has nice multi-select)
 * friendly copy-paste: maybe button to copy? better layout/selecable (maybe linerange returns a single block, and let user select linerange)
 * add URLs as a resource type (export my delicious)
 

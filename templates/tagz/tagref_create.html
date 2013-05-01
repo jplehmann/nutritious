@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}{{ block.super }} - Index{% endblock %}
+
+{% block main_content %}
+
+  <h2>Create tag reference</h2>
+  <br>
+
+  {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+  <form name="theForm" action="/tagz/tags/TAG_NAME/refs" method="post" class="form-horizontal">
+  {% csrf_token %}
+  
+    <div class="control-group">
+      <label class="control-label" for="inputTag">Tag</label>
+      <div class="controls">
+        <input name="theTag" type="text" id="inputTag" 
+            value="{{ tag_name|default:"" }}" 
+          {% if tag_name %} disabled {%endif%}>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <label class="control-label" for="inputResource">Resource</label>
+      <div class="controls">
+        <select name="resource" id="inputResource">
+          <!-- list options in library -->
+          {% for r in resources %}
+          <option {% if r == res_default %}selected="selected"{% endif %}>
+            {{ r }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <label class="control-label" for="inputRef">Reference</label>
+      <div class="controls">
+        <input name="reference" type="text" id="inputRef" placeholder="e.g. Jn 3:16">
+      </div>
+    </div>
+
+    <div class="control-group">
+      <label class="control-label" for="inputPrivate">Private</label>
+      <div class="controls">
+        <label class="checkbox">
+          <input name="private" type="checkbox" id="inputPrivate">
+        </label>
+        <br>
+        <button type="submit" class="btn" onclick="update_action_url()">Save</button>
+      </div>
+    </div>
+  </form>
+
+  <script>
+    function update_action_url()  {
+      var url = document.theForm.action;
+      url = url.replace("TAG_NAME", $('#inputTag').val());
+      document.theForm.action = url;
+    } 
+  </script>
+
+{{ block.super }}
+{% endblock main_content %}
+
+
+

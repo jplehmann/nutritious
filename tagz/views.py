@@ -1,10 +1,12 @@
 #from django.template import Context, loader
 from django.shortcuts import render_to_response, get_object_or_404, redirect
+from django.core.urlresolvers  import reverse
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.http import Http404
 from django.utils.http import urlquote
 #from django.core.exceptions import DoesNotExist
+from django.template import RequestContext
 
 from tagz.models import Tag
 from tagz.models import Reference
@@ -210,6 +212,45 @@ def tag(request, tag_name):
   return render_to_response('tagz/tag_detail.html', 
       {'tag': t, 'related_refs_n_tags': related_refs_n_tags})
 
+
+def tag_modify(request, tag_name):
+  """ Modify single tag """
+  t = get_object_or_404(Tag, tag=tag_name)
+  return render_to_response('tagz/tag_modify.html', 
+      {'tag': t }) 
+
+def tagref_createform(request, tag_name=None):
+  """ Form to create a single tag reference """
+  #t = get_object_or_404(Tag, tag=tag_name)
+  return render_to_response('tagz/tagref_create.html',   
+      {'tag_name': tag_name, 
+       'resources': library.list(),
+       'res_default': 'NASB'
+       }, context_instance=RequestContext(request))
+
+def tagref_create(request, tag_name):
+  """ Create a single tag reference """
+  try:
+    # resource MUST exist
+    resource = library.get(request.POST['resource'])
+    print "here1"
+    # reference must be valid
+    ref_str = request.POST['reference']
+    ref = resource.reference(ref_str)
+    print "here2"
+  except:
+    print traceback.format_exc()
+    raise Http404
+  # if tag name doesn't exist, create it
+  try:
+    t = get_exact_tag(tag_name)
+  except:
+    t = Tag(tag=tag_name)
+    t.save()
+  print "Saving be saving", ref_str, tag_name, t
+  new_ref = Reference(tag=t, book="Fake", chapter="1", firstLine="1", lastLine="2")
+  new_ref.save()
+  return HttpResponseRedirect(reverse('tagz.views.tags'))
 
 #def ref(request, ref_name):
 #  """ Single ref: show scripture and tags."""

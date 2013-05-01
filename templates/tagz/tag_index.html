@@ -4,8 +4,9 @@
 
 {% block main_content %}
 
-  {% if counted_tags %}
   <h2>Total number of tags: {{ counted_tags|length }}</h2>
+  <a href="createform">Create new tagref</a>
+  {% if counted_tags %}
       <ul>
       {% for tag, count in counted_tags %}
       <li><a href="/tagz/tags/{{ tag.tag }}/">{{ tag.tag }} ({{ count }})</a></li>
