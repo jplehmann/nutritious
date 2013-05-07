@@ -232,12 +232,11 @@ def tagref_create(request, tag_name):
   """ Create a single tag reference """
   try:
     # resource MUST exist
-    resource = library.get(request.POST['resource'])
-    print "here1"
+    request.POST['resource'].strip()
+    resource = library.get(request.POST['resource'].strip())
     # reference must be valid
     ref_str = request.POST['reference']
     ref = resource.reference(ref_str)
-    print "here2"
   except:
     print traceback.format_exc()
     raise Http404
