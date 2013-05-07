@@ -1,7 +1,7 @@
 {% load static %}
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Strict//EN" 
     "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<html ng-app="myApp">
     <head>
         <title>{% block title %}Tagz{% endblock %}</title>
         <link rel="stylesheet" media="screen"
@@ -42,5 +42,11 @@
     </body>
 
     <script src="{% static "lib/jquery-1.9.0.min.js" %}"></script>
+    <script src="{% static "lib/angular/angular.js" %}"></script>
+    <script src="{% static "js/angular/app.js" %}"></script>
+    <script src="{% static "js/angular/services.js" %}"></script>
+    <script src="{% static "js/angular/controllers.js" %}"></script>
+    <script src="{% static "js/angular/filters.js" %}"></script>
+    <script src="{% static "js/angular/directives.js" %}"></script>
 </html>
 

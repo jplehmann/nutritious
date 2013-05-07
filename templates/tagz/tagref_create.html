@@ -9,13 +9,13 @@
 
   {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
-  <form name="theForm" action="/tagz/tags/TAG_NAME/refs" method="post" class="form-horizontal">
+  <form name="theForm" action="/tagz/tags/(( tag ))/refs" method="post" class="form-horizontal">
   {% csrf_token %}
   
     <div class="control-group">
       <label class="control-label" for="inputTag">Tag</label>
       <div class="controls">
-        <input name="theTag" type="text" id="inputTag" 
+        <input name="theTag" type="text" id="inputTag" ng-model="tag"
             value="{{ tag_name|default:"" }}" 
           {% if tag_name %} disabled {%endif%}>
       </div>
@@ -48,18 +48,10 @@
           <input name="private" type="checkbox" id="inputPrivate">
         </label>
         <br>
-        <button type="submit" class="btn" onclick="update_action_url()">Save</button>
+        <button type="submit" class="btn">Save</button>
       </div>
     </div>
   </form>
-
-  <script>
-    function update_action_url()  {
-      var url = document.theForm.action;
-      url = url.replace("TAG_NAME", $('#inputTag').val());
-      document.theForm.action = url;
-    } 
-  </script>
 
 {{ block.super }}
 {% endblock main_content %}
