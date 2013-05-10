@@ -14,9 +14,8 @@
   
     <div class="control-group">
       <label class="control-label" for="inputTag">Tag</label>
-      <div class="controls">
+      <div class="controls" ng-init="tag='{{ tag_name|default:"" }}';">
         <input name="theTag" type="text" id="inputTag" ng-model="tag"
-            value="{{ tag_name|default:"" }}" 
           {% if tag_name %} disabled {%endif%}>
       </div>
     </div>
