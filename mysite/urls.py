@@ -12,12 +12,12 @@ urlpatterns = patterns('tagz.views',
     # TAGS
     # all tags
     url(r'^tagz/tags/$', 'tags'),
-    # specific tag
+    # specific tag (GET, DEL)
     url(r'^tagz/tags/(?P<tag_name>[^\/]+)/$', 'tag'),
     #url(r'^tagz/tags/(?P<tag_name>[^\/]+)/editform$', 'tag_edit'),
 
     # TAG REFERENCE
-    # tag detail
+    # tag detail (GET, DEL)
     url(r'^tagz/tags/(?P<tag_name>[^\/]+)/refs/(?P<id>\d+)$', 'tagref_detail'),
     # create form for specific tag
     url(r'^tagz/tags/(?P<tag_name>[^\/]+)/refs/createform', 'tagref_createform'),

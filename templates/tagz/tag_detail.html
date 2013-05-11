@@ -4,17 +4,21 @@
 
 {% block main_content %}
 
+  <div ng-controller="TagCtrl">
+
   <h2>References tagged with '{{ tag.tag }}'</h2>
   <a href="refs/createform">Create new tagref</a>
   {% if related_refs_n_tags %}
       <div style="width:750px">
       <ul>
       {% for id, ref, ref_path, tags, text in related_refs_n_tags %}
-      <li style="margin:10px 0px; list-style:none"><a style="font-size:1.2em" href="{{ ref_path }}">{{ ref }}</a>(<a href="refs/{{id}}">tag</a>)
+      <li style="margin:10px 0px; list-style:none"><a style="font-size:1.2em" href="{{ ref_path }}">{{ ref }}</a>
+          (<a href="refs/{{id}}">view</a>)
+          (<a ng-click="deleteTagRef({{id}});">delete</a>)
         <ul>
           <li style="font-size:1.3em">
-          {{ text }} 
-          </li
+          {{ text }}
+          </li>
           <li>
         {% for rtag in tags %}
         <a href="/tagz/tags/{{ rtag }}/"><span class="label label-info">{{ rtag }}</span></a>
@@ -31,6 +35,8 @@
   <p>
   <p>
   Return to <a href="/tagz/tags">all tags</a>.
+
+  </div>
 
 {{ block.super }}
 {% endblock main_content %}

@@ -188,6 +188,15 @@ def tag(request, tag_name):
   """ Single tag: show all references, and other tags on those refs."""
   t = get_object_or_404(Tag, tag=tag_name)
   related_refs = get_refs_with_tag(t)
+  if request.method == 'DELETE':
+    # clean up all associated references, since references only have 1 tag in them
+    # but this seems to not be necessary, maybe Django is cleaning up
+    # for me?
+    for ref in get_refs_with_tag(t):
+      ref.delete()
+    t.delete()
+    # not doing anything when called from AJAX request b/c response eats it
+    return HttpResponseRedirect(reverse('tagz.views.tags'));
   clean_refs = []
   related_tags = []
   texts = []
@@ -229,7 +238,11 @@ def tagref_detail(request, tag_name, id):
   if (tag_name != tagref.tag.tag):
     print "Mismatched tag name path with id '%s' '%s'" %( tag_name, tagref.tag.tag)
     raise Http404
-  return render_to_response('tagz/tagref_detail.html',   
+  if request.method == 'DELETE':
+    tagref.delete()
+    # not doing anything when called from AJAX request b/c response eats it
+    return HttpResponseRedirect(reverse('tagz.views.tags'));
+  return render_to_response('tagz/tagref_detail.html',
       {'tag_name': tag_name, 'tagref': tagref })
 
 def tagref_createform(request, tag_name=None):

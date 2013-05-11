@@ -4,17 +4,17 @@ Inbox
 Modify
 ------
 DONE: 
-  - create form for an existing tag OR a new one
-
-TODO:
-  - create GET detail for tagref
+  x create form for an existing tag OR a new one
+  x create GET detail for tagref
     * problem of specifying an ID is that it may not be consistnet with path,
       and is redundant, I guess I can just enforce consistency.
     - should tag detail be same as edit?
     - should after creating go to detail/get page?
-  - fix initial value of existing tag: how to pass to angular? need to
+  x fix initial value of existing tag: how to pass to angular? need to
     set default value on model/controller
-  - change database in the fields it stores
+
+TODO:
+  o change database in the fields it stores
 
 TAGS
 x read:
@@ -27,7 +27,7 @@ o delete: remove all references
     DEL /tags/<tag>
 
 TAGREFS
-o read:
+x read:
     GET /tags/<tag>/refs/<id>
 x create: associates a tag with a ref *FORM*
     POST /tags/<tag>/refs/createform
