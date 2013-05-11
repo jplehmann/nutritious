@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}{{ block.super }} - Index{% endblock %}
+
+{% block main_content %}
+
+  <h2>Tag reference</h2>
+  <br>
+
+  {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+  From path: {{ tag_name }}
+  <br>
+  From id: {{ tagref.tag }}
+  <br>
+  Reference: {{ tagref.pretty_ref }}
+
+
+{{ block.super }}
+{% endblock main_content %}
+
+
+

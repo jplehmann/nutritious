@@ -9,8 +9,8 @@
   {% if related_refs_n_tags %}
       <div style="width:750px">
       <ul>
-      {% for ref, ref_path, tags, text in related_refs_n_tags %}
-      <li style="margin:10px 0px; list-style:none"><a style="font-size:1.2em" href="{{ ref_path }}">{{ ref }}</a>
+      {% for id, ref, ref_path, tags, text in related_refs_n_tags %}
+      <li style="margin:10px 0px; list-style:none"><a style="font-size:1.2em" href="{{ ref_path }}">{{ ref }}</a>(<a href="refs/{{id}}">tag</a>)
         <ul>
           <li style="font-size:1.3em">
           {{ text }} 

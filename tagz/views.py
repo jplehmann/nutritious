@@ -192,8 +192,10 @@ def tag(request, tag_name):
   related_tags = []
   texts = []
   ref_paths = []
+  ids = []
   for ref in related_refs: 
     related_tags.append(get_tags_for_ref(ref))
+    ids.append(ref.id)
     # FIXME: Assuming for now that this reference is from the Bible.
     # In the future when we store the resource with the tag, use that
     # to look up the text.
@@ -208,20 +210,30 @@ def tag(request, tag_name):
     clean_refs.append(clean_ref)
     texts.append(text)
     ref_paths.append("/tagz/lib/%s/%s" % (resource, ref.pretty_ref()))
-  related_refs_n_tags = zip(clean_refs, ref_paths, related_tags, texts)
+  related_refs_n_tags = zip(ids, clean_refs, ref_paths, related_tags, texts)
   return render_to_response('tagz/tag_detail.html', 
       {'tag': t, 'related_refs_n_tags': related_refs_n_tags})
 
 
 def tag_modify(request, tag_name):
-  """ Modify single tag """
+  """ Modify single tag 
+      XXX: not used yet
+  """
   t = get_object_or_404(Tag, tag=tag_name)
   return render_to_response('tagz/tag_modify.html', 
       {'tag': t }) 
 
+def tagref_detail(request, tag_name, id):
+  tagref = get_object_or_404(Reference, id=id)
+  # make sure the tag with this id belongs under this path
+  if (tag_name != tagref.tag.tag):
+    print "Mismatched tag name path with id '%s' '%s'" %( tag_name, tagref.tag.tag)
+    raise Http404
+  return render_to_response('tagz/tagref_detail.html',   
+      {'tag_name': tag_name, 'tagref': tagref })
+
 def tagref_createform(request, tag_name=None):
   """ Form to create a single tag reference """
-  #t = get_object_or_404(Tag, tag=tag_name)
   return render_to_response('tagz/tagref_create.html',   
       {'tag_name': tag_name, 
        'resources': library.list(),
@@ -229,7 +241,11 @@ def tagref_createform(request, tag_name=None):
        }, context_instance=RequestContext(request))
 
 def tagref_create(request, tag_name):
-  """ Create a single tag reference """
+  """ Create a single tag reference. The resource must exist and 
+      the reference must be valid, but if the tag doesn't exist, 
+      then then it is created. 
+  """
+  print "Tagref create"
   try:
     # resource MUST exist
     request.POST['resource'].strip()
@@ -249,7 +265,7 @@ def tagref_create(request, tag_name):
   print "Saving be saving", ref_str, tag_name, t
   new_ref = Reference(tag=t, book="Fake", chapter="1", firstLine="1", lastLine="2")
   new_ref.save()
-  return HttpResponseRedirect(reverse('tagz.views.tags'))
+  return HttpResponseRedirect('refs/' + str(new_ref.id));
 
 #def ref(request, ref_name):
 #  """ Single ref: show scripture and tags."""

@@ -3,46 +3,37 @@ Inbox
 
 Modify
 ------
-- restfully, where do I put the form input?
-  - it should be a get to the tag detail?
-  - does tag detail just stay at the sam eplace and return 
-    something differnet/ (not restful)
+DONE: 
+  - create form for an existing tag OR a new one
 
-  These endponits are for where you submit the data
-    C - post
-    R - get
-    U - put
-    D - delete
-
-  What can you change abotu a tag?
-  - what resource
-  - what reference(s)
-
-  Create new tags:
-    - resource + ref + tag name
-  Delete (easy)
-
-  Rename a tag
-  Delete all of a tag
+TODO:
+  - create GET detail for tagref
+    * problem of specifying an ID is that it may not be consistnet with path,
+      and is redundant, I guess I can just enforce consistency.
+    - should tag detail be same as edit?
+    - should after creating go to detail/get page?
+  - fix initial value of existing tag: how to pass to angular? need to
+    set default value on model/controller
+  - change database in the fields it stores
 
 TAGS
-  read:
+x read:
     GET /tags/<tag>
-  create: (should just be implicit when a tagref is created)
-    POST /tags/
-  update: rename the tag (could collapse?) *FORM*
+x create: (should just be implicit when a tagref is created)
+    POST /tags/createform
+o update: rename the tag (could collapse?) *FORM*
     PUT /tags/<tag>
-  delete: remove all references
+o delete: remove all references
     DEL /tags/<tag>
 
 TAGREFS
-  read:
+o read:
     GET /tags/<tag>/refs/<id>
-  create: associates a tag with a ref *FORM*
+x create: associates a tag with a ref *FORM*
     POST /tags/<tag>/refs/createform
-  update: -- dont allow this  --
+x update: -- dont allow this  --
     (none)
-  delete: remove a reference
+o delete: remove a reference
     DEL /tags/<tag>/refs/<id>
 
   Currently:
@@ -56,9 +47,6 @@ TAGREFS
     reference: freeform text input (could look it up through/valdiate)
       - validate: check if ref exists
 
-  todo:
-  - move get for tagref
-  - create tagref
 
 Bugs
 ----

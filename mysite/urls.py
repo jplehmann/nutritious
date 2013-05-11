@@ -9,18 +9,25 @@ urlpatterns = patterns('tagz.views',
     url(r'^tagz/lib/$', 'lib'),
     url(r'^tagz/lib/(?P<res_name>[^\/]+)/(?P<ref_str>[^\/]+)?$', 'resource'),
 
-    # tags
+    # TAGS
+    # all tags
     url(r'^tagz/tags/$', 'tags'),
+    # specific tag
     url(r'^tagz/tags/(?P<tag_name>[^\/]+)/$', 'tag'),
     #url(r'^tagz/tags/(?P<tag_name>[^\/]+)/editform$', 'tag_edit'),
 
-    # tag reference
+    # TAG REFERENCE
+    # tag detail
+    url(r'^tagz/tags/(?P<tag_name>[^\/]+)/refs/(?P<id>\d+)$', 'tagref_detail'),
+    # create form for specific tag
     url(r'^tagz/tags/(?P<tag_name>[^\/]+)/refs/createform', 'tagref_createform'),
-    url(r'^tagz/tags/(?P<tag_name>[^\/]+)/refs', 'tagref_create'),
-    # with arbitrary tag
+    # create form with arbitrary tag (create tag too)
     url(r'^tagz/tags/createform', 'tagref_createform'),
+    # tag create (POST)
+    url(r'^tagz/tags/(?P<tag_name>[^\/]+)/refs$', 'tagref_create'),
+    # what is this for?
+    #url(r'^tagz/tags/(?P<tag_name>[^\/]+)/refs', 'tagref_create'),
 
-    #url(r'^tagz/refs/$', 'tagz.views.refs'),
     #url(r'^tagz/refs/(?P<ref_name>[^\/]+)/$', 'ref'),
 
     # home
