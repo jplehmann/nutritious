@@ -1,4 +1,5 @@
 from django.db import models
+from cStringIO import StringIO
 
 
 class Tag(models.Model):
@@ -81,5 +82,14 @@ def get_overlapping_refs(ref):
   return Reference.objects.filter(
       chapter=ref.chapter, book=ref.book, 
       firstLine__gte=ref.firstLine, lastLine__lte=ref.lastLine)
+
+
+def get_export_tsv():
+  out = StringIO()
+  for ref in Reference.objects.all():
+    print >>out, '\t'.join([ref.tag.tag, str(ref.book), str(ref.chapter)])
+  return out.getvalue()
+
+
 
 

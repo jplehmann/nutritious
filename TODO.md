@@ -3,6 +3,10 @@ Inbox
 
 Modify
 ------
+should return json or tsv?
+plus endpoint is ambiguous
+
+
 TODO:
   o change database in the fields it stores
     - put unique constraint on "tag name"

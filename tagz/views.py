@@ -14,6 +14,7 @@ from tagz.models import get_refs_with_tag
 from tagz.models import get_tags_for_ref
 from tagz.models import get_exact_tag
 from tagz.models import get_matching_tags
+from tagz.models import get_export_tsv
 
 from pybible import api
 from pybooks import library
@@ -324,6 +325,12 @@ def tagref_create(request, tag_name):
 #  """ All refs: simply show count."""
 #  refs = Reference.objects.all()
 #  return HttpResponse("Number of references found: %s" % refs.count())
+
+
+def tags_export(request):
+  response = HttpResponse(get_export_tsv(), content_type="application/tsv")
+  response['Content-Disposition'] = 'attachment; filename=export.tsv'
+  return response
 
 
 def safe_int(val):
