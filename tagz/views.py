@@ -186,17 +186,12 @@ def tags(request, tags=None):
 
 def tag(request, tag_name):
   """ Single tag: show all references, and other tags on those refs."""
+  if request.method == 'DELETE':
+    return tag_delete(request, tag_name)
+  elif request.method == 'PUT':
+    return tag_update(request, tag_name)
   t = get_object_or_404(Tag, tag=tag_name)
   related_refs = get_refs_with_tag(t)
-  if request.method == 'DELETE':
-    # clean up all associated references, since references only have 1 tag in them
-    # but this seems to not be necessary, maybe Django is cleaning up
-    # for me?
-    for ref in get_refs_with_tag(t):
-      ref.delete()
-    t.delete()
-    # not doing anything when called from AJAX request b/c response eats it
-    return HttpResponseRedirect(reverse('tagz.views.tags'));
   clean_refs = []
   related_tags = []
   texts = []
@@ -224,13 +219,45 @@ def tag(request, tag_name):
       {'tag': t, 'related_refs_n_tags': related_refs_n_tags})
 
 
-def tag_modify(request, tag_name):
-  """ Modify single tag 
-      XXX: not used yet
+def tag_delete(request, tag_name):
+  """ Delete a tag and all associated tagrefs.
   """
   t = get_object_or_404(Tag, tag=tag_name)
-  return render_to_response('tagz/tag_modify.html', 
-      {'tag': t }) 
+  # clean up all associated references, since references only have 1 tag in them
+  # but this seems to not be necessary, maybe Django is cleaning up
+  # for me?
+  for ref in get_refs_with_tag(t):
+    ref.delete()
+  t.delete()
+  # not doing anything when called from AJAX request b/c response eats it
+  return HttpResponseRedirect(reverse('tagz.views.tags'));
+
+
+def tag_update(request, tag_name):
+  """ Rename a tag. If the tag name is exists already, it will merge them.
+  """
+  t_old = get_object_or_404(Tag, tag=tag_name)
+  try:
+    new_name = request.GET.get('name', None)
+  except:
+    print traceback.format_exc()
+    print "problem getting new name"
+  print "old name, new: " + tag_name + " " + new_name
+  try:
+    t_new = get_exact_tag(new_name)
+    print t_new
+    for r in get_refs_with_tag(t_old):
+      r.tag = t_new
+      print "updating ref: " + str(r)
+      r.save()
+    t_old.delete()
+  except:
+    print traceback.format_exc()
+    print "renaming tag"
+    t_old.tag = new_name
+    t_old.save()
+  return HttpResponseRedirect('/tagz/tags/' + new_name);
+
 
 def tagref_detail(request, tag_name, id):
   tagref = get_object_or_404(Reference, id=id)

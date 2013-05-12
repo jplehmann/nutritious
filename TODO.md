@@ -5,6 +5,7 @@ Modify
 ------
 TODO:
   o change database in the fields it stores
+    - put unique constraint on "tag name"
     - tag, resource, ref, index.start, index.end
 {{{
     ** changing this to a string causes some problems... right now I know
@@ -49,6 +50,8 @@ TODO:
       tagOld.delete()
       
 }}}
+  o import TSV
+  o export TSV
 
 DONE: 
 {{{
@@ -189,6 +192,7 @@ Todo
 
 Tech Questions
 ---------
+- rename does a PUT and then is redirected with what should be a GET. The browser says its doing a GET but the server says it got a second PUT. Which is true? what is wrong?
 - how to have delete let server do the redirect? I think the AJAX eats it.  after deleting let controller say where to go.
 - How to go straight to a view method but change the path? Is a redirect required?  
   - For example how to in /lib?q=#tags go to /tagz/tags/... -- preferrably not with a redirect because I already have the list of things I want to show, I've done the serach at this point.  

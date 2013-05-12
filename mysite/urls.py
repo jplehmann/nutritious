@@ -9,13 +9,6 @@ urlpatterns = patterns('tagz.views',
     url(r'^tagz/lib/$', 'lib'),
     url(r'^tagz/lib/(?P<res_name>[^\/]+)/(?P<ref_str>[^\/]+)?$', 'resource'),
 
-    # TAGS
-    # all tags
-    url(r'^tagz/tags/$', 'tags'),
-    # specific tag (GET, DEL)
-    url(r'^tagz/tags/(?P<tag_name>[^\/]+)/$', 'tag'),
-    #url(r'^tagz/tags/(?P<tag_name>[^\/]+)/editform$', 'tag_edit'),
-
     # TAG REFERENCE
     # tag detail (GET, DEL)
     url(r'^tagz/tags/(?P<tag_name>[^\/]+)/refs/(?P<id>\d+)$', 'tagref_detail'),
@@ -29,6 +22,13 @@ urlpatterns = patterns('tagz.views',
     #url(r'^tagz/tags/(?P<tag_name>[^\/]+)/refs', 'tagref_create'),
 
     #url(r'^tagz/refs/(?P<ref_name>[^\/]+)/$', 'ref'),
+
+    # TAGS
+    # all tags
+    url(r'^tagz/tags/$', 'tags'),
+    # specific tag (GET, DEL)
+    url(r'^tagz/tags/(?P<tag_name>[^\/]+)', 'tag'),
+    #url(r'^tagz/tags/(?P<tag_name>[^\/]+)/editform$', 'tag_edit'),
 
     # home
     url(r'^tagz/$', 'nasb'), # redir to tags
