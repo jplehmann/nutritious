@@ -58,6 +58,10 @@ def get_refs_with_tag(tag):
     
 
 def get_tags_for_ref(ref):
+  """
+  Get all tags which are linked to references which are covered
+  by this ref.
+  """
   tags = []
   for rel_ref in get_overlapping_refs(ref):
     tags.append(rel_ref.tag)
@@ -66,8 +70,8 @@ def get_tags_for_ref(ref):
 
 def get_overlapping_refs(ref):
   """
-  Return QuerySet with all tags that are on refs that are completely
-  covered by this ref, so we know all their tags are on this ref.
+  Return QuerySet with all references which are completely covered
+  by this ref, so we know all their tags are on this ref.
   - find overlapping refs
     - filter on same book, same chapter, overlapping lines?
     - get each of their tags

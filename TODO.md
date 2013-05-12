@@ -3,7 +3,55 @@ Inbox
 
 Modify
 ------
+TODO:
+  o change database in the fields it stores
+    - tag, resource, ref, index.start, index.end
+{{{
+    ** changing this to a string causes some problems... right now I know
+      when references overlap, and so when I show some text, I can show
+      all the associated tags.  
+      Or when I show a tag, and I show all tagrefs for that tag, for
+      each tagref, I can get the other tags.. In other words, I need to
+      be able to associate/normalize the refs. 
+        If I have a ref, say John 3:16, then I need to be able to find out
+        what tags mark this.  Or say John 3:1-3, which tags cover this span?
+
+      you can say for a tag, give me refs
+
+      you can't say for a ref give me tags -- unless you have this
+      functionaliy: the db has no way of knowing what overlaps, 
+      and since i am not enforcing any standard on what refs look like,
+      IE lines, then I can't analyze it within the db.
+
+      Maybe the interface can provide a notion of start and end... computed
+      however it wants. for example line + chapter*1000 + book#*1,000,000
+      so I can then check if start and end positions are overlapping.
+      It doesn't have to be reversable although it could be... in which case
+      i wouldn't need to store a text ref possibly.
+
+      How to create the algo which converts book/chap/line into a well ordered
+      number? have to ensure that enough of a smaller can't roll over into
+      the next digit.   dot notiationw ould work, except the DB can't compae that.
+      though, it could maybe compare alphabetically.
+      
+      ** actually it just needs to be the lin number in the resource. So if
+      lines have global IDS.
+}}}
+  o update endpoint to rename a tag
+{{{
+  def update():
+    tagNew = Tag.objects(tag=newName)
+    if not tagNew:
+      tagOld.name = newName
+    else:
+      for r in tagOld.references():
+        r.tag = tagNew
+      tagOld.delete()
+      
+}}}
+
 DONE: 
+{{{
   x create form for an existing tag OR a new one
   x create GET detail for tagref
     * problem of specifying an ID is that it may not be consistnet with path,
@@ -13,9 +61,6 @@ DONE:
   x fix initial value of existing tag: how to pass to angular? need to
     set default value on model/controller
 
-TODO:
-  o change database in the fields it stores
-
 TAGS
 x read:
     GET /tags/<tag>
@@ -23,7 +68,7 @@ x create: (should just be implicit when a tagref is created)
     POST /tags/createform
 o update: rename the tag (could collapse?) *FORM*
     PUT /tags/<tag>
-o delete: remove all references
+x delete: remove all references
     DEL /tags/<tag>
 
 TAGREFS
@@ -33,7 +78,7 @@ x create: associates a tag with a ref *FORM*
     POST /tags/<tag>/refs/createform
 x update: -- dont allow this  --
     (none)
-o delete: remove a reference
+x delete: remove a reference
     DEL /tags/<tag>/refs/<id>
 
   Currently:
@@ -46,7 +91,7 @@ o delete: remove a reference
     resource: pick
     reference: freeform text input (could look it up through/valdiate)
       - validate: check if ref exists
-
+}}}
 
 Bugs
 ----
@@ -144,6 +189,7 @@ Todo
 
 Tech Questions
 ---------
+- how to have delete let server do the redirect? I think the AJAX eats it.  after deleting let controller say where to go.
 - How to go straight to a view method but change the path? Is a redirect required?  
   - For example how to in /lib?q=#tags go to /tagz/tags/... -- preferrably not with a redirect because I already have the list of things I want to show, I've done the serach at this point.  
   - so this problem occurs when an intermediate URL needs to do some of the work, and we dont want to redo that work.
