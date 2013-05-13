@@ -232,7 +232,7 @@ def tag_delete(request, tag_name):
   for ref in get_refs_with_tag(t):
     ref.delete()
   t.delete()
-  # not doing anything when called from AJAX request b/c response eats it
+  # FIXME: not doing anything when called from AJAX request b/c response eats it
   return HttpResponseRedirect(reverse('tagz.views.tags'));
 
 
@@ -343,7 +343,8 @@ def tags_import(request):
   if request.method == 'POST':
     form = ImportFileForm(request.POST, request.FILES)
     if form.is_valid():
-      import_tsv_file(request.FILES['docfile'])
+      errors, successes = import_tsv_file(request.FILES['docfile'])
+      # TODO: msg user # of errors and successes
       return HttpResponseRedirect('/tagz/tags/')
   else:
     form = ImportFileForm()

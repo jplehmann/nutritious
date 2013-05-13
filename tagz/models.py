@@ -92,7 +92,51 @@ def get_export_tsv():
 
 
 def import_tsv_file(f):
+  """ Parse the file input and create models.
+  """
+  line_num = 0
+  successes = 0
+  errors = 0
+  def extract(v):
+    v = v.strip()
+    if len(v) == 0:
+      raise Exception("Empty value")
+    return v
   for chunk in f.chunks():
     for line in chunk.split('\n'):
-      print line
+      line = line.strip()
+      line_num += 1
+      vals = line.split('\t')
+      if (len(vals) != 3):
+        errors += 1
+        print "Wrong number of values on line #%d = %d" % (line_num, len(vals))
+        continue
+      try:
+        tag_name = extract(vals[0])
+        book = extract(vals[1])
+        chapter = int(extract(vals[2]))
+      except:
+        print "Bad value on line #%d" % line_num
+        errors += 1
+        continue
+      # see if tag exists
+      try:
+        tag = get_exact_tag(tag_name)
+      except:
+        print "Creating new tag: " + tag_name
+        tag = Tag(tag=tag_name)
+        tag.save()
+      # check for duplicates
+      dups = Reference.objects.filter(tag=tag, book=book, chapter=chapter);
+      print "found " + str(len(dups))
+      if (dups):
+        print "Skipping duplicate. with " + str(dups)
+        continue
+      ref = Reference(tag=tag, book=book, chapter=chapter, 
+          firstLine="1", lastLine="2")
+      ref.save()
+      print "Creating new tagref"
+      successes += 1
+  return (errors, successes)
+      
 
