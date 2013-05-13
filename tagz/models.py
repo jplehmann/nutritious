@@ -87,7 +87,7 @@ def get_overlapping_refs(ref):
 def get_export_tsv():
   out = StringIO()
   for ref in Reference.objects.all():
-    print >>out, '\t'.join([ref.tag.tag, str(ref.book), str(ref.chapter)])
+    print >>out, '\t'.join([ref.tag.tag, "NASB", ref.pretty_ref()])
   return out.getvalue()
 
 
