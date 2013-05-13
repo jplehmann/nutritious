@@ -1,16 +1,9 @@
 Inbox
 -----
 
-Modify
-------
-should return json or tsv?
-plus endpoint is ambiguous
-
-
-TODO:
-  o change database in the fields it stores
-    - put unique constraint on "tag name"
-    - tag, resource, ref, index.start, index.end
+o change database in the fields it stores
+  - put unique constraint on "tag name"
+  - tag, resource, ref, index.start, index.end
 {{{
     ** changing this to a string causes some problems... right now I know
       when references overlap, and so when I show some text, I can show
@@ -42,73 +35,17 @@ TODO:
       ** actually it just needs to be the lin number in the resource. So if
       lines have global IDS.
 }}}
-  o update endpoint to rename a tag
-{{{
-  def update():
-    tagNew = Tag.objects(tag=newName)
-    if not tagNew:
-      tagOld.name = newName
-    else:
-      for r in tagOld.references():
-        r.tag = tagNew
-      tagOld.delete()
-      
-}}}
-  o import TSV
-  o export TSV
-
-DONE: 
-{{{
-  x create form for an existing tag OR a new one
-  x create GET detail for tagref
-    * problem of specifying an ID is that it may not be consistnet with path,
-      and is redundant, I guess I can just enforce consistency.
-    - should tag detail be same as edit?
-    - should after creating go to detail/get page?
-  x fix initial value of existing tag: how to pass to angular? need to
-    set default value on model/controller
-
-TAGS
-x read:
-    GET /tags/<tag>
-x create: (should just be implicit when a tagref is created)
-    POST /tags/createform
-o update: rename the tag (could collapse?) *FORM*
-    PUT /tags/<tag>
-x delete: remove all references
-    DEL /tags/<tag>
-
-TAGREFS
-x read:
-    GET /tags/<tag>/refs/<id>
-x create: associates a tag with a ref *FORM*
-    POST /tags/<tag>/refs/createform
-x update: -- dont allow this  --
-    (none)
-x delete: remove a reference
-    DEL /tags/<tag>/refs/<id>
-
-  Currently:
-    Reference has book/chp/first/last, tag
-    Change to: resource, reference
-
-  FORM for creation of a tagref:
-    tag name -- select OR new input field
-      - validte: confirm creation of new
-    resource: pick
-    reference: freeform text input (could look it up through/valdiate)
-      - validate: check if ref exists
-}}}
 
 Bugs
 ----
+- plus import/export endpoints are ambiguous with tag names
 - AttributeError: BibleResource instance has no __call__ method
 - search bar when at library or tags is broken/unsupported
 - anger tag has 0 John ref
 
 Todo
 ----
-- first pass documentation: both get a readme describing what they're for, what technology they use, where they're hosted? and features and todos?
+x first pass documentation: both get a readme describing what they're for, what technology they use, where they're hosted? and features and todos?
 - rename packages "Nutricious" and "Textbites"
 - rename library to resources "res"
 - open source resources -- pride and prejudice, NKJV, quotes, some web text where tagging makes sense
@@ -116,10 +53,10 @@ Todo
 
 0.4
 ---
-* create and edit tags (rename?)
+x create and edit tags (rename?)
 * authentication to protect writes
 - browser test would be really good at this point, lots of functionality
-- export tags database to xml/json
+x export tags database to xml/json
 * more bible versions (easy) (and figure out copyright issue)
 - should search be case insensitive by default? (how could regex override?) -- might expect other normalization too, stemming
 
@@ -258,6 +195,42 @@ Future Tech Stories
   * http://sontek.net/blog/detail/turning-vim-into-a-modern-python-ide#django
 
 
+Rest Endpoints
+--------------
+{{{
+TAGS
+x read:
+    GET /tags/<tag>
+x create: (should just be implicit when a tagref is created)
+    POST /tags/createform
+o update: rename the tag (could collapse?) *FORM*
+    PUT /tags/<tag>
+x delete: remove all references
+    DEL /tags/<tag>
+
+TAGREFS
+x read:
+    GET /tags/<tag>/refs/<id>
+x create: associates a tag with a ref *FORM*
+    POST /tags/<tag>/refs/createform
+x update: -- dont allow this  --
+    (none)
+x delete: remove a reference
+    DEL /tags/<tag>/refs/<id>
+
+  Currently:
+    Reference has book/chp/first/last, tag
+    Change to: resource, reference
+
+  FORM for creation of a tagref:
+    tag name -- select OR new input field
+      - validte: confirm creation of new
+    resource: pick
+    reference: freeform text input (could look it up through/valdiate)
+      - validate: check if ref exists
+}}}
+
+
 
 0.1
 -----------------------------
@@ -304,4 +277,11 @@ Future Tech Stories
   - [DONE] search through book in bible
 * [DONE] search for tag reference first then query
 * [DONE] multiple tag results
+
+0.3
+---
+* [DONE] new restful operations on tag: create, delete, rename
+* [DONE] new restful operations on tag refs: create, delete
+* [DONE] import TSV
+* [DONE] export TSV
 
