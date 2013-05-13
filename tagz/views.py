@@ -7,6 +7,7 @@ from django.http import Http404
 from django.utils.http import urlquote
 #from django.core.exceptions import DoesNotExist
 from django.template import RequestContext
+from django import forms
 
 from tagz.models import Tag
 from tagz.models import Reference
@@ -15,6 +16,7 @@ from tagz.models import get_tags_for_ref
 from tagz.models import get_exact_tag
 from tagz.models import get_matching_tags
 from tagz.models import get_export_tsv
+from tagz.models import import_tsv_file
 
 from pybible import api
 from pybooks import library
@@ -331,6 +333,21 @@ def tags_export(request):
   response = HttpResponse(get_export_tsv(), content_type="application/tsv")
   response['Content-Disposition'] = 'attachment; filename=export.tsv'
   return response
+
+
+class ImportFileForm(forms.Form):
+    docfile = forms.FileField(label="Select a file to upload.")
+
+
+def tags_import(request):
+  if request.method == 'POST':
+    form = ImportFileForm(request.POST, request.FILES)
+    if form.is_valid():
+      import_tsv_file(request.FILES['docfile'])
+      return HttpResponseRedirect('/tagz/tags/')
+  else:
+    form = ImportFileForm()
+  return render_to_response('tagz/tags_import.html', {'form': form})
 
 
 def safe_int(val):

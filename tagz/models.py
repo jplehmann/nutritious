@@ -91,5 +91,8 @@ def get_export_tsv():
   return out.getvalue()
 
 
-
+def import_tsv_file(f):
+  for chunk in f.chunks():
+    for line in chunk.split('\n'):
+      print line
 

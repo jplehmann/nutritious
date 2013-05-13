@@ -27,7 +27,9 @@ urlpatterns = patterns('tagz.views',
     # all tags
     url(r'^tagz/tags/$', 'tags'),
     # Export -- need more specific name o/w confusing
+    # TODO: name these better
     url(r'^tagz/tags/export$', 'tags_export'),
+    url(r'^tagz/tags/import$', 'tags_import'),
     # specific tag (GET, DEL)
     url(r'^tagz/tags/(?P<tag_name>[^\/]+)', 'tag'),
     #url(r'^tagz/tags/(?P<tag_name>[^\/]+)/editform$', 'tag_edit'),
