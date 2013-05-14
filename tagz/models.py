@@ -3,7 +3,7 @@ from cStringIO import StringIO
 
 
 class Tag(models.Model):
-  tag = models.CharField(max_length=100)
+  tag = models.CharField(max_length=100, unique=True, db_index=True)
 
   def __unicode__(self):
       return self.tag
@@ -14,12 +14,13 @@ class Tag(models.Model):
 
 class Reference(models.Model):
   tag = models.ForeignKey(Tag)
-  book = models.CharField(max_length=100)
-  chapter = models.IntegerField()
-  firstLine = models.IntegerField()
-  lastLine = models.IntegerField()
+  resource = models.CharField(max_length=100)
+  reference = models.CharField(max_length=100, db_index=True)
   created_at = models.DateTimeField(auto_now_add=True, editable=False, null=True)
   updated_at = models.DateTimeField(auto_now=True, editable=False, null=True)
+  # TODO revisit this null part
+  offset_start = models.IntegerField(null=True)
+  offset_end = models.IntegerField(null=True)
 
   def __unicode__(self):
     return "%s @ %s" % (self.tag, self.pretty_ref())
@@ -28,14 +29,15 @@ class Reference(models.Model):
     """
     A nice looking version of the reference.
     """
-    s = "%s %d:%d" % (self.book.title().replace('_', ' '), self.chapter, self.firstLine)
-    if (self.firstLine == self.lastLine):
-      return s
-    else:
-      return s + "-" + str(self.lastLine)
+    return str(self.reference)
+    #s = "%s %d:%d" % (self.book.title().replace('_', ' '), self.chapter, self.firstLine)
+    #if (self.firstLine == self.lastLine):
+    #  return s
+    #else:
+    #  return s + "-" + str(self.lastLine)
 
   class Meta:
-      ordering = ["book", "chapter", "firstLine", "tag", "lastLine"]
+      ordering = ["offset_start", "offset_end", "resource", "reference", "tag"]
 
 
 def get_exact_tag(query):
@@ -74,20 +76,39 @@ def get_overlapping_refs(ref):
   Return QuerySet with all references which are completely covered
   by this ref, so we know all their tags are on this ref.
   - find overlapping refs
-    - filter on same book, same chapter, overlapping lines?
+    - filter on same resource, overlapping offsets
     - get each of their tags
-
     - get all the other refs which are a superset or subset?
   """
   return Reference.objects.filter(
-      chapter=ref.chapter, book=ref.book, 
-      firstLine__gte=ref.firstLine, lastLine__lte=ref.lastLine)
+      resource=ref.resource, 
+      offset_start__gte=ref.offset_start, offset_end__lte=ref.offset_end)
 
+
+# XXX todo remove this
+from pybooks import library
+import traceback
 
 def get_export_tsv():
   out = StringIO()
   for ref in Reference.objects.all():
-    print >>out, '\t'.join([ref.tag.tag, "NASB", ref.pretty_ref()])
+    offset_start = ref.offset_start
+    offset_end = ref.offset_end
+    resource = str(ref.resource)
+    ref_str = str(ref.reference)
+    # if offsets aren't known, look them up
+    if not offset_start or not offset_end:
+      try:
+        pybook_ref = library.get(resource).reference(ref_str)
+      except:
+        print "Couldn't find refernce: ", ref_str
+        continue
+      try:
+        offset_start, offset_end = pybook_ref.indices()
+      except:
+        print "Problem with index for ", ref_str
+        print traceback.format_exc()
+    print >>out, '\t'.join([ref.tag.tag, resource, ref_str, str(offset_start), str(offset_end)])
   return out.getvalue()
 
 
@@ -107,14 +128,17 @@ def import_tsv_file(f):
       line = line.strip()
       line_num += 1
       vals = line.split('\t')
-      if (len(vals) != 3):
+      # with or without offsets
+      if (len(vals) != 3 and len(vals) != 5):
         errors += 1
         print "Wrong number of values on line #%d = %d" % (line_num, len(vals))
         continue
       try:
         tag_name = extract(vals[0])
-        book = extract(vals[1])
-        chapter = int(extract(vals[2]))
+        res = extract(vals[1])
+        ref_str = extract(vals[2])
+        offset_start = int(extract(vals[3])) if len(vals) == 5 else None
+        offset_end = int(extract(vals[4])) if len(vals) == 5 else None
       except:
         print "Bad value on line #%d" % line_num
         errors += 1
@@ -127,13 +151,16 @@ def import_tsv_file(f):
         tag = Tag(tag=tag_name)
         tag.save()
       # check for duplicates
-      dups = Reference.objects.filter(tag=tag, book=book, chapter=chapter);
+      dups = Reference.objects.filter(tag=tag, resource=res, reference=ref_str);
       print "found " + str(len(dups))
       if (dups):
         print "Skipping duplicate. with " + str(dups)
         continue
-      ref = Reference(tag=tag, book=book, chapter=chapter, 
-          firstLine="1", lastLine="2")
+      if offset_start == None:
+        ref = Reference(tag=tag, resource=res, reference=ref_str)
+      else:
+        ref = Reference(tag=tag, resource=res, reference=ref_str, 
+            offset_start=offset_start, offset_end=offset_end)
       ref.save()
       print "Creating new tagref"
       successes += 1

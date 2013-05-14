@@ -1,5 +1,10 @@
 Inbox
 -----
+- be able to create a reference for a single line, from reference view
+- bug: can't loko at quotes -- path isn't impleneted?
+- bug: was able to create  reference to Pride and Prejudice 2:1 even though this isn't known, so this needs to be validated
+- make library a dropdown menu
+- migrate other databases -- herkou and pc, easier to start over?
 
 o change database in the fields it stores
   - put unique constraint on "tag name"
@@ -38,6 +43,8 @@ o change database in the fields it stores
 
 Bugs
 ----
+- getting index offsets, about 20 errors when exporting
+- getting index offsets, about 20 errors couldn't find references
 - plus import/export endpoints are ambiguous with tag names
 - AttributeError: BibleResource instance has no __call__ method
 - search bar when at library or tags is broken/unsupported

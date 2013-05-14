@@ -291,8 +291,8 @@ def tagref_create(request, tag_name):
   print "Tagref create"
   try:
     # resource MUST exist
-    request.POST['resource'].strip()
-    resource = library.get(request.POST['resource'].strip())
+    res_str = request.POST['resource'].strip()
+    resource = library.get(res_str)
     # reference must be valid
     ref_str = request.POST['reference']
     ref = resource.reference(ref_str)
@@ -305,8 +305,9 @@ def tagref_create(request, tag_name):
   except:
     t = Tag(tag=tag_name)
     t.save()
-  print "Saving be saving", ref_str, tag_name, t
-  new_ref = Reference(tag=t, book="Fake", chapter="1", firstLine="1", lastLine="2")
+  print "Saving be saving", ref_str, tag_name, t, ref.pretty()
+  new_ref = Reference(tag=t, resource=res_str, reference=ref.pretty(), 
+      offset_start=ref.indices().start, offset_end=ref.indices().end)
   new_ref.save()
   return HttpResponseRedirect('refs/' + str(new_ref.id));
 

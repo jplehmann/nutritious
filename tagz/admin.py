@@ -6,9 +6,9 @@ from django.contrib import admin
 
 class RegisterAdmin(admin.ModelAdmin):
   readonly_fields = ("created_at","updated_at",)
-  list_display = ("book", "chapter", "firstLine", "lastLine", "tag",)
-  list_filter = ('book',)
-  search_fields = ['book', 'tag__tag']
+  list_display = ("reference", "resource", "offset_start", "offset_end", "tag",)
+  list_filter = ('reference',)
+  search_fields = ['reference', 'tag__tag']
   #formfield_overrides = {
   #  models.CharField: {'widget': TextInput(attrs={'size':'50'})},
   #  #models.TextField: {'widget': Textarea(attrs={'rows':4, 'cols':40})},
