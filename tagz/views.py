@@ -206,7 +206,7 @@ def tag(request, tag_name):
     # FIXME: Assuming for now that this reference is from the Bible.
     # In the future when we store the resource with the tag, use that
     # to look up the text.
-    resource = "NASB"
+    resource = ref.resource
     try:
       pybook_ref = library.get(resource).reference(ref.pretty_ref())
       text = pybook_ref.text()
