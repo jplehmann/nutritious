@@ -48,11 +48,12 @@ def lib_resource_search(resource, res_name, ref_obj, query, ref_str):
   # first see if this is a reference in this resource
   try:
     new_ref = resource.reference(query)
-    print new_ref
+    # we don't pass the request back because we don't want
+    # it to find the search parameters
     return render_resource(None, res_name, new_ref.pretty())
   except Exception as e:
-    #print traceback.format_exc()
-    #print e
+    print traceback.format_exc()
+    print e
     pass
   hits = ref_obj.search(query)
   title = ("Search of '%s' for '%s' (%d hits)" % 
@@ -82,7 +83,8 @@ def render_resource(request, res_name, ref_str=None, highlights=None):
   are redirected to another handler.
   @param Request may be None in the case where search is calling back
   to here, in order to display a reference.
-  @param ref_str from the path, if given
+  @param ref_str from the path, if given. The reference within the resource
+  to be retrieved like 'John 5:1'
   @param highlights are reference strings which should be highlighted,
   which should be 'sub-references' to make sense.
   """
@@ -111,7 +113,7 @@ def render_resource(request, res_name, ref_str=None, highlights=None):
     # requesting context is legal if there are no children, AND, it
     # is a text-bearing reference
     if text and not children:
-      context_size = safe_int(request.GET.get('ctx', 0))
+      context_size = safe_int(request.GET.get('ctx', 0)) if request else None
       # get the amount of context needed
       if context_size and context_size > 0:
         # get reference 
