@@ -1,52 +1,28 @@
 Inbox
 -----
-- be able to create a reference for a single line, from reference view
-- bug: can't loko at quotes -- path isn't impleneted?
-- bug: was able to create  reference to Pride and Prejudice 2:1 even though this isn't known, so this needs to be validated
-- make library a dropdown menu
+- metatags/tagsets: sets of other tags (and metas?), and can have color
+- tag search with multiple tags and operators (+ = must have, - = can't have), default is disjunction.
+- refs should probably not be under tags
+- tag list / search result set should allow multi-select of results, then ability to "add tag" to that set.
+- also if can highlight verses/lines (or maybe checkboxes or area to click to select entire), then can select several then copy all (or add tag). Or, make list of verses not selectable but if you drill into a single one then you can copy words.
+  
+- feature1: be able to create a tagref for a single line, from resource view
+- feature3: make library a dropdown menu
 - migrate other databases -- herkou and pc, easier to start over?
 
-o change database in the fields it stores
-  - put unique constraint on "tag name"
-  - tag, resource, ref, index.start, index.end
-{{{
-    ** changing this to a string causes some problems... right now I know
-      when references overlap, and so when I show some text, I can show
-      all the associated tags.  
-      Or when I show a tag, and I show all tagrefs for that tag, for
-      each tagref, I can get the other tags.. In other words, I need to
-      be able to associate/normalize the refs. 
-        If I have a ref, say John 3:16, then I need to be able to find out
-        what tags mark this.  Or say John 3:1-3, which tags cover this span?
-
-      you can say for a tag, give me refs
-
-      you can't say for a ref give me tags -- unless you have this
-      functionaliy: the db has no way of knowing what overlaps, 
-      and since i am not enforcing any standard on what refs look like,
-      IE lines, then I can't analyze it within the db.
-
-      Maybe the interface can provide a notion of start and end... computed
-      however it wants. for example line + chapter*1000 + book#*1,000,000
-      so I can then check if start and end positions are overlapping.
-      It doesn't have to be reversable although it could be... in which case
-      i wouldn't need to store a text ref possibly.
-
-      How to create the algo which converts book/chap/line into a well ordered
-      number? have to ensure that enough of a smaller can't roll over into
-      the next digit.   dot notiationw ould work, except the DB can't compae that.
-      though, it could maybe compare alphabetically.
-      
-      ** actually it just needs to be the lin number in the resource. So if
-      lines have global IDS.
-}}}
+Future:
+- need friendly message when refernce for tagref is bad in validation
+- quotes / any simple
+  - needs a path test
+  - indices test
+- quotes wont show text for a person, yet we can create a reference to it. how could we validate this earlier on?
 
 Bugs
 ----
+- because of missing lines (e.g NIV) line lookups can be off by 1, this is a but in pybooks for reference search
 - getting index offsets, about 20 errors when exporting
 - getting index offsets, about 20 errors couldn't find references
 - plus import/export endpoints are ambiguous with tag names
-- AttributeError: BibleResource instance has no __call__ method
 - search bar when at library or tags is broken/unsupported
 - anger tag has 0 John ref
 
@@ -61,9 +37,9 @@ x first pass documentation: both get a readme describing what they're for, what 
 0.4
 ---
 x create and edit tags (rename?)
-* authentication to protect writes
-- browser test would be really good at this point, lots of functionality
 x export tags database to xml/json
+* authentication to protect writes
+- browser test would be really good at this point, lots of functionality; what to use, angular?
 * more bible versions (easy) (and figure out copyright issue)
 - should search be case insensitive by default? (how could regex override?) -- might expect other normalization too, stemming
 
@@ -103,7 +79,7 @@ x export tags database to xml/json
 
 2.0
 ---
-* Mutability for resources like Quotes
+* Mutability for resources like Quotes (and Bible) (database-backed pytbook)
 * Responsiveness: rendering in nice size fonts for mobile.  Also add features like dropdown beneath search with book names.
 * generalize to (bible, books, quotes, persons, webpages (page, video), gdocs)
   * inefficiency of searching bible refs with aliases
@@ -291,4 +267,5 @@ x delete: remove a reference
 * [DONE] new restful operations on tag refs: create, delete
 * [DONE] import TSV
 * [DONE] export TSV
-
+* [DONE] resources contain index/offsets
+* [DONE] new database schema, migrated and code updated
