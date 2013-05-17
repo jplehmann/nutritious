@@ -46,12 +46,14 @@ def lib_resource_search(resource, res_name, ref_obj, query, ref_str):
     return redirect('/tagz/tags?q=' + urlquote(query))
     #return tag_search(query)
   # first see if this is a reference in this resource
-  #try:
+  try:
     new_ref = resource.reference(query)
-    return resource(None, res_name, new_ref.pretty())
-  #except Exception as e:
-  #  print traceback.format_exc()
-  #  print e
+    print new_ref
+    return render_resource(None, res_name, new_ref.pretty())
+  except Exception as e:
+    #print traceback.format_exc()
+    #print e
+    pass
   hits = ref_obj.search(query)
   title = ("Search of '%s' for '%s' (%d hits)" % 
       (ref_obj.pretty(), query, len(hits)))
@@ -73,7 +75,7 @@ def nasb(request):
   return HttpResponseRedirect("/tagz/lib/NASB")
 
 
-def resource(request, res_name, ref_str=None, highlights=None):
+def render_resource(request, res_name, ref_str=None, highlights=None):
   """ Display a resource. If a reference is given within
   that resource, then it shows that particular scope.
   This handler is also used to front-end searches, which
@@ -116,7 +118,8 @@ def resource(request, res_name, ref_str=None, highlights=None):
         try:
           context = ref_obj.context(context_size)
           # set the highlight on our center line
-          return resource(None, res_name, context.pretty(), [ref_obj.pretty()])
+          return render_resource(
+              None, res_name, context.pretty(), [ref_obj.pretty()])
         except Exception as e:
           print e
     # navigation references
@@ -203,9 +206,6 @@ def tag(request, tag_name):
   for ref in related_refs: 
     related_tags.append(get_tags_for_ref(ref))
     ids.append(ref.id)
-    # FIXME: Assuming for now that this reference is from the Bible.
-    # In the future when we store the resource with the tag, use that
-    # to look up the text.
     resource = ref.resource
     try:
       pybook_ref = library.get(resource).reference(ref.pretty_ref())
@@ -297,6 +297,7 @@ def tagref_create(request, tag_name):
     ref_str = request.POST['reference']
     ref = resource.reference(ref_str)
   except:
+    print "User provided bad resource or reference."
     print traceback.format_exc()
     raise Http404
   # if tag name doesn't exist, create it

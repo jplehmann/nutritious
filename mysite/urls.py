@@ -7,7 +7,7 @@ admin.autodiscover()
 urlpatterns = patterns('tagz.views',
     # resources
     url(r'^tagz/lib/$', 'lib'),
-    url(r'^tagz/lib/(?P<res_name>[^\/]+)/(?P<ref_str>[^\/]+)?$', 'resource'),
+    url(r'^tagz/lib/(?P<res_name>[^\/]+)/(?P<ref_str>[^\/]+)?$', 'render_resource'),
 
     # TAG REFERENCE
     # tag detail (GET, DEL)
