@@ -1,60 +1,73 @@
+
+
 Inbox
 -----
-- metatags/tagsets: sets of other tags (and metas?), and can have color
-- tag search with multiple tags and operators (+ = must have, - = can't have), default is disjunction.
-- refs should probably not be under tags
-- tag list / search result set should allow multi-select of results, then ability to "add tag" to that set.
-- also if can highlight verses/lines (or maybe checkboxes or area to click to select entire), then can select several then copy all (or add tag). Or, make list of verses not selectable but if you drill into a single one then you can copy words.
-  
-- feature1: be able to create a tagref for a single line, from resource view
-- feature3: make library a dropdown menu
-- migrate other databases -- herkou and pc, easier to start over?
 
-Future:
-- need friendly message when refernce for tagref is bad in validation
-- quotes / any simple
-  - needs a path test
-  - indices test
-- quotes wont show text for a person, yet we can create a reference to it. how could we validate this earlier on?
 
 Bugs
 ----
 - because of missing lines (e.g NIV) line lookups can be off by 1, this is a but in pybooks for reference search
-- getting index offsets, about 20 errors when exporting
-- getting index offsets, about 20 errors couldn't find references
 - plus import/export endpoints are ambiguous with tag names
 - search bar when at library or tags is broken/unsupported
 - anger tag has 0 John ref
+- getting index offsets, about 20 errors when exporting
+- getting index offsets, about 20 errors couldn't find references
+- (??) rename does a PUT and then is redirected with what should be a GET. The browser says its doing a GET but the server says it got a second PUT. Which is true? what is wrong?
+- (??) how to have delete let server do the redirect? I think the AJAX eats it.  after deleting let controller say where to go.
+
+
+Priorities:
+----------
+* browser test
+* select verses and copy
+* select verses and create tag
+* authentication to protect writes to the data
+* setup LESS
+- put tagz and pybooks on github with Travis CI
+- consider splitting refs and tags into two apps
+- refs should probably not be under tags
+
+
 
 Todo
 ----
 x first pass documentation: both get a readme describing what they're for, what technology they use, where they're hosted? and features and todos?
 - rename packages "Nutricious" and "Textbites"
 - rename library to resources "res"
-- open source resources -- pride and prejudice, NKJV, quotes, some web text where tagging makes sense
+- open source resources -- pride and prejudice
 - move to github
+- travis CI -- once I'm on github
 
 0.4
 ---
-x create and edit tags (rename?)
-x export tags database to xml/json
 * authentication to protect writes
-- browser test would be really good at this point, lots of functionality; what to use, angular?
-* more bible versions (easy) (and figure out copyright issue)
+- browser test -- Angular?
+{{{
+  1. even though I can see the webpage, it can't seem to see it
+  2. how can I serve up /test instead of putting it under static?
+  3. make sure tests are removed at deployment
+  4. need test runner to start it up -- karma -- to run from commandline
+}}}
+- test for import / export and verify get input back again
+- figure out copyright issues with NIV, NLT
 - should search be case insensitive by default? (how could regex override?) -- might expect other normalization too, stemming
 
 0.5
 ---
 * remove absolute paths (esp in view, try reverse())
-* integrate tagz into references
-- click search should select all to replace
-- shortcut key to do search
+* integrate tagz into references: select line range and add tag
+* search shortcuts
+  * click search should select all to replace
+  * shortcut key to do search
 * autocomplete for tag search (medium) (AJAX query for tags) angular UI select2 or "chosen" (has nice multi-select)
 * friendly copy-paste: maybe button to copy? better layout/selecable (maybe linerange returns a single block, and let user select linerange)
-* add URLs as a resource type (export my delicious)
+* add URLs as a resource type (export my delicious) (though immutable)
 
 1.0
 ---
+* tag search with multiple tags and operators (+ = must have, - = can't have), default is disjunction.
+* tag list / search result set should allow multi-select of results, then ability to "add tag" to that set, or remove
+* D3 visualizations about tags
 * context should work for a linerange too
 * select search highlights all (can bootstrap do this?)
 * navigation: more breadcrumbs (book, chapter links)
@@ -66,7 +79,6 @@ x export tags database to xml/json
   * put HR before first row as well
   * streamline the left side references
 * Tech stories
-  * setup angular
   * setup LESS
 * Design
   * properly load library resources -- best place for that logic?
@@ -76,6 +88,11 @@ x export tags database to xml/json
 * could put library / resources in a navbar dropdown
 * resource could provide some relative links for a navbar dropdown (OT/NT)
 * Manually test quotes for new features, and need auto tests for this too... Put tests into simple and make sure quotes and bible use those.
+  * quotes / any simple resource: needs a path test, indices test
+* validation for input
+  * such as friendly message when refernce for tagref is bad
+    * quotes wont show text for a person, yet we can create a reference to it.
+      how could we validate this earlier on?
 
 2.0
 ---
@@ -86,11 +103,12 @@ x export tags database to xml/json
     * maybe one general ref endpoint takes guids but another specific one
       (refs/bible/xxx) does alias lookups
 * plan/reorg around more apps (refs -> new app?)
-- Tag Sets: each account can have sets of tags, one for general, one for a
-  particular memory set. each tag can be in any number of sets. (many to
-  many). I think this should be pretty easy to add as columns in the
-  database. Seems really cool because just as my sets are meaningful to me
-  they can extend them and be a place for life to look to.
+- metatags/tagsets: sets of other tags (and metas?), and can have color
+  - each account can have sets of tags, one for general, one for a
+    particular memory set. each tag can be in any number of sets. (many to
+    many). I think this should be pretty easy to add as columns in the
+    database. Seems really cool because just as my sets are meaningful to me
+    they can extend them and be a place for life to look to.
 - Comments: (noted elsewhere) the ability to attach comments. These are just
   like tags, except don't have a topic but do have a longer text portion.
 - Index Notes (say google docs), tagging references there and creating
@@ -124,13 +142,8 @@ Tech Questions
   - Figute out the best way to write my search method which redirects back to a resource if one was provided. Or if we wanted to do a scoped search with a tag, how would that work? My goal was that search should centralize the searching... Maybe it also needs to handle searches over resources.
 * how to have div (non-table) view but have dynamic column width, according to the longest items?
   - seems impossible to do a row-based approach like this because the rows are independent.  Could do a column layout with fixed height instead perhaps, but this sounds even worse.
-
-
-Questions
----------
 - divergences of ref simple ref and view ref, what to do? tests reflect actual
   api while reference api has moved on
-- how to assign colors to tags?
 - if making a mutable resource (quotes), is that a django project, and where to
   put code? If not in pybooks, does this make testing hard?
 
@@ -170,6 +183,39 @@ Study my view and see how many attributes it has...
   - why name?  what's wrong with the top reference's name?
   - well resources have a type
   - in any case top ref can also be a resoruce
+- Rest Endpoints
+  {{{
+  TAGS
+  x read:
+      GET /tags/<tag>
+  x create: (should just be implicit when a tagref is created)
+      POST /tags/createform
+  o update: rename the tag (could collapse?) *FORM*
+      PUT /tags/<tag>
+  x delete: remove all references
+      DEL /tags/<tag>
+
+  TAGREFS
+  x read:
+      GET /tags/<tag>/refs/<id>
+  x create: associates a tag with a ref *FORM*
+      POST /tags/<tag>/refs/createform
+  x update: -- dont allow this  --
+      (none)
+  x delete: remove a reference
+      DEL /tags/<tag>/refs/<id>
+
+    Currently:
+      Reference has book/chp/first/last, tag
+      Change to: resource, reference
+
+    FORM for creation of a tagref:
+      tag name -- select OR new input field
+        - validte: confirm creation of new
+      resource: pick
+      reference: freeform text input (could look it up through/valdiate)
+        - validate: check if ref exists
+  }}}
 
 Future Tech Stories
 -------------------
@@ -178,40 +224,6 @@ Future Tech Stories
   * http://sontek.net/blog/detail/turning-vim-into-a-modern-python-ide#django
 
 
-Rest Endpoints
---------------
-{{{
-TAGS
-x read:
-    GET /tags/<tag>
-x create: (should just be implicit when a tagref is created)
-    POST /tags/createform
-o update: rename the tag (could collapse?) *FORM*
-    PUT /tags/<tag>
-x delete: remove all references
-    DEL /tags/<tag>
-
-TAGREFS
-x read:
-    GET /tags/<tag>/refs/<id>
-x create: associates a tag with a ref *FORM*
-    POST /tags/<tag>/refs/createform
-x update: -- dont allow this  --
-    (none)
-x delete: remove a reference
-    DEL /tags/<tag>/refs/<id>
-
-  Currently:
-    Reference has book/chp/first/last, tag
-    Change to: resource, reference
-
-  FORM for creation of a tagref:
-    tag name -- select OR new input field
-      - validte: confirm creation of new
-    resource: pick
-    reference: freeform text input (could look it up through/valdiate)
-      - validate: check if ref exists
-}}}
 
 
 
@@ -265,7 +277,9 @@ x delete: remove a reference
 ---
 * [DONE] new restful operations on tag: create, delete, rename
 * [DONE] new restful operations on tag refs: create, delete
+* [DONE] forms for create and modify tag/tagrefs
 * [DONE] import TSV
 * [DONE] export TSV
 * [DONE] resources contain index/offsets
 * [DONE] new database schema, migrated and code updated
+* [DONE] more bible versions
