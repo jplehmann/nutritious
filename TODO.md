@@ -16,51 +16,51 @@ Bugs
 - (??) how to have delete let server do the redirect? I think the AJAX eats it.  after deleting let controller say where to go.
 
 
-Priorities:
-----------
-* browser test
-* select verses and copy
-* select verses and create tag
-* authentication to protect writes to the data
-* setup LESS
-- put tagz and pybooks on github with Travis CI
-- consider splitting refs and tags into two apps
-- refs should probably not be under tags
-
-
+Tasks
+-----
+- angular IRC for help on scenario tests, or consider python browser testing
+- find out how to multi-select lines
+- how i'll do authentication; 
+  - add column to Tags and References
+  - for all queries add user
+    - and add for create
+  - protect creation with @authenticated
+  - create guest account
+  - update database with columns
 
 Todo
 ----
-x first pass documentation: both get a readme describing what they're for, what technology they use, where they're hosted? and features and todos?
-- rename packages "Nutricious" and "Textbites"
-- rename library to resources "res"
-- open source resources -- pride and prejudice
-- move to github
-- travis CI -- once I'm on github
-
-0.4
----
+* move to github
+  - rename packages "Nutricious" and "Textbites"
+  - rename library to resources "res"
+  - travis CI -- once I'm on github
+  - first pass documentation: readme, features, todos
+* misc technical
+  - setup LESS: http://stackoverflow.com/a/8726853/317110
+  - consider splitting refs and tags into two apps
+  - refs should probably not be under tags
+* select verses and copy
 * authentication to protect writes
-- browser test -- Angular?
+* browser test -- Angular?
 {{{
   1. even though I can see the webpage, it can't seem to see it
   2. how can I serve up /test instead of putting it under static?
   3. make sure tests are removed at deployment
   4. need test runner to start it up -- karma -- to run from commandline
 }}}
-- test for import / export and verify get input back again
-- figure out copyright issues with NIV, NLT
-- should search be case insensitive by default? (how could regex override?) -- might expect other normalization too, stemming
+* integrate tagz into references: select line range and add tag
 
 0.5
 ---
+* open source resources -- pride and prejudice??
+* should search be case insensitive by default? (how could regex override?) -- might expect other normalization too, stemming
+* figure out copyright issues with NIV, NLT
+* test for import / export and verify get input back again
 * remove absolute paths (esp in view, try reverse())
-* integrate tagz into references: select line range and add tag
 * search shortcuts
   * click search should select all to replace
   * shortcut key to do search
 * autocomplete for tag search (medium) (AJAX query for tags) angular UI select2 or "chosen" (has nice multi-select)
-* friendly copy-paste: maybe button to copy? better layout/selecable (maybe linerange returns a single block, and let user select linerange)
 * add URLs as a resource type (export my delicious) (though immutable)
 
 1.0
