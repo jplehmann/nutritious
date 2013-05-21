@@ -1,5 +1,9 @@
 Inbox
 -----
+- is there a better way than passing requsetcontext manaualy?
+
+
+
 - metatags/tagsets: sets of other tags (and metas?), and can have color
 - tag search with multiple tags and operators (+ = must have, - = can't have), default is disjunction.
 - refs should probably not be under tags

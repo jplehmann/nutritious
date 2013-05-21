@@ -41,12 +41,13 @@ def lib(request):
   # generic library response
   if not query:
     return render_to_response('tagz/library.html', 
-        {'resources': library.list()})
+        {'resources': library.list()}, 
+        context_instance=RequestContext(request))
   else:
     return tag_search(query)
 
 
-def lib_resource_search(resource, res_name, ref_obj, query, ref_str):
+def lib_resource_search(request, resource, res_name, ref_obj, query, ref_str):
   """ Search a resource given a query.
   """
   # temporarily redirect tag search to root
@@ -75,7 +76,8 @@ def lib_resource_search(resource, res_name, ref_obj, query, ref_str):
        'resource_path': res_path,
        'parent_ref': ref_obj.path(), 
        'children': hits,
-       'text': None, 'sub_ref': ref_str if ref_str else "" })
+       'text': None, 'sub_ref': ref_str if ref_str else "" },
+      context_instance=RequestContext(request))
 
 
 def nasb(request):
@@ -107,7 +109,7 @@ def render_resource(request, res_name, ref_str=None, highlights=None):
     if request:
       query = request.GET.get('q', None)
       if query:
-        return lib_resource_search(resource, res_name, ref_obj, query, ref_str)
+        return lib_resource_search(request, resource, res_name, ref_obj, query, ref_str)
     # inspect if the referene has children
     # should return None if it doesn't have them. 
     children = ref_obj.children()
@@ -155,11 +157,14 @@ def render_resource(request, res_name, ref_str=None, highlights=None):
     # determine which view to use
     if children:
       if show_child_text:
-        return render_to_response('tagz/ref_text_list.html', context)
+        return render_to_response('tagz/ref_text_list.html', context,
+            context_instance=RequestContext(request))
       else:
-        return render_to_response('tagz/ref_index.html', context)
+        return render_to_response('tagz/ref_index.html', context,
+            context_instance=RequestContext(request))
     else:
-      return render_to_response('tagz/ref_detail.html', context)
+      return render_to_response('tagz/ref_detail.html', context,
+          context_instance=RequestContext(request))
   except Exception as e:
     print "Exception: " + str(e)
     print traceback.format_exc()
@@ -198,7 +203,8 @@ def tags(request, tags=None):
     counts.append(refs.count())
   counted_tags = zip(all_tags, counts)
   return render_to_response('tagz/tag_index.html', 
-      {'counted_tags': counted_tags})
+      {'counted_tags': counted_tags},
+      context_instance=RequestContext(request))
 
 
 def tag(request, tag_name):
@@ -230,7 +236,8 @@ def tag(request, tag_name):
     ref_paths.append("/tagz/lib/%s/%s" % (resource, ref.pretty_ref()))
   related_refs_n_tags = zip(ids, clean_refs, ref_paths, related_tags, texts)
   return render_to_response('tagz/tag_detail.html', 
-      {'tag': t, 'related_refs_n_tags': related_refs_n_tags})
+      {'tag': t, 'related_refs_n_tags': related_refs_n_tags},
+      context_instance=RequestContext(request))
 
 
 def tag_delete(request, tag_name):
@@ -284,7 +291,8 @@ def tagref_detail(request, tag_name, id):
     # not doing anything when called from AJAX request b/c response eats it
     return HttpResponseRedirect(reverse('tagz.views.tags'));
   return render_to_response('tagz/tagref_detail.html',
-      {'tag_name': tag_name, 'tagref': tagref })
+      {'tag_name': tag_name, 'tagref': tagref },
+      context_instance=RequestContext(request))
 
 def tagref_createform(request, tag_name=None):
   """ Form to create a single tag reference """
@@ -361,7 +369,8 @@ def tags_import(request):
       return HttpResponseRedirect('/tagz/tags/')
   else:
     form = ImportFileForm()
-  return render_to_response('tagz/tags_import.html', {'form': form})
+  return render_to_response('tagz/tags_import.html', {'form': form},
+      context_instance=RequestContext(request))
 
 
 def safe_int(val):
