@@ -31,6 +31,11 @@
                     <li><a href="/tagz/tags/export">Export tags</a></li>
                   </ul>
                 </li>
+                {% if user.is_authenticated %}
+                  <li><a href="/tagz/accounts/logout">Logout</a></li>
+                {% else %}
+                  <li><a href="/tagz/accounts/login">Login</a></li>
+                {% endif %}
               </ul>
               <!-- probably bad to reference this scope; what to do
                    when this is not available? -->

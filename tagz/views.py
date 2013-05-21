@@ -8,6 +8,7 @@ from django.utils.http import urlquote
 #from django.core.exceptions import DoesNotExist
 from django.template import RequestContext
 from django import forms
+from django.contrib.auth.decorators import login_required
 
 from tagz.models import Tag
 from tagz.models import Reference
@@ -23,7 +24,15 @@ from pybooks import library
 import traceback
 
 
+from django.contrib.auth import logout
+
+def logout_view(request):
+    logout(request)
+    # Redirect to a success page.
+
 library.load_resources()
+
+@login_required
 def lib(request):
   """ Library root.
       Also receives searches performed when no resource is selected.
