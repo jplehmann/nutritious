@@ -1,6 +1,7 @@
 Inbox
 -----
 - is there a better way than passing requsetcontext manaualy?
+- remove /tagz context (good time to fix absolute?)
 
 
 

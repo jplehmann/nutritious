@@ -12,10 +12,11 @@ from django.contrib.auth.decorators import login_required
 
 from tagz.models import Tag
 from tagz.models import Reference
-from tagz.models import get_refs_with_tag
+from tagz.models import get_all_tags
 from tagz.models import get_tags_for_ref
 from tagz.models import get_exact_tag
 from tagz.models import get_matching_tags
+from tagz.models import get_refs_with_tag
 from tagz.models import get_export_tsv
 from tagz.models import import_tsv_file
 
@@ -43,7 +44,7 @@ def lib(request):
         {'resources': library.list()}, 
         context_instance=RequestContext(request))
   else:
-    return tag_search(query)
+    return tag_search(request, query)
 
 
 def lib_resource_search(request, resource, res_name, ref_obj, query, ref_str):
@@ -53,7 +54,7 @@ def lib_resource_search(request, resource, res_name, ref_obj, query, ref_str):
   query = query.strip()
   if query.startswith("#"):
     return redirect('/tagz/tags?q=' + urlquote(query))
-    #return tag_search(query)
+    #return tag_search(request, query)
   # first see if this is a reference in this resource
   try:
     new_ref = resource.reference(query)
@@ -170,7 +171,7 @@ def render_resource(request, res_name, ref_str=None, highlights=None):
     raise Http404
 
 
-def tag_search(query):
+def tag_search(request, query):
   # tag search: currently only supports a single tag, and must begin with #
   query = query.strip()
   if query.startswith("#"):
@@ -178,11 +179,11 @@ def tag_search(query):
     query = query[1:]
     try:
       # exact match
-      match = get_exact_tag(query)
+      match = get_exact_tag(request.user, query)
       return redirect('/tagz/tags/' + match.tag)
     except:
       # starts-with match
-      matches = get_matching_tags(query)
+      matches = get_matching_tags(request.user, query)
       if matches:
         return tags(None, matches)
   raise Http404 # ("Root search must contain only an #tag.")
@@ -194,11 +195,11 @@ def tags(request, tags=None):
   if request:
     query = request.GET.get('q', None)
     if query:
-      return tag_search(query)
-  all_tags = Tag.objects.all() if tags == None else tags
+      return tag_search(request, query)
+  all_tags = get_all_tags(request.user) if tags == None else tags
   counts = []
   for t in all_tags:
-    refs = get_refs_with_tag(t)
+    refs = get_refs_with_tag(request.user, t)
     counts.append(refs.count())
   counted_tags = zip(all_tags, counts)
   return render_to_response('tagz/tag_index.html', 
@@ -213,14 +214,14 @@ def tag(request, tag_name):
   elif request.method == 'PUT':
     return tag_update(request, tag_name)
   t = get_object_or_404(Tag, tag=tag_name)
-  related_refs = get_refs_with_tag(t)
+  related_refs = get_refs_with_tag(request.user, t)
   clean_refs = []
   related_tags = []
   texts = []
   ref_paths = []
   ids = []
   for ref in related_refs: 
-    related_tags.append(get_tags_for_ref(ref))
+    related_tags.append(get_tags_for_ref(request.user, ref))
     ids.append(ref.id)
     resource = ref.resource
     try:
@@ -247,7 +248,7 @@ def tag_delete(request, tag_name):
   # clean up all associated references, since references only have 1 tag in them
   # but this seems to not be necessary, maybe Django is cleaning up
   # for me?
-  for ref in get_refs_with_tag(t):
+  for ref in get_refs_with_tag(request.user, t):
     ref.delete()
   t.delete()
   # FIXME: not doing anything when called from AJAX request b/c response eats it
@@ -266,9 +267,9 @@ def tag_update(request, tag_name):
     print "problem getting new name"
   print "old name, new: " + tag_name + " " + new_name
   try:
-    t_new = get_exact_tag(new_name)
+    t_new = get_exact_tag(request.user, new_name)
     print t_new
-    for r in get_refs_with_tag(t_old):
+    for r in get_refs_with_tag(request.user, t_old):
       r.tag = t_new
       print "updating ref: " + str(r)
       r.save()
@@ -289,6 +290,7 @@ def tagref_detail(request, tag_name, id):
     raise Http404
   if request.method == 'DELETE':
     tagref.delete()
+    # TODO: if this is the last ref for this tag, delete the tag?
     # not doing anything when called from AJAX request b/c response eats it
     return HttpResponseRedirect(reverse('tagz.views.tags'));
   return render_to_response('tagz/tagref_detail.html',
@@ -324,19 +326,22 @@ def tagref_create(request, tag_name):
     raise Http404
   # if tag name doesn't exist, create it
   try:
-    t = get_exact_tag(tag_name)
+    t = get_exact_tag(request.user, tag_name)
   except:
-    t = Tag(tag=tag_name)
+    # TODO: move to models
+    t = Tag(tag=tag_name, user=request.user)
     t.save()
   print "Saving be saving", ref_str, tag_name, t, ref.pretty()
+  # TODO: move to models
   new_ref = Reference(tag=t, resource=res_str, reference=ref.pretty(), 
-      offset_start=ref.indices().start, offset_end=ref.indices().end)
+      offset_start=ref.indices().start, offset_end=ref.indices().end, 
+      user=request.user)
   new_ref.save()
   return HttpResponseRedirect('refs/' + str(new_ref.id));
 
 
 def tags_export(request):
-  response = HttpResponse(get_export_tsv(), content_type="application/tsv")
+  response = HttpResponse(get_export_tsv(request.user), content_type="application/tsv")
   response['Content-Disposition'] = 'attachment; filename=export.tsv'
   return response
 
@@ -350,7 +355,7 @@ def tags_import(request):
   if request.method == 'POST':
     form = ImportFileForm(request.POST, request.FILES)
     if form.is_valid():
-      errors, successes = import_tsv_file(request.FILES['docfile'])
+      errors, successes = import_tsv_file(request.user, request.FILES['docfile'])
       # TODO: msg user # of errors and successes
       return HttpResponseRedirect('/tagz/tags/')
   else:
