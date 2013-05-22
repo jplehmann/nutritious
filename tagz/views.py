@@ -32,7 +32,6 @@ def logout_view(request):
 
 library.load_resources()
 
-@login_required
 def lib(request):
   """ Library root.
       Also receives searches performed when no resource is selected.
@@ -240,6 +239,7 @@ def tag(request, tag_name):
       context_instance=RequestContext(request))
 
 
+@login_required
 def tag_delete(request, tag_name):
   """ Delete a tag and all associated tagrefs.
   """
@@ -254,6 +254,7 @@ def tag_delete(request, tag_name):
   return HttpResponseRedirect(reverse('tagz.views.tags'));
 
 
+@login_required
 def tag_update(request, tag_name):
   """ Rename a tag. If the tag name is exists already, it will merge them.
   """
@@ -294,6 +295,7 @@ def tagref_detail(request, tag_name, id):
       {'tag_name': tag_name, 'tagref': tagref },
       context_instance=RequestContext(request))
 
+@login_required
 def tagref_createform(request, tag_name=None):
   """ Form to create a single tag reference """
   return render_to_response('tagz/tagref_create.html',   
@@ -302,6 +304,7 @@ def tagref_createform(request, tag_name=None):
        'res_default': 'NASB'
        }, context_instance=RequestContext(request))
 
+@login_required
 def tagref_create(request, tag_name):
   """ Create a single tag reference. The resource must exist and 
       the reference must be valid, but if the tag doesn't exist, 
@@ -360,6 +363,7 @@ class ImportFileForm(forms.Form):
     docfile = forms.FileField(label="Select a file to upload.")
 
 
+@login_required
 def tags_import(request):
   if request.method == 'POST':
     form = ImportFileForm(request.POST, request.FILES)
