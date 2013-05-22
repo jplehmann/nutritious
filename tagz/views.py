@@ -8,13 +8,15 @@ from django.utils.http import urlquote
 #from django.core.exceptions import DoesNotExist
 from django.template import RequestContext
 from django import forms
+from django.contrib.auth.decorators import login_required
 
 from tagz.models import Tag
 from tagz.models import Reference
-from tagz.models import get_refs_with_tag
+from tagz.models import get_all_tags
 from tagz.models import get_tags_for_ref
 from tagz.models import get_exact_tag
 from tagz.models import get_matching_tags
+from tagz.models import get_refs_with_tag
 from tagz.models import get_export_tsv
 from tagz.models import import_tsv_file
 
@@ -23,7 +25,14 @@ from pybooks import library
 import traceback
 
 
+from django.contrib.auth import logout
+
+def logout_view(request):
+    logout(request)
+    # Redirect to a success page.
+
 library.load_resources()
+
 def lib(request):
   """ Library root.
       Also receives searches performed when no resource is selected.
@@ -32,19 +41,20 @@ def lib(request):
   # generic library response
   if not query:
     return render_to_response('tagz/library.html', 
-        {'resources': library.list()})
+        {'resources': library.list()}, 
+        context_instance=RequestContext(request))
   else:
-    return tag_search(query)
+    return tag_search(request, query)
 
 
-def lib_resource_search(resource, res_name, ref_obj, query, ref_str):
+def lib_resource_search(request, resource, res_name, ref_obj, query, ref_str):
   """ Search a resource given a query.
   """
   # temporarily redirect tag search to root
   query = query.strip()
   if query.startswith("#"):
     return redirect('/tagz/tags?q=' + urlquote(query))
-    #return tag_search(query)
+    #return tag_search(request, query)
   # first see if this is a reference in this resource
   try:
     new_ref = resource.reference(query)
@@ -66,7 +76,8 @@ def lib_resource_search(resource, res_name, ref_obj, query, ref_str):
        'resource_path': res_path,
        'parent_ref': ref_obj.path(), 
        'children': hits,
-       'text': None, 'sub_ref': ref_str if ref_str else "" })
+       'text': None, 'sub_ref': ref_str if ref_str else "" },
+      context_instance=RequestContext(request))
 
 
 def nasb(request):
@@ -98,7 +109,7 @@ def render_resource(request, res_name, ref_str=None, highlights=None):
     if request:
       query = request.GET.get('q', None)
       if query:
-        return lib_resource_search(resource, res_name, ref_obj, query, ref_str)
+        return lib_resource_search(request, resource, res_name, ref_obj, query, ref_str)
     # inspect if the referene has children
     # should return None if it doesn't have them. 
     children = ref_obj.children()
@@ -146,18 +157,21 @@ def render_resource(request, res_name, ref_str=None, highlights=None):
     # determine which view to use
     if children:
       if show_child_text:
-        return render_to_response('tagz/ref_text_list.html', context)
+        return render_to_response('tagz/ref_text_list.html', context,
+            context_instance=RequestContext(request))
       else:
-        return render_to_response('tagz/ref_index.html', context)
+        return render_to_response('tagz/ref_index.html', context,
+            context_instance=RequestContext(request))
     else:
-      return render_to_response('tagz/ref_detail.html', context)
+      return render_to_response('tagz/ref_detail.html', context,
+          context_instance=RequestContext(request))
   except Exception as e:
     print "Exception: " + str(e)
     print traceback.format_exc()
     raise Http404
 
 
-def tag_search(query):
+def tag_search(request, query):
   # tag search: currently only supports a single tag, and must begin with #
   query = query.strip()
   if query.startswith("#"):
@@ -165,11 +179,11 @@ def tag_search(query):
     query = query[1:]
     try:
       # exact match
-      match = get_exact_tag(query)
+      match = get_exact_tag(request.user, query)
       return redirect('/tagz/tags/' + match.tag)
     except:
       # starts-with match
-      matches = get_matching_tags(query)
+      matches = get_matching_tags(request.user, query)
       if matches:
         return tags(None, matches)
   raise Http404 # ("Root search must contain only an #tag.")
@@ -181,15 +195,16 @@ def tags(request, tags=None):
   if request:
     query = request.GET.get('q', None)
     if query:
-      return tag_search(query)
-  all_tags = Tag.objects.all() if tags == None else tags
+      return tag_search(request, query)
+  all_tags = get_all_tags(request.user) if tags == None else tags
   counts = []
   for t in all_tags:
-    refs = get_refs_with_tag(t)
+    refs = get_refs_with_tag(request.user, t)
     counts.append(refs.count())
   counted_tags = zip(all_tags, counts)
   return render_to_response('tagz/tag_index.html', 
-      {'counted_tags': counted_tags})
+      {'counted_tags': counted_tags},
+      context_instance=RequestContext(request))
 
 
 def tag(request, tag_name):
@@ -199,14 +214,14 @@ def tag(request, tag_name):
   elif request.method == 'PUT':
     return tag_update(request, tag_name)
   t = get_object_or_404(Tag, tag=tag_name)
-  related_refs = get_refs_with_tag(t)
+  related_refs = get_refs_with_tag(request.user, t)
   clean_refs = []
   related_tags = []
   texts = []
   ref_paths = []
   ids = []
   for ref in related_refs: 
-    related_tags.append(get_tags_for_ref(ref))
+    related_tags.append(get_tags_for_ref(request.user, ref))
     ids.append(ref.id)
     resource = ref.resource
     try:
@@ -221,9 +236,11 @@ def tag(request, tag_name):
     ref_paths.append("/tagz/lib/%s/%s" % (resource, ref.pretty_ref()))
   related_refs_n_tags = zip(ids, clean_refs, ref_paths, related_tags, texts)
   return render_to_response('tagz/tag_detail.html', 
-      {'tag': t, 'related_refs_n_tags': related_refs_n_tags})
+      {'tag': t, 'related_refs_n_tags': related_refs_n_tags},
+      context_instance=RequestContext(request))
 
 
+@login_required
 def tag_delete(request, tag_name):
   """ Delete a tag and all associated tagrefs.
   """
@@ -231,13 +248,14 @@ def tag_delete(request, tag_name):
   # clean up all associated references, since references only have 1 tag in them
   # but this seems to not be necessary, maybe Django is cleaning up
   # for me?
-  for ref in get_refs_with_tag(t):
+  for ref in get_refs_with_tag(request.user, t):
     ref.delete()
   t.delete()
   # FIXME: not doing anything when called from AJAX request b/c response eats it
   return HttpResponseRedirect(reverse('tagz.views.tags'));
 
 
+@login_required
 def tag_update(request, tag_name):
   """ Rename a tag. If the tag name is exists already, it will merge them.
   """
@@ -249,9 +267,9 @@ def tag_update(request, tag_name):
     print "problem getting new name"
   print "old name, new: " + tag_name + " " + new_name
   try:
-    t_new = get_exact_tag(new_name)
+    t_new = get_exact_tag(request.user, new_name)
     print t_new
-    for r in get_refs_with_tag(t_old):
+    for r in get_refs_with_tag(request.user, t_old):
       r.tag = t_new
       print "updating ref: " + str(r)
       r.save()
@@ -272,11 +290,14 @@ def tagref_detail(request, tag_name, id):
     raise Http404
   if request.method == 'DELETE':
     tagref.delete()
+    # TODO: if this is the last ref for this tag, delete the tag?
     # not doing anything when called from AJAX request b/c response eats it
     return HttpResponseRedirect(reverse('tagz.views.tags'));
   return render_to_response('tagz/tagref_detail.html',
-      {'tag_name': tag_name, 'tagref': tagref })
+      {'tag_name': tag_name, 'tagref': tagref },
+      context_instance=RequestContext(request))
 
+@login_required
 def tagref_createform(request, tag_name=None):
   """ Form to create a single tag reference """
   return render_to_response('tagz/tagref_create.html',   
@@ -285,6 +306,7 @@ def tagref_createform(request, tag_name=None):
        'res_default': 'NASB'
        }, context_instance=RequestContext(request))
 
+@login_required
 def tagref_create(request, tag_name):
   """ Create a single tag reference. The resource must exist and 
       the reference must be valid, but if the tag doesn't exist, 
@@ -304,37 +326,22 @@ def tagref_create(request, tag_name):
     raise Http404
   # if tag name doesn't exist, create it
   try:
-    t = get_exact_tag(tag_name)
+    t = get_exact_tag(request.user, tag_name)
   except:
-    t = Tag(tag=tag_name)
+    # TODO: move to models
+    t = Tag(tag=tag_name, user=request.user)
     t.save()
   print "Saving be saving", ref_str, tag_name, t, ref.pretty()
+  # TODO: move to models
   new_ref = Reference(tag=t, resource=res_str, reference=ref.pretty(), 
-      offset_start=ref.indices().start, offset_end=ref.indices().end)
+      offset_start=ref.indices().start, offset_end=ref.indices().end, 
+      user=request.user)
   new_ref.save()
   return HttpResponseRedirect('refs/' + str(new_ref.id));
 
-#def ref(request, ref_name):
-#  """ Single ref: show scripture and tags."""
-#  #ref = get_object_or_404(Reference, ref=ref_name)
-#  # 1. parse this ref 
-#  text, clean_ref = api.getTextAndCleanReference(ref_name)
-#  # 2. create a new reference object
-#  # 3. look up all tags that overlap
-#  #get_tags_for_ref(ref)
-#  tags = []
-#  return render_to_response('tagz/ref_detail.html', 
-#      {'ref_name': clean_ref, 'text': text, 'tags': tags})
-#
-#
-#def refs(request):
-#  """ All refs: simply show count."""
-#  refs = Reference.objects.all()
-#  return HttpResponse("Number of references found: %s" % refs.count())
-
 
 def tags_export(request):
-  response = HttpResponse(get_export_tsv(), content_type="application/tsv")
+  response = HttpResponse(get_export_tsv(request.user), content_type="application/tsv")
   response['Content-Disposition'] = 'attachment; filename=export.tsv'
   return response
 
@@ -343,16 +350,18 @@ class ImportFileForm(forms.Form):
     docfile = forms.FileField(label="Select a file to upload.")
 
 
+@login_required
 def tags_import(request):
   if request.method == 'POST':
     form = ImportFileForm(request.POST, request.FILES)
     if form.is_valid():
-      errors, successes = import_tsv_file(request.FILES['docfile'])
+      errors, successes = import_tsv_file(request.user, request.FILES['docfile'])
       # TODO: msg user # of errors and successes
       return HttpResponseRedirect('/tagz/tags/')
   else:
     form = ImportFileForm()
-  return render_to_response('tagz/tags_import.html', {'form': form})
+  return render_to_response('tagz/tags_import.html', {'form': form},
+      context_instance=RequestContext(request))
 
 
 def safe_int(val):

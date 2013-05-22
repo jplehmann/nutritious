@@ -160,3 +160,7 @@ LOGGING = {
         },
     }
 }
+
+LOGIN_REDIRECT_URL = "/tagz"
+LOGIN_URL = "/tagz/accounts/login"
+

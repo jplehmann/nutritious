@@ -60,3 +60,8 @@ hr {
 .navbar-inverse .navbar-search .search-query {
   background-color: #fff;
 }
+
+.login-out {
+  font-size:.8em; 
+  margin-left:22.0em;
+}
