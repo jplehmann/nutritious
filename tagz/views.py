@@ -334,24 +334,6 @@ def tagref_create(request, tag_name):
   new_ref.save()
   return HttpResponseRedirect('refs/' + str(new_ref.id));
 
-#def ref(request, ref_name):
-#  """ Single ref: show scripture and tags."""
-#  #ref = get_object_or_404(Reference, ref=ref_name)
-#  # 1. parse this ref 
-#  text, clean_ref = api.getTextAndCleanReference(ref_name)
-#  # 2. create a new reference object
-#  # 3. look up all tags that overlap
-#  #get_tags_for_ref(ref)
-#  tags = []
-#  return render_to_response('tagz/ref_detail.html', 
-#      {'ref_name': clean_ref, 'text': text, 'tags': tags})
-#
-#
-#def refs(request):
-#  """ All refs: simply show count."""
-#  refs = Reference.objects.all()
-#  return HttpResponse("Number of references found: %s" % refs.count())
-
 
 def tags_export(request):
   response = HttpResponse(get_export_tsv(), content_type="application/tsv")
