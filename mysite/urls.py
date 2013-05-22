@@ -48,7 +48,10 @@ urlpatterns += patterns('',
     # login
     url(r'^tagz/accounts/login/$', 'django.contrib.auth.views.login', {'template_name': 'accounts/login.html'}),
     # logout
-    url(r'^tagz/accounts/logout/$', 'django.contrib.auth.views.logout_then_login') 
+    url(r'^tagz/accounts/logout/$', 'django.contrib.auth.views.logout_then_login'),
     #url(r'^tagz/accounts/logout/$', 'tagz.views.logout')
+
+  (r'^favicon\.ico$', 'django.views.generic.simple.redirect_to', {'url': '/static/img/favicon.ico'})
+    
 )
 
