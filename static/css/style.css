@@ -65,3 +65,11 @@ hr {
   font-size:.8em; 
   margin-left:22.0em;
 }
+
+#selectable .ui-selecting {
+  /*background: #cfefff; */
+  background: #cfefce;
+}
+#selectable .ui-selected {
+  background: #76d173;
+}

@@ -3,6 +3,27 @@
 /* Controllers */
 
 angular.module('myApp.controllers', []).
+
+    controller('RefCtrl', ['$scope', '$http', function ($scope, $http) {
+      var selectedLines = [];
+      $( "#selectable" ).selectable({
+        filter: '.row-fluid',
+        stop: function(event, ui) { 
+          selectedLines = [];
+        },
+        selected: function(event, ui) { 
+          var ref = $(ui.selected).find('a').attr('href');
+          console.log('selected ' + ref);
+          //console.log('selected ' + $(ui.selected));
+          selectedLines.push(ref);
+          console.log(selectedLines);
+        }
+      });
+    }]).
+//        selecting: function(event, ui) { 
+//          console.log('selecting ' + $(ui.selecting).find('a').text());
+//        },
+
     controller('TagCtrl', ['$scope', '$http', function ($scope, $http) {
 
         $scope.renameTag = function(tagName) {
