@@ -1,47 +1,47 @@
 
 Inbox
 -----
-- is there a better way than passing requsetcontext manaualy?
-- remove /tagz context (good time to fix absolute?)
 
 
-Bugs
-----
-- because of missing lines (e.g NIV) line lookups can be off by 1, this is a but in pybooks for reference search
-- plus import/export endpoints are ambiguous with tag names
-- search bar when at library or tags is broken/unsupported
-- anger tag has 0 John ref
-- getting index offsets, about 20 errors when exporting
-- getting index offsets, about 20 errors couldn't find references
-- (??) rename does a PUT and then is redirected with what should be a GET. The browser says its doing a GET but the server says it got a second PUT. Which is true? what is wrong?
-- (??) how to have delete let server do the redirect? I think the AJAX eats it.  after deleting let controller say where to go.
 
+Current Work
+------------
+- given these objects, how do we get the text for the linerange?
+  + add combine() to references, which takes a list of reference strings and
+    smashes them down to include ranges and returns references, for tagging
+    selected verses (mauybe disallow tagging of non-contig lines)
+  - need the linerange reference...
+  - how to combine references?
+  - we could provide the individual integers: 1,3,5,9; but, we dont
+    know the format of the books...
+  - maybe reference(...) could parse several separated by ;  and combine
+    spans?
+  - or get refs individually then splice?
+
+  Would be nice to make assumptiosn about references...
+    - we can get the ref of the parent, then provide the integers?
+    ref.getsubref(1,3,5)
 
 Tasks
 -----
 - angular IRC for help on scenario tests, or consider python browser testing
 - find out how to multi-select lines
-- how i'll do authentication; 
-  - add column to Tags and References
-  - for all queries add user
-    - and add for create
-  - protect creation with @authenticated
-  - create guest account
-  - update database with columns
 
 Todo
 ----
-* move to github
+- setup LESS: http://stackoverflow.com/a/8726853/317110
+- reorganization
+  - refs should probably not be under tags
+    - consider splitting refs and tags into two apps
   - rename packages "Nutricious" and "Textbites"
   - rename library to resources "res"
-  - travis CI -- once I'm on github
-  - first pass documentation: readme, features, todos
-* misc technical
-  - setup LESS: http://stackoverflow.com/a/8726853/317110
-  - consider splitting refs and tags into two apps
-  - refs should probably not be under tags
-* select verses and copy
-* authentication to protect writes
+  - remove /tagz context (good time to fix absolute?)
+- features
+  * select verses and copy -- Cmd/Ctrl-C with ZClip
+  * search
+    * Ctrl-S shortcut key to do search
+    * click search should select all to replace
+  * select verses and tag -- Cmd/Ctrl-T (ideally a pop-up or modal)
 * browser test -- Angular?
 {{{
   1. even though I can see the webpage, it can't seem to see it
@@ -49,23 +49,34 @@ Todo
   3. make sure tests are removed at deployment
   4. need test runner to start it up -- karma -- to run from commandline
 }}}
-* integrate tagz into references: select line range and add tag
-
-0.5
----
-* open source resources -- pride and prejudice??
-* should search be case insensitive by default? (how could regex override?) -- might expect other normalization too, stemming
-* figure out copyright issues with NIV, NLT
-* test for import / export and verify get input back again
-* remove absolute paths (esp in view, try reverse())
-* search shortcuts
-  * click search should select all to replace
-  * shortcut key to do search
-* autocomplete for tag search (medium) (AJAX query for tags) angular UI select2 or "chosen" (has nice multi-select)
-* add URLs as a resource type (export my delicious) (though immutable)
+* move to github
+  - travis CI -- once I'm on github
+  - first pass documentation: readme, features, todos
 
 1.0
 ---
++ parallel search
+{{{
+  - with a meta flag like @all, OR maybe aliases like @bible
+  which maps to a set of resources (stored in library), then search each. 
+  - search across all, but then render using current resource knowing that double
+  click can expand out to the other versions. (depends on parallel lookup)
+}}}
++ parallel verse lookup
+{{{
+  - double click on a line to trigger a lookpu on all 
+  resources in the library with that reference, then display them below
+  in a collapse-like fold. Double click on the first again to close. Need
+  to display resource name somewhere on the line or beside it?
+  - figure out how to make this work with copy/paste range
+}}}
+* make search case insensitive
+* add URLs as a resource type (export my delicious) (though immutable)
+* autocomplete for tag search (medium) (AJAX query for tags) angular UI select2 or "chosen" (has nice multi-select)
+* remove absolute paths (esp in view, try reverse())
+* figure out copyright issues with NIV, NLT
+* test for import / export and verify get input back again
+* open source resources -- pride and prejudice??
 * tag search with multiple tags and operators (+ = must have, - = can't have), default is disjunction.
 * tag list / search result set should allow multi-select of results, then ability to "add tag" to that set, or remove
 * D3 visualizations about tags
@@ -124,21 +135,30 @@ Todo
   * [template??] so admin columns not so wide
 * models
   * timestamps of modifications and history view
-* users
-  * authentication to require login
-  * multi-user: data stored separately for each user
 * misc technical debt
   * upgrade to django 1.5
 * show related tags (lexically, semantically)
 * move bible-specific functionality into plugins
 
 
+Bugs
+----
+* because of missing lines (e.g NIV) line lookups can be off by 1, this is a but in pybooks for reference search -- fix by inserting blank lines
+* search bar when at library or tags is broken/unsupported
+- plus import/export endpoints are ambiguous with tag names
+- anger tag has 0 John ref
+- getting index offsets, about 20 errors when exporting
+- getting index offsets, about 20 errors couldn't find references
+- (??) rename does a PUT and then is redirected with what should be a GET. The browser says its doing a GET but the server says it got a second PUT. Which is true? what is wrong?
+- (??) how to have delete let server do the redirect? I think the AJAX eats it.  after deleting let controller say where to go.
+
+
 Tech Questions
 ---------
 - rename does a PUT and then is redirected with what should be a GET. The browser says its doing a GET but the server says it got a second PUT. Which is true? what is wrong?
 - how to have delete let server do the redirect? I think the AJAX eats it.  after deleting let controller say where to go.
-- How to go straight to a view method but change the path? Is a redirect required?  
-  - For example how to in /lib?q=#tags go to /tagz/tags/... -- preferrably not with a redirect because I already have the list of things I want to show, I've done the serach at this point.  
+- How to go straight to a view method but change the path? Is a redirect required?
+  - For example how to in /lib?q=#tags go to /tagz/tags/... -- preferrably not with a redirect because I already have the list of things I want to show, I've done the serach at this point.
   - so this problem occurs when an intermediate URL needs to do some of the work, and we dont want to redo that work.
   - Figute out the best way to write my search method which redirects back to a resource if one was provided. Or if we wanted to do a scoped search with a tag, how would that work? My goal was that search should centralize the searching... Maybe it also needs to handle searches over resources.
 * how to have div (non-table) view but have dynamic column width, according to the longest items?
@@ -284,3 +304,7 @@ Future Tech Stories
 * [DONE] resources contain index/offsets
 * [DONE] new database schema, migrated and code updated
 * [DONE] more bible versions
+* [DONE] authentication to protect writes
+* [DONE] multi-user: data stored separately for each user
+* [DONE] guest account for not logged in users
+
