@@ -3,26 +3,76 @@
 /* Controllers */
 
 angular.module('myApp.controllers', []).
-
+  
     controller('RefCtrl', ['$scope', '$http', function ($scope, $http) {
-      var selectedLines = [];
+
+      //console.log(numsToRanges([1]));
+      //console.log(numsToRanges([1,2]));
+      //console.log(numsToRanges([1,3]));
+      //console.log(numsToRanges([1,2,3]));
+      //console.log(numsToRanges([1,3,4]));
+      //console.log(numsToRanges([1,2,3,5,8,9,11,13,14]));
+
+      function numsToRanges(nums) {
+        //var sNums = sort(nums);
+        var prev = -1;
+        var prevWritten = -1;
+        var ref = "";
+        for (var i=0; i < nums.length; i++) {
+          if (nums[i] == prev+1) {
+            // do nothing if in a range
+            prev = nums[i];
+          } else {
+            if (ref.length > 0) {
+              if (prev !== prevWritten) {
+                // if gapping and more than one in previous, bound it
+                ref = ref + "-" + prev;
+              }
+              // close the last range
+              ref = ref + ",";
+            }
+            // start the new range
+            ref = ref + nums[i];
+            prevWritten = nums[i];
+            prev = nums[i];
+          }
+        }
+        // close last open range
+        if (prev !== -1 && prev !== prevWritten) {
+          // if gapping and more than one in previous, bound it
+          ref = ref + "-" + prev;
+        }
+        return ref;
+      }
+
       $( "#selectable" ).selectable({
         filter: '.row-fluid',
         stop: function(event, ui) { 
-          selectedLines = [];
-        },
-        selected: function(event, ui) { 
-          var ref = $(ui.selected).find('a').attr('href');
-          console.log('selected ' + ref);
-          //console.log('selected ' + $(ui.selected));
-          selectedLines.push(ref);
-          console.log(selectedLines);
+          var selectedLines = [];
+          var selectedText = "";
+          // collect references
+          angular.forEach($('#selectable .ui-selected a'), function(e) {
+            // and why did .attr('x') not work on the whole list?
+            // why is e not a jquery selector?
+            //selectedLines.push($(e).attr('href'));
+            selectedLines.push(parseInt($(e).text().trim()));
+          });
+          // collect text
+          angular.forEach($('#selectable .ui-selected span'), function(e) {
+            selectedText = selectedText.trim() + " " + $(e).text().trim();
+          });
+          // consolidate references
+          //console.log(selectedLines);
+          //console.log(selectedText);
+          var refStr = $scope.reference + ":" + numsToRanges(selectedLines);
+          var refAndText = selectedText + "  (" + refStr + ")"
+          //console.log($scope.resource);
+          //console.log($scope.reference);
+          console.log(refAndText)
+          $scope.selectedText = refAndText;
         }
       });
     }]).
-//        selecting: function(event, ui) { 
-//          console.log('selecting ' + $(ui.selecting).find('a').text());
-//        },
 
     controller('TagCtrl', ['$scope', '$http', function ($scope, $http) {
 

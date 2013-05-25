@@ -12,7 +12,8 @@
 
   <!-- List view -->
   {% if children %}
-  <div ng-controller="RefCtrl" id="selectable">
+  <div ng-controller="RefCtrl" id="selectable" 
+       ng-init="reference='{{title}}'; resource='{{resource_name}}'">
       {% for child in children %}
       <div class="row-fluid">
         <!-- Child text -->

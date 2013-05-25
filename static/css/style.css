@@ -68,8 +68,8 @@ hr {
 
 #selectable .ui-selecting {
   /*background: #cfefff; */
-  background: #cfefce;
+  background: #76d173;
 }
 #selectable .ui-selected {
-  background: #76d173;
+  background: #cfefce;
 }
