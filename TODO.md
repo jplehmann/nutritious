@@ -20,6 +20,7 @@ Things to test
 
   select?
   copy?
+  ctrl-t tag
 
 Current Work
 ------------
@@ -42,23 +43,20 @@ Current Work
 Tasks
 -----
 - angular IRC for help on scenario tests, or consider python browser testing
-- find out how to multi-select lines
 
 Todo
 ----
-- setup LESS: http://stackoverflow.com/a/8726853/317110
 - reorganization
+  - remove absolute refs to tags
+    - urls
+    - html - href, action
+    - javascript
+    * serrch for tagz
   - refs should probably not be under tags
     - consider splitting refs and tags into two apps
   - rename packages "Nutricious" and "Textbites"
   - rename library to resources "res"
   - remove /tagz context (good time to fix absolute?)
-- features
-  * select verses and copy -- Cmd/Ctrl-C with ZClip
-  * search
-    * Ctrl-S shortcut key to do search
-    * click search should select all to replace
-  * select verses and tag -- Cmd/Ctrl-T (ideally a pop-up or modal)
 * browser test -- Angular?
 {{{
   1. even though I can see the webpage, it can't seem to see it
@@ -72,6 +70,7 @@ Todo
 
 1.0
 ---
+- random tags view
 + parallel search
 {{{
   - with a meta flag like @all, OR maybe aliases like @bible
@@ -87,6 +86,7 @@ Todo
   to display resource name somewhere on the line or beside it?
   - figure out how to make this work with copy/paste range
 }}}
+* highlight search terms
 * make search case insensitive
 * add URLs as a resource type (export my delicious) (though immutable)
 * autocomplete for tag search (medium) (AJAX query for tags) angular UI select2 or "chosen" (has nice multi-select)
@@ -325,3 +325,9 @@ Future Tech Stories
 * [DONE] multi-user: data stored separately for each user
 * [DONE] guest account for not logged in users
 
+* select verses and copy -- Cmd/Ctrl-C with ZClip
+* search
+  * Ctrl-S shortcut key to do search
+  * click search should select all to replace
+* select verses and tag -- Cmd/Ctrl-T (ideally a pop-up or modal)
+* setup LESS: http://stackoverflow.com/a/8726853/317110
