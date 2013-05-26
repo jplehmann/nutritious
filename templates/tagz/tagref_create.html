@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% load filters %}
+
 {% block title %}{{ block.super }} - Index{% endblock %}
 
 {% block main_content %}
@@ -9,6 +11,7 @@
 
   {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
+  <div ng-controller="TagCtrl">
   <form name="theForm" action="/tagz/tags/(( tag ))/refs" method="post" class="form-horizontal">
   {% csrf_token %}
   
@@ -22,21 +25,20 @@
 
     <div class="control-group">
       <label class="control-label" for="inputResource">Resource</label>
-      <div class="controls">
-        <select name="resource" id="inputResource">
-          <!-- list options in library -->
-          {% for r in resources %}
-          <option {% if r == res_default %}selected="selected"{% endif %}>
-            {{ r }}</option>
-          {% endfor %}
+      <div class="controls" >
+        <select name="resource" id="inputResource" 
+                ng-init="resources={{ resources|jsonify }}; 
+                selectedResource=(resource || '{{res_default}}')" 
+                ng-options="r for r in resources" ng-model="selectedResource">
         </select>
       </div>
     </div>
 
     <div class="control-group">
-      <label class="control-label" for="inputRef">Reference</label>
+      <label class="control-label" for="inputRef" >Reference</label>
       <div class="controls">
-        <input name="reference" type="text" id="inputRef" placeholder="e.g. Jn 3:16">
+        <input name="reference" type="text" id="inputRef" 
+               placeholder="e.g. Jn 3:16" ng-model="reference">
       </div>
     </div>
 
@@ -47,10 +49,11 @@
           <input name="private" type="checkbox" id="inputPrivate">
         </label>
         <br>
-        <button type="submit" class="btn">Save</button>
+        <button type="submit" class="btn" id="submitButton">Save</button>
       </div>
     </div>
   </form>
+  </div>
 
 {{ block.super }}
 {% endblock main_content %}

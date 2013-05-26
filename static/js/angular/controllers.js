@@ -4,11 +4,13 @@
 
 angular.module('myApp.controllers', []).
 
-    controller('BaseCtrl', ['$scope', '$http', function ($scope, $http) {
+    controller('BaseCtrl', ['$scope', '$http', '$window', 
+            function ($scope, $http, $window) {
 
-      $scope.params = $.url().param();
-
-      $scope.query = $scope.params['q'];
+      $scope.query = $.url().param('q');
+      // reference and resource are initialized in html
+      $scope.reference = undefined;
+      $scope.resource = undefined;
       
       // Ctrl-S for copy
       $(document).bind('keydown', function (e) {
@@ -21,7 +23,8 @@ angular.module('myApp.controllers', []).
 
     }]).
   
-    controller('RefCtrl', ['$scope', '$http', function ($scope, $http) {
+    controller('RefCtrl', ['$scope', '$http', '$window', 
+            function ($scope, $http, $window) {
 
       //console.log(numsToRanges([1]));
       //console.log(numsToRanges([1,2]));
@@ -78,30 +81,45 @@ angular.module('myApp.controllers', []).
           angular.forEach($('#selectable .ui-selected span'), function(e) {
             selectedText = selectedText.trim() + " " + $(e).text().trim();
           });
-          var refStr = $scope.reference + ":" + numsToRanges(selectedLines);
-          var refAndText = selectedText + "  (" + refStr + ")"
-          $scope.selectedText = refAndText;
+          $scope.selectedRef = $scope.reference + ":" + numsToRanges(selectedLines);
+          $scope.selectedText = selectedText + "  (" + $scope.selectedRef + ")";
         }
       });
 
       // add the links back which selectable blew out
       $('.row-fluid a').click(function(e) {
-        window.location = e.target.href;
+        $window.location = e.target.href;
       });
 
       function copyToClipboard (text) {
-        window.prompt("Copy to clipboard: Ctrl+C, Enter", text);
+        $window.prompt("Copy to clipboard: Ctrl+C, Enter", text);
       }
 
       // Ctrl-C for copy
       $(document).bind('keydown', function (e) {
         if ((e.ctrlKey || e.metaKey) && e.which === "C".charCodeAt(0)) {
           copyToClipboard($scope.selectedText);
+          e.preventDefault();
+        }
+      });
+      
+      // Ctrl-T for tag (Meta doesn't work)
+      $(document).bind('keydown', function (e) {
+        if ((e.ctrlKey || e.metaKey) && e.which === "T".charCodeAt(0)) {
+          // go to create tag URL
+          $window.location = "/tagz/tags/createform?res=" + $scope.resource +
+            // if anything is selected, provide that ref/resource
+            "&ref=" + ($scope.selectedRef || $scope.reference)
+          e.preventDefault();
         }
       });
     }]).
 
-    controller('TagCtrl', ['$scope', '$http', function ($scope, $http) {
+    controller('TagCtrl', ['$scope', '$http', '$window', '$timeout', 
+            function ($scope, $http, $window, $timeout) {
+
+        $scope.resource = $.url().param('res');
+        $scope.reference = $.url().param('ref');
 
         $scope.renameTag = function(tagName) {
             var newName = prompt("Enter new tag name");
@@ -112,7 +130,7 @@ angular.module('myApp.controllers', []).
             $http.put(tagName + "?name=" + newName)
                 .success(function () {
                     console.log("rename successful");
-                    window.location.reload(true);
+                    $window.location.reload(true);
                 }).error(function() {
                         console.log("rename failed");
                     });
@@ -124,7 +142,7 @@ angular.module('myApp.controllers', []).
             $http.delete(tagName)
                 .success(function () {
                     console.log("delete successful");
-                    window.location.reload(true);
+                    $window.location.reload(true);
                 }).error(function() {
                         console.log("delete failed");
                     });
@@ -137,10 +155,25 @@ angular.module('myApp.controllers', []).
             $http.delete(url)
                 .success(function () {
                     console.log("delete successful");
-                    window.location.reload(true);
+                    $window.location.reload(true);
                 }).error(function() {
                     console.log("delete failed");
                 });
             // TODO: redirect
         };
+
+        // focus on the first un-initialized field
+        $timeout(function() {
+          if (!$scope.tag) {
+            console.log("here1");
+            $('#inputTag').focus();
+          } else if (!$scope.resource) {
+            $('#inputResource').focus();
+          } else if (!$scope.reference) {
+            $('#inputRef').focus();
+          } else {
+            $('#submitButton').focus();
+          }
+
+        });
     }]);
