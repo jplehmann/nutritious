@@ -5,13 +5,17 @@
 angular.module('myApp.controllers', []).
 
     controller('BaseCtrl', ['$scope', '$http', function ($scope, $http) {
+
+      $scope.params = $.url().param();
+
+      $scope.query = $scope.params['q'];
       
       // Ctrl-S for copy
       $(document).bind('keydown', function (e) {
         if ((e.ctrlKey || e.metaKey) && e.which === "S".charCodeAt(0)) {
           // go to search 
-          console.log("firing event");
           $('#search_input').focus().select();
+          e.preventDefault();
         }
       });
 

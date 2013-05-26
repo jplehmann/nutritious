@@ -58,6 +58,7 @@ hr {
 }
 
 .navbar-inverse .navbar-search .search-query {
+  color: #000;
   background-color: #fff;
 }
 

@@ -9,7 +9,7 @@ urlpatterns = patterns('tagz.views',
 
     # resources
     url(r'^tagz/lib/$', 'lib'),
-    url(r'^tagz/lib/(?P<res_name>[^\/]+)/(?P<ref_str>[^\/]+)?$', 'render_resource'),
+    url(r'^tagz/lib/(?P<res_name>[^\/]+)/(?P<ref_str>[^\/]+)?$', 'get_resource'),
 
     # TAG REFERENCE
     # tag detail (GET, DEL)

@@ -2,7 +2,24 @@
 Inbox
 -----
 
+Things to test
 
+  search
+    reference
+      - book
+      - chapter
+      - line
+    keyword query
+      - ...
+    tags
+      - tag exact
+      - tag prefix -> single
+      - tag prefix -> list
+      - tag match none
+    context highlighting
+
+  select?
+  copy?
 
 Current Work
 ------------

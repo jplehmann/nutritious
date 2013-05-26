@@ -60,7 +60,7 @@ def lib_resource_search(request, resource, res_name, ref_obj, query, ref_str):
     new_ref = resource.reference(query)
     # we don't pass the request back because we don't want
     # it to find the search parameters
-    return render_resource(None, res_name, new_ref.pretty())
+    return render_resource(request, res_name, new_ref.pretty())
   except Exception as e:
     print traceback.format_exc()
     print e
@@ -87,7 +87,7 @@ def nasb(request):
   return HttpResponseRedirect("/tagz/lib/NASB")
 
 
-def render_resource(request, res_name, ref_str=None, highlights=None):
+def get_resource(request, res_name, ref_str=None, highlights=None):
   """ Display a resource. If a reference is given within
   that resource, then it shows that particular scope.
   This handler is also used to front-end searches, which
@@ -110,6 +110,22 @@ def render_resource(request, res_name, ref_str=None, highlights=None):
       query = request.GET.get('q', None)
       if query:
         return lib_resource_search(request, resource, res_name, ref_obj, query, ref_str)
+    return render_resource(request, res_name, ref_str, highlights)
+  except Exception as e:
+    print "Exception: " + str(e)
+    print traceback.format_exc()
+    raise Http404
+
+
+def render_resource(request, res_name, ref_str=None, highlights=None):
+  """ Doesn't check for query parameters.
+  """
+  try:
+    resource = library.get(res_name)
+    if ref_str:
+      ref_obj = resource.reference(ref_str)
+    else:
+      ref_obj = resource.top_reference()
     # inspect if the referene has children
     # should return None if it doesn't have them. 
     children = ref_obj.children()
@@ -132,7 +148,7 @@ def render_resource(request, res_name, ref_str=None, highlights=None):
           context = ref_obj.context(context_size)
           # set the highlight on our center line
           return render_resource(
-              None, res_name, context.pretty(), [ref_obj.pretty()])
+              request, res_name, context.pretty(), [ref_obj.pretty()])
         except Exception as e:
           print e
     # navigation references

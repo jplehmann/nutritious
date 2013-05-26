@@ -39,6 +39,8 @@
                   {% endif %}
                 </li>
               </ul>
+
+              <!-- Search input -->
               <!-- probably bad to reference this scope; what to do
                    when this is not available? -->
               <form action=
@@ -49,7 +51,7 @@
                 {% endif %}
                    method="get" class="navbar-search pull-right">
               <input id="search_input" class="search-query input-medium" 
-                     type="text" name="q" 
+                     type="text" name="q" ng-model="query"
                     placeholder="enter query, ref, or #tag"/>
               </form>
             </div>
@@ -91,6 +93,7 @@
     <script src="{% static "lib/jquery-1.9.0.min.js" %}"></script>
     <script src="{% static "lib/jquery-ui.js" %}"></script>
     <script src="{% static "lib/bootstrap/js/bootstrap.min.js" %}"></script>
+    <script src="{% static "lib/purl.js" %}"></script>
     <script src="{% static "lib/angular/angular.js" %}"></script>
     <script src="{% static "js/angular/app.js" %}"></script>
     <script src="{% static "js/angular/services.js" %}"></script>
