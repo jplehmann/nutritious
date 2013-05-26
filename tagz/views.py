@@ -184,8 +184,8 @@ def tag_search(request, query):
     except:
       # starts-with match
       matches = get_matching_tags(request.user, query)
-      if matches:
-        return tags(None, matches)
+      # render even if no tags found
+      return render_tags(request, matches)
   raise Http404 # ("Root search must contain only an #tag.")
 
 
@@ -197,11 +197,17 @@ def tags(request, tags=None):
     if query:
       return tag_search(request, query)
   all_tags = get_all_tags(request.user) if tags == None else tags
+  render_tags(request, all_tags)
+
+
+def render_tags(request, tags):
+  """ Render the given tags. 
+  """
   counts = []
-  for t in all_tags:
+  for t in tags:
     refs = get_refs_with_tag(request.user, t)
     counts.append(refs.count())
-  counted_tags = zip(all_tags, counts)
+  counted_tags = zip(tags, counts)
   return render_to_response('tagz/tag_index.html', 
       {'counted_tags': counted_tags},
       context_instance=RequestContext(request))
