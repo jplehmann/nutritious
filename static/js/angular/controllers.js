@@ -84,6 +84,11 @@ angular.module('myApp.controllers', []).
         }
       });
 
+      // add the links back which selectable blew out
+      $('.row-fluid a').click(function(e) {
+        window.location = e.target.href;
+      });
+
       function copyToClipboard (text) {
         window.prompt("Copy to clipboard: Ctrl+C, Enter", text);
       }
