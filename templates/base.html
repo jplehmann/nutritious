@@ -10,7 +10,7 @@
             href="{% static "css/style.css" %}" />
         {% block extra_head %}{% endblock %}
     </head>
-    <body>
+    <body ng-controller="BaseCtrl">
         <div class="container">
           <div class="navbar navbar-inverse navbar-fixed-top">
             <div class="navbar-inner">
@@ -48,8 +48,9 @@
                      "/tagz/lib"
                 {% endif %}
                    method="get" class="navbar-search pull-right">
-             <input class="search-query input-medium" type="text" name="q" 
-                    placeholder="enter a reference or query"/>
+              <input id="search_input" class="search-query input-medium" 
+                     type="text" name="q" 
+                    placeholder="enter query, ref, or #tag"/>
               </form>
             </div>
           </div>

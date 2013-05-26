@@ -3,6 +3,19 @@
 /* Controllers */
 
 angular.module('myApp.controllers', []).
+
+    controller('BaseCtrl', ['$scope', '$http', function ($scope, $http) {
+      
+      // Ctrl-S for copy
+      $(document).bind('keydown', function (e) {
+        if ((e.ctrlKey || e.metaKey) && e.which === "S".charCodeAt(0)) {
+          // go to search 
+          console.log("firing event");
+          $('#search_input').focus().select();
+        }
+      });
+
+    }]).
   
     controller('RefCtrl', ['$scope', '$http', function ($scope, $http) {
 
