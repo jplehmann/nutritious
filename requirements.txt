@@ -1,3 +1,4 @@
+django-less
 Unipath==0.2.1
 Django==1.4.4
 psycopg2==2.4.6
