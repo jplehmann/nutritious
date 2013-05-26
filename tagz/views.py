@@ -213,7 +213,7 @@ def tags(request, tags=None):
     if query:
       return tag_search(request, query)
   all_tags = get_all_tags(request.user) if tags == None else tags
-  render_tags(request, all_tags)
+  return render_tags(request, all_tags)
 
 
 def render_tags(request, tags):
