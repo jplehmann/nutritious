@@ -68,30 +68,10 @@ angular.module('myApp.controllers', []).
           var refAndText = selectedText + "  (" + refStr + ")"
           //console.log($scope.resource);
           //console.log($scope.reference);
-          //console.log(refAndText)
+          console.log(refAndText)
           $scope.selectedText = refAndText;
         }
       });
-
-      // Ctrl-C for copy
-      $(document).bind('keydown', function (e) {
-        if (e.ctrlKey && e.which === "C".charCodeAt(0)) {
-          $("#d_clip_button").click();
-          document.getElementById('d_clip_button').click();
-          console.log("Copying: " + $scope.selectedText);
-        }
-      });
-
-      var clip = new ZeroClipboard($("#d_clip_button"), 
-          { moviePath: "/static/lib/zero-clipboard/ZeroClipboard.swf", text: "Copy me!" })
-      
-      clip.on( 'load', function(client) {
-        // alert( "movie is loaded" );
-      } );
-
-      clip.on( 'complete', function(client, args) {
-        alert("Copied text to clipboard: " + args.text );
-      } );
     }]).
 
     controller('TagCtrl', ['$scope', '$http', function ($scope, $http) {
