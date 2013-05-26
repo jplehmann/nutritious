@@ -61,15 +61,20 @@ angular.module('myApp.controllers', []).
           angular.forEach($('#selectable .ui-selected span'), function(e) {
             selectedText = selectedText.trim() + " " + $(e).text().trim();
           });
-          // consolidate references
-          //console.log(selectedLines);
-          //console.log(selectedText);
           var refStr = $scope.reference + ":" + numsToRanges(selectedLines);
           var refAndText = selectedText + "  (" + refStr + ")"
-          //console.log($scope.resource);
-          //console.log($scope.reference);
-          console.log(refAndText)
           $scope.selectedText = refAndText;
+        }
+      });
+
+      function copyToClipboard (text) {
+        window.prompt("Copy to clipboard: Ctrl+C, Enter", text);
+      }
+
+      // Ctrl-C for copy
+      $(document).bind('keydown', function (e) {
+        if ((e.ctrlKey || e.metaKey) && e.which === "C".charCodeAt(0)) {
+          copyToClipboard($scope.selectedText);
         }
       });
     }]).
