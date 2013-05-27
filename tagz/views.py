@@ -20,7 +20,6 @@ from tagz.models import get_refs_with_tag
 from tagz.models import get_export_tsv
 from tagz.models import import_tsv_file
 
-from pybible import api
 from pybooks import library
 import traceback
 
@@ -53,7 +52,7 @@ def lib_resource_search(request, resource, res_name, ref_obj, query, ref_str):
   # temporarily redirect tag search to root
   query = query.strip()
   if query.startswith("#"):
-    return redirect('/tagz/tags?q=' + urlquote(query))
+    return redirect(reverse('tags') + '?q=' + urlquote(query))
     #return tag_search(request, query)
   # first see if this is a reference in this resource
   try:
@@ -70,7 +69,7 @@ def lib_resource_search(request, resource, res_name, ref_obj, query, ref_str):
       (ref_obj.pretty(), query, len(hits)))
   # TODO keep this up to date with parameters in lib_resource
   # Let a test confirm this.
-  res_path = "/tagz/lib/" + res_name
+  res_path = reverse('resource', args=(res_name, None))
   return render_to_response('tagz/ref_search_results.html', 
       {'resource_name': res_name, 'title': title,
        'resource_path': res_path,
@@ -84,8 +83,8 @@ def nasb(request):
   """ Must redirect instead of simply serving the resource, otherwise
       relative links built up will be wrong.
   """
-  return HttpResponseRedirect("/tagz/lib/NASB")
-
+  return HttpResponseRedirect(reverse('resource', kwargs={'res_name':'NASB'}))
+  
 
 def get_resource(request, res_name, ref_str=None, highlights=None):
   """ Display a resource. If a reference is given within
@@ -153,11 +152,11 @@ def render_resource(request, res_name, ref_str=None, highlights=None):
           print e
     # navigation references
     parent_ref, previous_ref, next_ref = None, None, None
-    # TODO: remove this hardcoded path somehow (with reverse?)
-    res_path = "/tagz/lib/" + res_name
+    res_path = (reverse('resource', kwargs={'res_name':res_name}))
     if ref_obj:
       def rel_url(rel_fct):
-        return res_path + '/' + rel_fct().path() if rel_fct() else None
+        # TODO: could make this into a reverse() 
+        return res_path + rel_fct().path() if rel_fct() else None
       parent_ref = rel_url(ref_obj.parent)
       previous_ref = rel_url(ref_obj.previous)
       next_ref = rel_url(ref_obj.next)
@@ -196,7 +195,7 @@ def tag_search(request, query):
     try:
       # exact match
       match = get_exact_tag(request.user, query)
-      return redirect('/tagz/tags/' + match.tag)
+      return redirect(reverse('tags') + match.tag)
     except:
       # starts-with match
       matches = get_matching_tags(request.user, query)
@@ -255,7 +254,7 @@ def tag(request, tag_name):
       text, clean_ref = ('unknown', ref.pretty_ref())
     clean_refs.append(clean_ref)
     texts.append(text)
-    ref_paths.append("/tagz/lib/%s/%s" % (resource, ref.pretty_ref()))
+    ref_paths.append(reverse('resource', args=(resource, ref.pretty_ref())))
   related_refs_n_tags = zip(ids, clean_refs, ref_paths, related_tags, texts)
   return render_to_response('tagz/tag_detail.html', 
       {'tag': t, 'related_refs_n_tags': related_refs_n_tags},
@@ -274,7 +273,7 @@ def tag_delete(request, tag_name):
     ref.delete()
   t.delete()
   # FIXME: not doing anything when called from AJAX request b/c response eats it
-  return HttpResponseRedirect(reverse('tagz.views.tags'));
+  return HttpResponseRedirect(reverse('tags'));
 
 
 @login_required
@@ -301,7 +300,7 @@ def tag_update(request, tag_name):
     print "renaming tag"
     t_old.tag = new_name
     t_old.save()
-  return HttpResponseRedirect('/tagz/tags/' + new_name);
+  return HttpResponseRedirect(reverse('tag', args=new_name));
 
 
 def tagref_detail(request, tag_name, id):
@@ -314,7 +313,7 @@ def tagref_detail(request, tag_name, id):
     tagref.delete()
     # TODO: if this is the last ref for this tag, delete the tag?
     # not doing anything when called from AJAX request b/c response eats it
-    return HttpResponseRedirect(reverse('tagz.views.tags'));
+    return HttpResponseRedirect(reverse('tags'));
   return render_to_response('tagz/tagref_detail.html',
       {'tag_name': tag_name, 'tagref': tagref },
       context_instance=RequestContext(request))
@@ -359,7 +358,7 @@ def tagref_create(request, tag_name):
       offset_start=ref.indices().start, offset_end=ref.indices().end, 
       user=request.user)
   new_ref.save()
-  return HttpResponseRedirect('refs/' + str(new_ref.id));
+  return HttpResponseRedirect(reverse('tagref_detail', args=(tag_name, str(new_ref.id))));
 
 
 def tags_export(request):
@@ -379,7 +378,7 @@ def tags_import(request):
     if form.is_valid():
       errors, successes = import_tsv_file(request.user, request.FILES['docfile'])
       # TODO: msg user # of errors and successes
-      return HttpResponseRedirect('/tagz/tags/')
+      return HttpResponseRedirect(reverse('tags'))
   else:
     form = ImportFileForm()
   return render_to_response('tagz/tags_import.html', {'form': form},
