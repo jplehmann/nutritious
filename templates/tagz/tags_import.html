@@ -6,7 +6,7 @@
 
   <div>
 
-    <form method='post' enctype="multipart/form-data" action="/tagz/tags/import">
+    <form method='post' enctype="multipart/form-data" action="{% url tags_import %}">
             {% csrf_token %}
         <p>{{ form.non_field_errors }}</p>
         <p>{{ form.docfile.label_tag }} {{ form.docfile.help_text }}</p>
@@ -33,7 +33,7 @@
 
   <p>
   <p>
-  Return to <a href="/tagz/tags">all tags</a>.
+  Return to <a href="{% url tags %}">all tags</a>.
 
   </div>
 

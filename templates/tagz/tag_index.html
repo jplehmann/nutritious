@@ -11,7 +11,7 @@
   {% if counted_tags %}
       <ul>
       {% for tag, count in counted_tags %}
-      <li><a href="/tagz/tags/{{ tag.tag }}/">{{ tag.tag }} ({{ count }})</a>
+      <li><a href="{% url tag tag.tag %}">{{ tag.tag }} ({{ count }})</a>
       (<a ng-click="deleteTag('{{tag.tag}}');">delete</a>)
       </li>
 

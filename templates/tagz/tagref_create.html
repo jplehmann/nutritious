@@ -12,7 +12,7 @@
   {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
   <div ng-controller="TagCtrl">
-  <form name="theForm" action="/tagz/tags/(( tag ))/refs" method="post" class="form-horizontal">
+  <form name="theForm" action="{% url post_tagref '((tag))' %}" method="post" class="form-horizontal">
   {% csrf_token %}
   
     <div class="control-group">

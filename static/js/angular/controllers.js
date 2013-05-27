@@ -107,7 +107,8 @@ angular.module('myApp.controllers', []).
       $(document).bind('keydown', function (e) {
         if ((e.ctrlKey || e.metaKey) && e.which === "T".charCodeAt(0)) {
           // go to create tag URL
-          $window.location = "/tagz/tags/createform?res=" + $scope.resource +
+          // TODO: FIXME remove absolute
+          $window.location = $scope.tagCreateUrl + "?res=" + $scope.resource +
             // if anything is selected, provide that ref/resource
             "&ref=" + ($scope.selectedRef || $scope.reference)
           e.preventDefault();
@@ -127,6 +128,7 @@ angular.module('myApp.controllers', []).
               return;
             }
             newName = newName.trim();
+            // FIXME get link from server
             $http.put(tagName + "?name=" + newName)
                 .success(function () {
                     console.log("rename successful");
@@ -139,6 +141,7 @@ angular.module('myApp.controllers', []).
 
         $scope.deleteTag = function(tagName) {
             console.log("delete called: " + tagName);
+            // FIXME get link from server
             $http.delete(tagName)
                 .success(function () {
                     console.log("delete successful");
@@ -150,6 +153,7 @@ angular.module('myApp.controllers', []).
         };
 
         $scope.deleteTagRef = function(id) {
+            // FIXME get link from server
             var url = "refs/" + id;
             console.log("delete called: " + url);
             $http.delete(url)
@@ -165,7 +169,6 @@ angular.module('myApp.controllers', []).
         // focus on the first un-initialized field
         $timeout(function() {
           if (!$scope.tag) {
-            console.log("here1");
             $('#inputTag').focus();
           } else if (!$scope.resource) {
             $('#inputResource').focus();
@@ -174,6 +177,5 @@ angular.module('myApp.controllers', []).
           } else {
             $('#submitButton').focus();
           }
-
         });
     }]);

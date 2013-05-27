@@ -7,7 +7,7 @@
   <div ng-controller="TagCtrl">
 
   <h2>References tagged with '{{ tag.tag }}'</h2>
-      <a href="refs/createform">Create</a> new tagref
+    <a href="{% url create_tagref_for_tag tag.tag %}">Create</a> new tagref
   <br> <a ng-click="deleteTag('{{tag.tag}}');">Delete</a> this tag
   <br> <a ng-click="renameTag('{{tag.tag}}');">Rename</a> this tag
   {% if related_refs_n_tags %}
@@ -15,7 +15,7 @@
       <ul>
       {% for id, ref, ref_path, tags, text in related_refs_n_tags %}
       <li style="margin:10px 0px; list-style:none"><a style="font-size:1.2em" href="{{ ref_path }}">{{ ref }}</a>
-          (<a href="refs/{{id}}">view</a>)
+          (<a href="{% url tagref_detail tag.tag id %}}">view</a>)
           (<a ng-click="deleteTagRef({{id}});">delete</a>)
         <ul>
           <li style="font-size:1.3em">
@@ -23,7 +23,7 @@
           </li>
           <li>
         {% for rtag in tags %}
-        <a href="/tagz/tags/{{ rtag }}/"><span class="label label-info">{{ rtag }}</span></a>
+        <a href="{% url tag rtag %}"><span class="label label-info">{{ rtag }}</span></a>
         {% endfor %}
           </li>
         </ul>
@@ -36,7 +36,7 @@
   {% endif %}
   <p>
   <p>
-  Return to <a href="/tagz/tags">all tags</a>.
+  Return to <a href="{% url tags %}">all tags</a>.
 
   </div>
 

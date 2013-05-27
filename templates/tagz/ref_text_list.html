@@ -13,7 +13,7 @@
   <!-- List view -->
   {% if children %}
   <div ng-controller="RefCtrl" id="selectable" 
-       ng-init="reference='{{title}}'; resource='{{resource_name}}'">
+       ng-init="reference='{{title}}'; resource='{{resource_name}}'; tagCreateUrl='{% url create_tagref %}'">
       {% for child in children %}
       <div class="row-fluid">
         <!-- Child text -->
