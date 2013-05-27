@@ -164,6 +164,6 @@ LOGGING = {
     }
 }
 
-LOGIN_REDIRECT_URL = "/tagz"
-LOGIN_URL = "/tagz/accounts/login"
+LOGIN_REDIRECT_URL = "/"
+LOGIN_URL = "/accounts/login"
 
