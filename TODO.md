@@ -2,8 +2,25 @@
 Inbox
 -----
 
-Things to test
 
+
+Current Work
+------------
+
+
+Problems
+--------
+- cannot use Ctrl-T on Linux (why some Ctrl-S override, but not others?)
+- Angular test runner
+https://github.com/angular/angular.js/issues/2795
+http://stackoverflow.com/questions/16783016/angular-scenario-test-runner-with-django-displays-page-but-assertions-fail
+
+- Look into how to using Angular $http instead of form post
+- Find out in general how to handle redirecting after ajax
+- Ask quetion about django post / get vs post problem again
+
+Things to test
+{{{
   search
     reference
       - book
@@ -21,42 +38,17 @@ Things to test
   select?
   copy?
   ctrl-t tag
+}}}
 
-Current Work
-------------
-- given these objects, how do we get the text for the linerange?
-  + add combine() to references, which takes a list of reference strings and
-    smashes them down to include ranges and returns references, for tagging
-    selected verses (mauybe disallow tagging of non-contig lines)
-  - need the linerange reference...
-  - how to combine references?
-  - we could provide the individual integers: 1,3,5,9; but, we dont
-    know the format of the books...
-  - maybe reference(...) could parse several separated by ;  and combine
-    spans?
-  - or get refs individually then splice?
-
-  Would be nice to make assumptiosn about references...
-    - we can get the ref of the parent, then provide the integers?
-    ref.getsubref(1,3,5)
-
-Tasks
------
-- angular IRC for help on scenario tests, or consider python browser testing
 
 Todo
 ----
 - reorganization
-  - remove absolute refs to tags
-    - urls
-    - html - href, action
-    - javascript
-    * serrch for tagz
-  - refs should probably not be under tags
-    - consider splitting refs and tags into two apps
+  x remove absolute refs to tags
+  x remove /tagz context
+  - consider splitting refs and tags into two apps (refs not under tags)
   - rename packages "Nutricious" and "Textbites"
   - rename library to resources "res"
-  - remove /tagz context (good time to fix absolute?)
 * browser test -- Angular?
 {{{
   1. even though I can see the webpage, it can't seem to see it
