@@ -15,7 +15,7 @@
       <ul>
       {% for id, ref, ref_path, tags, text in related_refs_n_tags %}
       <li style="margin:10px 0px; list-style:none"><a style="font-size:1.2em" href="{{ ref_path }}">{{ ref }}</a>
-          (<a href="{% url tagref_detail tag.tag id %}}">view</a>)
+          (<a href="{% url tagref_detail tag.tag id %}">view</a>)
           (<a ng-click="deleteTagRef({{id}});">delete</a>)
         <ul>
           <li style="font-size:1.3em">
