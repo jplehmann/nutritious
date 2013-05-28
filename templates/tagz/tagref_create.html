@@ -26,11 +26,12 @@
     <div class="control-group">
       <label class="control-label" for="inputResource">Resource</label>
       <div class="controls" >
-        <select name="resource" id="inputResource" 
+        <select name="resource_id" id="inputResource" 
                 ng-init="resources={{ resources|jsonify }}; 
                 selectedResource=(resource || '{{res_default}}')" 
                 ng-options="r for r in resources" ng-model="selectedResource">
         </select>
+        <input type="hidden" name="resource" value="((selectedResource))" >
       </div>
     </div>
 
