@@ -1,2 +1,4 @@
 *.pyc
 db/
+LESS_CACHE/
+node_modules
