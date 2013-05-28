@@ -5,13 +5,14 @@ from django.contrib.auth.models import User
 
 class Tag(models.Model):
   user = models.ForeignKey(User)
-  tag = models.CharField(max_length=100, unique=True, db_index=True)
+  tag = models.CharField(max_length=100, db_index=True)
 
   def __unicode__(self):
       return self.tag
 
   class Meta:
       ordering = ["tag"]
+      unique_together = ('user', 'tag')
 
 
 class Reference(models.Model):
@@ -162,10 +163,11 @@ def import_tsv_file(user, f):
         continue
       # see if tag exists
       try:
-        tag = get_exact_tag(tag_name)
+        tag = get_exact_tag(user, tag_name)
       except:
+        print traceback.format_exc()
         print "Creating new tag: " + tag_name
-        tag = Tag(tag=tag_name, user=user_pk(user))
+        tag = Tag(tag=tag_name, user=user)
         tag.save()
       # check for duplicates
       dups = Reference.objects.filter(tag=tag, resource=res, 
@@ -175,10 +177,10 @@ def import_tsv_file(user, f):
         print "Skipping duplicate. with " + str(dups)
         continue
       if offset_start == None:
-        ref = Reference(tag=tag, resource=res, reference=ref_str, user=user_pk(user))
+        ref = Reference(tag=tag, resource=res, reference=ref_str, user=user)
       else:
         ref = Reference(tag=tag, resource=res, reference=ref_str, 
-            offset_start=offset_start, offset_end=offset_end, user=user_pk(user))
+            offset_start=offset_start, offset_end=offset_end, user=user)
       ref.save()
       print "Creating new tagref"
       successes += 1
