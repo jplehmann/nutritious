@@ -234,7 +234,7 @@ def tag(request, tag_name):
     return tag_delete(request, tag_name)
   elif request.method == 'PUT':
     return tag_update(request, tag_name)
-  t = get_object_or_404(Tag, tag=tag_name)
+  t = get_object_or_404(Tag, tag=tag_name, user=request.user)
   related_refs = get_refs_with_tag(request.user, t)
   clean_refs = []
   related_tags = []
@@ -265,7 +265,7 @@ def tag(request, tag_name):
 def tag_delete(request, tag_name):
   """ Delete a tag and all associated tagrefs.
   """
-  t = get_object_or_404(Tag, tag=tag_name)
+  t = get_object_or_404(Tag, tag=tag_name, user=request.user)
   # clean up all associated references, since references only have 1 tag in them
   # but this seems to not be necessary, maybe Django is cleaning up
   # for me?
@@ -280,7 +280,7 @@ def tag_delete(request, tag_name):
 def tag_update(request, tag_name):
   """ Rename a tag. If the tag name is exists already, it will merge them.
   """
-  t_old = get_object_or_404(Tag, tag=tag_name)
+  t_old = get_object_or_404(Tag, tag=tag_name, user=request.user)
   try:
     new_name = request.GET.get('name', None)
   except:
@@ -304,7 +304,7 @@ def tag_update(request, tag_name):
 
 
 def tagref_detail(request, tag_name, id):
-  tagref = get_object_or_404(Reference, id=id)
+  tagref = get_object_or_404(Reference, id=id, user=request.user)
   # make sure the tag with this id belongs under this path
   if (tag_name != tagref.tag.tag):
     print "Mismatched tag name path with id '%s' '%s'" %( tag_name, tagref.tag.tag)
