@@ -1,5 +1,6 @@
 from django.conf.urls import patterns, include, url
 from django.contrib.auth.views import login, logout_then_login
+from django.views.generic.simple import direct_to_template
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -36,7 +37,8 @@ urlpatterns = patterns('tagz.views',
     #url(r'^tags/(?P<tag_name>[^\/]+)/editform$', 'tag_edit'),
 
     # home
-    url(r'^$', view='nasb', name="home"), # redir to tags
+    url(r'^$', view=direct_to_template, 
+      kwargs={'template': 'home.html'}, name="home"), # redir to tags
 
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
@@ -44,9 +46,10 @@ urlpatterns = patterns('tagz.views',
 
 urlpatterns += patterns('',
     # login
-    url(r'^accounts/login/$', view='django.contrib.auth.views.login', kwargs={'template_name': 'accounts/login.html'}, name='login'),
+    url(r'^accounts/login/$', view=login, 
+      kwargs={'template_name': 'accounts/login.html'}, name='login'),
     # logout
-    url(r'^accounts/logout/$', view='django.contrib.auth.views.logout_then_login', name='logout'),
+    url(r'^accounts/logout/$', view=logout_then_login, name='logout'),
     #url(r'^accounts/logout/$', 'tagz.views.logout')
 
   (r'^favicon\.ico$', 'django.views.generic.simple.redirect_to', {'url': '/static/img/favicon.ico'})

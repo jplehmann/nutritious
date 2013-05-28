@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}{{ block.super }} - Home {% endblock %}
+
+{% block main_content %}
+
+<h2>Nutritious</h2>
+
+<p>
+Nutritious is a Django-based web application for browsing and tagging textual content, inspired by Delicious.  It generalizes tagging beyond webpages to within-document bookmark-like tags, and can apply to arbitrary collections of text, such as a quotation library.  In addition it provides navigation within these resources as well as regex-based search.
+<p>
+A live demo can be seen at <a href="http://nutritious.herokuapps.com">nutritious.herokuapps.com</a>
+<p>
+
+<h3>Details</h3>
+Nutritious enables the browsing and tagging of <a href="http://github.com/jplehmann/textbites">Textbites</a> resources. Textbites provides a Python API for a textual resource. 
+
+<ul>
+  <li> Tags are persisted in a Postgres DB.</li>
+  <li> Currently all Textbite are static, though this is a future feature.</li>
+  <li> Nutritious does not currently support multiple users.</li>
+</ul>
+
+<h3>Features</h3>
+<ul>
+  <li> Tags are persisted in a Postgres DB.</li>
+  <li> Currently all Textbite are static, though this is a future feature.</li>
+  <li> Nutritious does not currently support multiple users.</li>
+</ul>
+
+{{ block.super }}
+{% endblock main_content %}
