@@ -1,24 +1,24 @@
 
 Inbox
 -----
+- angular footer in wrong place when context highlighted (bad html?)
 
 
 Problems
 --------
-- cannot tag or copy from search results page
-- cannot use Ctrl-T on Linux (why some Ctrl-S override, but not others?)
-- Angular test runner
-https://github.com/angular/angular.js/issues/2795
-http://stackoverflow.com/questions/16783016/angular-scenario-test-runner-with-django-displays-page-but-assertions-fail
 
 - Look into how to using Angular $http instead of form post
 - Find out in general how to handle redirecting after ajax
 - Ask quetion about django post / get vs post problem again
 
-Tests to Add
-------------
+Testing
+-------
 - "delete all tags" option.
 - add to tests: login with testing account, and import testing fixture
+- how to hide the testing password??  I can't if its in open source code,
+  unless I put it in the environment of each computer
+- tests running too slowly on heroku, how to fix? set greater timeout on
+  heroku or use angular XHR?
 {{{
 x search
 {{{
@@ -103,9 +103,8 @@ o test other kinds of resources
 Todo
 ----
 - reorganization
-  - consider splitting refs and tags into two apps (refs not under tags)
   - rename packages "Nutricious" and "Textbites"
-  - rename library to resources "res"
+  - consider splitting refs and tags into two apps (refs not under tags)
 * move to github
   - travis CI -- once I'm on github
   - first pass documentation: readme, features, todos
@@ -113,6 +112,7 @@ Todo
 
 1.0
 ---
+- select, tag and copy from search page
 - random tags view
 + parallel search
 {{{
@@ -203,14 +203,21 @@ Todo
 
 Bugs
 ----
+- ajax tag creation/deletion
+  - delete tag on tag detail gives 404 though it works
+  - tagref detail
+    - rename doesnt redirect: rename does a PUT and then is redirected with what should be a GET. The browser says its doing a GET but the server says it got a second PUT. Which is true? what is wrong?
+    - delete tagref on tag detail is also broken, doesnt work at all
+  - in general figure out right way to handle responses in AJAX which require
+    redirects, etc. I think the AJAX eats it.  after deleting let controller
+    say where to go.
+- cannot use Ctrl-T on Linux (why some Ctrl-S override, but not others?)
 * because of missing lines (e.g NIV) line lookups can be off by 1, this is a but in pybooks for reference search -- fix by inserting blank lines
 * search bar when at library or tags is broken/unsupported
 - plus import/export endpoints are ambiguous with tag names
 - anger tag has 0 John ref
 - getting index offsets, about 20 errors when exporting
 - getting index offsets, about 20 errors couldn't find references
-- (??) rename does a PUT and then is redirected with what should be a GET. The browser says its doing a GET but the server says it got a second PUT. Which is true? what is wrong?
-- (??) how to have delete let server do the redirect? I think the AJAX eats it.  after deleting let controller say where to go.
 
 
 Tech Questions
