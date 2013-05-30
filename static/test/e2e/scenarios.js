@@ -77,7 +77,7 @@ function search(query, resource, sleepTime) {
   if (resource) {
     browser().navigateTo('../../../lib/' + resource);
   }
-  inputElement('#search_input').enter(query);
+  inputElement('#search-input').enter(query);
   element("#search-submit").click();
   sleep(sleepTime ? sleepTime : 0.5);
 }
