@@ -54,7 +54,7 @@ describe('Nutritious search', function() {
   });
 
   it('with Tag should find hits', function() {
-    search('#love');
+    search('#love', null, 0.5);
     expect(element('a').text()).toContain('John 3:16');
     expect(element('a').text()).toContain('Romans 5:8');
     expect(element('a').text()).toContain('1 John 4:19');
@@ -73,13 +73,13 @@ xdescribe('Run one test', function() {
 // 
 // Utility functions
 //
-function search(query, resource) {
+function search(query, resource, sleepTime) {
   if (resource) {
     browser().navigateTo('../../../lib/' + resource);
   }
   inputElement('#search_input').enter(query);
   element("#search-submit").click();
-  sleep(0.3);
+  sleep(sleepTime ? sleepTime : 0.5);
 }
 
 
