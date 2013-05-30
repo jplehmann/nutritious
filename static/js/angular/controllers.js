@@ -4,8 +4,8 @@
 
 angular.module('myApp.controllers', []).
 
-    controller('BaseCtrl', ['$scope', '$http', '$window', 
-            function ($scope, $http, $window) {
+    controller('BaseCtrl', ['$scope', '$http', '$window', '$timeout', 
+            function ($scope, $http, $window, $timeout) {
 
       $scope.query = $.url().param('q');
       // reference and resource are initialized in html
@@ -21,6 +21,13 @@ angular.module('myApp.controllers', []).
         }
       });
 
+      // TEST:
+      //$('#search_input').keypress(function(e) {
+      //  console.log(e);
+      //});
+      //$('#search_input').val('#love');
+      ////jQuery('#search_input').trigger(jQuery.Event('keypress', { which: 13 }));
+      //$('#search_input').parent('form').submit();
     }]).
   
     controller('RefCtrl', ['$scope', '$http', '$window', 

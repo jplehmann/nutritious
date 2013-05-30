@@ -1,20 +1,76 @@
 'use strict';
-
+ 
 /* http://docs.angularjs.org/guide/dev_guide.e2e-testing */
 
-describe('Tagz App', function() {
+describe('Nutritious home', function() {
 
-  it('should redirect to /tagz to /.../NASB', function() {
-    browser().navigateTo('../../../tagz');
-    console.log(browser().location().url());
-    console.log(browser().location().path());
-    console.log(element('title'));
-    expect(element('title').attr('text')).toBe('Tagz - Library Resource');
-    //expect(browser().location().url()).toBe('/tagz/lib/NASB');
+  beforeEach(function() {
+    browser().navigateTo('../../..');
   });
 
-/*
+  it('should be home at the root', function() {
+    expect(element('title').text()).toContain('Tagz - Home');
+  });
 
+  it('library should contain NASB', function() {
+    element('#lib-link').click();
+    expect(element('.content a').text()).toContain('NASB');
+    element('#res-NASB').click();
+    expect(element('.content h2').text()).toContain('NASB');
+  });
+});
+
+describe('Nutritious search', function() {
+
+  beforeEach(function() {
+    browser().navigateTo('../../..');
+  });
+
+  function search(query, resource) {
+    if (resource) {
+      browser().navigateTo('../../../lib/' + resource);
+    }
+    inputElement('#search_input').enter(query);
+    element("#search-submit").click();
+    sleep(0.3);
+  }
+
+  it('with Keywords should find hits', function() {
+    search('Adam', 'NASB');
+    expect(element('.content h2').text()).toContain("Search of 'NASB' for 'Adam' (21 hits)");
+    expect(element('.row-fluid span').text())
+        .toContain("It was also about these men that Enoch");
+  });
+
+  it('with Reference should find a Line', function() {
+    search('jn 3:16', 'NASB');
+    expect(element('.content div').text())
+        .toContain("For God so loved the world,");
+  });
+  
+  it('with Reference should find a Chapter', function() {
+    search('jn 3', 'NASB');
+    expect(element('.content div').text())
+        .toContain("Now there was a man of the Pharisees");
+    expect(element('.content div').text())
+        .toContain("He who believes in the Son has eternal life");
+  });
+  
+  it('with Reference should find a Book', function() {
+    search('jn', 'NASB');
+    expect(element('.content a').text()).toContain("John 1");
+    expect(element('.content a').text()).toContain("John 21");
+  });
+  
+  it('with Tag should find hits', function() {
+    search('#love');
+    expect(element('a').text()).toContain('John 3:16');
+    expect(element('a').text()).toContain('Romans 5:8');
+    expect(element('a').text()).toContain('1 John 4:19');
+  });
+
+
+/*
 describe('PhoneCat App', function() {
 
   it('should redirect index.html to index.html#/phones', function() {
@@ -90,4 +146,18 @@ describe('PhoneCat App', function() {
     });
   });
 */
+
+// Example of how to get access to jQuery
+//angular.scenario.dsl('appElement', function() {
+//  return function(selector, fn) {
+//    return this.addFutureAction('element ' + selector, function($window, $document, done) {
+//      var $ = $window.$; 
+//      // pass the jquery element as well as jquery back
+//      fn.call(this, $window.angular.element(selector), $);
+//      done();
+//    });
+//  };
+//});
+
+
 });

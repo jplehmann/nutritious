@@ -6,7 +6,7 @@
 
   <ul>
   {% for resource in resources %}
-    <li><a href="{% url library %}{{resource}}">{{ resource }}</a></li>
+    <li><a id="res-{{resource}}" href="{% url library %}{{resource}}">{{ resource }}</a></li>
   {% endfor %}
   </ul>
 
