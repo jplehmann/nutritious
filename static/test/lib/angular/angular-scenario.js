@@ -25751,6 +25751,57 @@ angular.scenario.dsl('input', function() {
   };
 });
 
+/**
+ * Input with selector by Zach Snow.
+ */
+angular.scenario.dsl('inputElement', function() {
+  var chain = {};
+   
+  var $sniffer = angular.injector(['ng']).get('$sniffer');
+  var supportInputEvent = $sniffer.hasEvent('input');
+ 
+  chain.enter = function(value, event) {
+    var label = "input by selector '" + this.inputSelector + "' enter '" + value + "'";
+    return this.addFutureAction(label, function($window, $document, done) {
+      var input = $document.elements(this.inputSelector).filter(':input');
+      input.val(value);
+      input.trigger(event || (supportInputEvent ? 'input' : 'change'));
+      done();
+    });
+  };
+ 
+  chain.check = function() {
+    var label = "checkbox by selector '" + this.inputSelector + "' toggle";
+    return this.addFutureAction(label, function($window, $document, done) {
+      var input = $document.elements(this.inputSelector).filter(':checkbox');
+      input.trigger('click');
+      done();
+    });
+  };
+ 
+  chain.select = function(value) {
+    var label = "radio button by selector '" + this.inputSelector + "' toggle '" + value + "'";
+    return this.addFutureAction(label, function($window, $document, done) {
+      var input = $document.elements('$1[value="$2"]', this.inputSelector, value).filter(':radio');
+      input.trigger('click');
+      done();
+    });
+  };
+ 
+  chain.val = function() {
+    var label = "return input val for selector " + this.inputSelector;
+    return this.addFutureAction(label, function($window, $document, done) {
+      var input = $document.elements(this.inputSelector).filter(':input');
+      done(null, input.val());
+    });
+  };
+ 
+  return function(selector) {
+    this.inputSelector = selector;
+    return chain;
+  };
+});
+
 
 /**
  * Usage:
