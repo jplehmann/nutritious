@@ -8,8 +8,8 @@ admin.autodiscover()
 
 urlpatterns = patterns('tagz.views',
     # resources
-    url(r'^lib/$', view='lib', name="library"),
-    url(r'^lib/(?P<res_name>[^\/]+)/(?P<ref_str>[^\/]+)?$', view='get_resource', name='resource'),
+    url(r'^res/$', view='lib', name="library"),
+    url(r'^res/(?P<res_name>[^\/]+)/(?P<ref_str>[^\/]+)?$', view='get_resource', name='resource'),
 
     # TAG REFERENCE
     # tag detail (GET, DEL)
