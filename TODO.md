@@ -3,13 +3,9 @@ Inbox
 -----
 
 
-
-Current Work
-------------
-
-
 Problems
 --------
+- cannot tag or copy from search results page
 - cannot use Ctrl-T on Linux (why some Ctrl-S override, but not others?)
 - Angular test runner
 https://github.com/angular/angular.js/issues/2795
@@ -19,46 +15,101 @@ http://stackoverflow.com/questions/16783016/angular-scenario-test-runner-with-dj
 - Find out in general how to handle redirecting after ajax
 - Ask quetion about django post / get vs post problem again
 
-Things to test
+Tests to Add
+------------
+- "delete all tags" option.
+- add to tests: login with testing account, and import testing fixture
 {{{
-  search
-    reference
-      - book
-      - chapter
-      - line
-    keyword query
-      - ...
-    tags
-      - tag exact
+x search
+{{{
+  x reference
+      x book
+      x chapter
+      x line
+  x keyword query
+      x 'Adam'
+  o tags
+      x tag exact
       - tag prefix -> single
       - tag prefix -> list
       - tag match none
-    context highlighting
+}}}
+o clicking links
+{{{
+  o resource 
+      -> book
+      -> chapter
+  o book 
+      -> chapter
+      -> line
 
-  select?
-  copy?
-  ctrl-t tag
+  o line -> context
+}}}
+o navigational links
+{{{
+    resource - no nav links
+    book -> top, up, next, prev (next and prev disabled if last, first)
+    chapter ->  (same)
+    line -> (same)
+    context -> top, up, prev/next disabled
+}}}
+o authentication
+{{{
+  that you can do all the above as a guest
+    but not create tag
+  test login
+    verify that you can create a tag
+    delete it
+  logout
+    verify that you are logged out
+}}}
+o power user
+{{{
+  o select lines and copy to buffer and paste?
+  o select lines and ctrl-t tag
+  o ctrl-S to search
+}}}
+o import and export
+o tags
+{{{
+  - all tags
+    - listing of all tags (check count)
+    - create tagref
+      - new tag
+      - pre-existing tag
+    - delete tag
+  - tag detail (lists all verses)
+    - create (another tagref for this tag)
+    - delete tag
+    - rename tag
+      - if other doesn't exsit
+      - if other does exist
+    - per tagref
+      - test link to refernece
+      - view tagref
+      - delete tagref
+}}}
+o test other kinds of resources
+{{{
+  - PIP TEST1
+    - navigation
+    - create a tag on another resource as well
+
+  - quotes
 }}}
 
+}}}
 
 Todo
 ----
 - reorganization
-  x remove absolute refs to tags
-  x remove /tagz context
   - consider splitting refs and tags into two apps (refs not under tags)
   - rename packages "Nutricious" and "Textbites"
   - rename library to resources "res"
-* browser test -- Angular?
-{{{
-  1. even though I can see the webpage, it can't seem to see it
-  2. how can I serve up /test instead of putting it under static?
-  3. make sure tests are removed at deployment
-  4. need test runner to start it up -- karma -- to run from commandline
-}}}
 * move to github
   - travis CI -- once I'm on github
   - first pass documentation: readme, features, todos
+* more browser tests
 
 1.0
 ---
