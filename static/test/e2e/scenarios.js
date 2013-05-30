@@ -2,6 +2,12 @@
  
 /* http://docs.angularjs.org/guide/dev_guide.e2e-testing */
 
+// TODO: create testing account, and "delete all tags" option.
+//
+// When testing use this account and clear all the import fixture.
+// 
+// TODO: add link within tagz to run all tests.
+
 describe('Nutritious home', function() {
 
   beforeEach(function() {
@@ -25,15 +31,6 @@ describe('Nutritious search', function() {
   beforeEach(function() {
     browser().navigateTo('../../..');
   });
-
-  function search(query, resource) {
-    if (resource) {
-      browser().navigateTo('../../../lib/' + resource);
-    }
-    inputElement('#search_input').enter(query);
-    element("#search-submit").click();
-    sleep(0.3);
-  }
 
   it('with Keywords should find hits', function() {
     search('Adam', 'NASB');
@@ -61,13 +58,37 @@ describe('Nutritious search', function() {
     expect(element('.content a').text()).toContain("John 1");
     expect(element('.content a').text()).toContain("John 21");
   });
-  
+
   it('with Tag should find hits', function() {
     search('#love');
     expect(element('a').text()).toContain('John 3:16');
     expect(element('a').text()).toContain('Romans 5:8');
     expect(element('a').text()).toContain('1 John 4:19');
   });
+  
+});
+
+xdescribe('Run one test', function() {
+  beforeEach(function() {
+    browser().navigateTo('../../..');
+  });
+
+});
+
+
+// 
+// Utility functions
+//
+function search(query, resource) {
+  if (resource) {
+    browser().navigateTo('../../../lib/' + resource);
+  }
+  inputElement('#search_input').enter(query);
+  element("#search-submit").click();
+  sleep(0.3);
+}
+
+
 
 
 /*
@@ -160,4 +181,3 @@ describe('PhoneCat App', function() {
 //});
 
 
-});
