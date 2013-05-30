@@ -2,12 +2,6 @@
  
 /* http://docs.angularjs.org/guide/dev_guide.e2e-testing */
 
-// TODO: create testing account, and "delete all tags" option.
-//
-// When testing use this account and clear all the import fixture.
-// 
-// TODO: add link within tagz to run all tests.
-
 describe('Nutritious home', function() {
 
   beforeEach(function() {
