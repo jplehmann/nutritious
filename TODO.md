@@ -1,7 +1,17 @@
 
+What steps for someone to set this up themself?
+What is missing?
+  pybible... can I rmeove more of these dependencies so it works out of the box?
+  need a deecent example that is not 
+
+recreating the database
+- create it, create the admin, ... 
+- can i move stuff?
+
 Inbox
 -----
-- angular footer in wrong place when context highlighted (bad html?)
+- angular footer in wrong place when context highlighted, and on
+  verses list (bad html?)
 
 
 Problems
@@ -103,8 +113,8 @@ o test other kinds of resources
 Todo
 ----
 - reorganization
+  - rename package tagz -> tags
   - rename packages "Nutricious" and "Textbites"
-  - consider splitting refs and tags into two apps (refs not under tags)
 * move to github
   - travis CI -- once I'm on github
   - first pass documentation: readme, features, todos
@@ -112,7 +122,8 @@ Todo
 
 1.0
 ---
-- select, tag and copy from search page
+- select, tag and copy from Search page and Tag Detail page
+  - create a directive for displaying verses to use in all 3+ places
 - random tags view
 + parallel search
 {{{
