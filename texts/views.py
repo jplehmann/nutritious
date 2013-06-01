@@ -8,7 +8,7 @@ from django.http import Http404
 from django.template import RequestContext
 from django.utils.http import urlquote
 
-from pybooks import library
+from textbites import library
 
 from tags.views import tag_search
 

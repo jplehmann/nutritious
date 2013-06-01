@@ -9,7 +9,7 @@ from django.template import RequestContext
 from django import forms
 from django.contrib.auth.decorators import login_required
 
-from pybooks import library
+from textbites import library
 
 from tags.models import Tag
 from tags.models import Reference

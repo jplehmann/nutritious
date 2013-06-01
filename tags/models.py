@@ -103,7 +103,7 @@ def get_overlapping_refs(user, ref):
 
 
 # XXX todo remove this
-from pybooks import library
+from textbites import library
 import traceback
 
 def get_export_tsv(user):
