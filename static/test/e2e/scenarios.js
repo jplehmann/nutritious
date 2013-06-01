@@ -9,7 +9,7 @@ describe('Nutritious home', function() {
   });
 
   it('should be home at the root', function() {
-    expect(element('title').text()).toContain('Tagz - Home');
+    expect(element('title').text()).toContain('Nutritious - Home');
   });
 
   it('library should contain NASB', function() {
