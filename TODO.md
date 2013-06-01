@@ -1,45 +1,45 @@
 
 
-- update documentation
-    What steps for someone to set this up themself?
-    1. install postgres
-    2. createdb nutrtious
-    3. syncdb (create admin), migrate
-    4. create guest user
-
-- remove unnecessary dependencies
-    pybible... can I rmeove more of these dependencies so it works out of the box?
-    need a deecent example that is not 
-
-- Need to secure admin password -- pw is in my settings, but this would be admin to my public site!!
-
-
-Inbox
------
-- delete all
-  - delete all needs to take user to login screen
-  - even get or 404 thinsg are broken in logged out mode?
-
-
 Backlog
 =======
 
 Todo
 ----
+* Need to secure admin and testing passwords -- pw is in my settings, but this would be admin to my public site!!
+* dependency on pybible: remove dependency by rewriting code
+{{{
+  - relies on reference parsing and normalization and book list.
+  - textbites dependency
+  - integration test dependency
+  * what if i used the format used by simplebooks? -- still wouldn't get alises...
+
+  - getting rid of pybible dependecy: loading and aliases, would fix my problem
+    - loading straight to sipmel_book is easy.
+    - what about alias normalization?
+    - advantage: avoid this problem, plus provide bible format for everyone (and other books?)
+      - and i already have code to reuse?
+      - seems like the reference code i alreayd have could eb good enough?
+      - try to factor it out of pybible, and then move it all together
+
+
+}}}
+* properly load library resources -- best place for that logic?
+  - library can be moved wherever... to texts app.
+
 * move to github
   - travis CI -- once I'm on github
   - first pass documentation: readme, features, todos
 * more browser tests
+  * delete all
+    - delete all needs to take user to login screen
+    - even get or 404 thinsg are broken in logged out mode?
 
 
 Testing
 -------
-- "delete all tags" option.
-- add to tests: login with testing account, and import testing fixture
-- how to hide the testing password??  I can't if its in open source code,
-  unless I put it in the environment of each computer
-- tests running too slowly on heroku, how to fix? set greater timeout on
-  heroku or use angular XHR?
+- add to tests: login with testing account, delete all, and import testing fixture
+- tests running too slowly on heroku, how to fix? set greater timeout on heroku
+  or use angular XHR?
 {{{
 x search
 {{{
@@ -140,11 +140,8 @@ Bugs
 - getting index offsets, about 20 errors when exporting
 - getting index offsets, about 20 errors couldn't find references
 
-
-* properly load library resources -- best place for that logic?
-
-1.0
----
+Smaller
+-------
 * select, tag and copy from Search page and Tag Detail page
   * create a directive for displaying verses to use in all 3+ places
 * search
@@ -185,9 +182,13 @@ Bugs
   * such as friendly message when refernce for tagref is bad
     * quotes wont show text for a person, yet we can create a reference to it.
       how could we validate this earlier on?
+* D3 visualizations about tags
+* autocomplete for tag search (AJAX query for tags) angular UI select2 or "chosen" (has nice multi-select)
+* book groups with @xxx
+* historical view of tagref changes
 
-2.0
----
+Larger
+------
 * Mutability for resources like Quotes, Links (database-backed textbites)
 * generalize to other resource types with attributes (bible, books, quotes, persons, webpages (page, video), gdocs)
 * metatags/tagsets: sets of other tags (and metas?), and can have color
@@ -201,13 +202,14 @@ Bugs
   like tags, except don't have a topic but do have a longer text portion.
 * Index Notes (say google docs), tagging references there and creating
   an index, so that you have footnotes into your own documents and studies.
-* D3 visualizations about tags
-* autocomplete for tag search (AJAX query for tags) angular UI select2 or "chosen" (has nice multi-select)
-* book groups with @xxx
-* historical view of tagref changes
-* upgrade to django 1.5
 * show related tags (lexically, semantically)
 * Responsiveness: rendering in nice size fonts for mobile.  Also add features like dropdown beneath search with book names.
+
+Tech Stories
+------------
+- Upgrade to Django 1.5
+- Use a RESTful framework like django-rest-framework
+- Explore Generic class-based views
 
 
 Discussion
@@ -301,8 +303,8 @@ Design
   }}}
 
 
-Version History
-===============
+History
+=======
 
 0.1
 ---

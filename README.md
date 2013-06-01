@@ -1,37 +1,57 @@
 Nutritious
 ==========
-Nutritious is a Django-based web application for browsing and tagging textual content, inspired by Delicious.  It generalizes tagging beyond webpages to within-document bookmark-like tags, and can apply to arbitrary collections of text, such as a quotation library.  In addition it provides navigation within these resources as well as regex-based search.
+Nutritious is a Django-based web application for browsing and tagging textual content.  It generalizes beyond "delicious"-style tagging of webpages to within-document bookmark-like tags on arbitrary collections of text (e.g., a quotations library).  It also provides navigation within these resources as well as regex-based search.
 
 A live demo can be seen at [nutritious.herokuapps.com][1].
+
+Features
+--------
+* Browsing of textual resources.
+* Search by keyword/regex, textbite reference, or tag name (#tag).
+* Highlighted context expansion.
+* RESTful access to textual resources and tag data
+* Create/delete/rename of tags and their references.
+* Import and export of tag data from/to TSV.
+* User accounts (though currently admin creates new users).
+* Unauthenticated read-only access to "guest" account.
+* Hotkeys for search (Ctrl-S) and copying (Ctrl-C) and tagging (Ctrl-T) of selected lines.
+* Integration tests with Angular Scenario Test Runner.
 
 Details
 -------
 Nutritious enables the browsing and tagging of [Textbites][2] resources. Textbites provides a Python API for a textual resource. 
 
-* Tags are persisted in a Postgres DB.
-* Currently all Textbite are static, though this is a future feature.
-* Nutritious does not currently support multiple users.
-
+* Tag data are persisted in a Postgres DB.
+* Textbites are currently limited to static resources.
 
 [1]: http://nutritious.herokuapps.com
 [2]: http://github.com/jplehmann/textbites
 
+Dependencies
+------------
+* Django (1.4.4)
+* AngularJS
+* Twitter Bootstrap
+* LESS CSS
 
-Features
---------
-* RESTful paths to resources and tags
-* Browsing of textual resources
-  * Highlighted context expansion
-* Scoped search (with q=)
-  * Even regex support (encode + as %2b)
-    * http://127.0.0.1:8000/tagz/lib/NASB/Luke?q=hi\w%2bt
-* Tags library
-  * Tags search
-* Several different kinds of Textbite implementations (books, bible, quotes)
+Usage
+-----
+Installing Nutritious should be mostly similar to any Django app, but here are some tips.
 
+Installing locally:
 
-Technical 
----------
-* Django 1.4.4
+* Install pip and ideally virtualenv. 
+* Install dependences through pip.
+* Install the LESS CSS compiler (`npm install -g less`)
+* Setup a postgres database.
+  * Install postgres.
+  * Create nutritious database.
+  * Run ./manage.py with syncdb and migrate.
+* Using the admin interface create "guest" user.
 
+Deploying to Heroku:
+
+* For LESS CSS, configure buildpack as a 'multi':
+   * `heroku config:add BUILDPACK_URL=https://github.com/ddollar/heroku-buildpack-multi.git`
+* Sync and migrate the database using `heroku run python manage.py ...`.
 
