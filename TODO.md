@@ -1,32 +1,36 @@
-- delete all needs to take user to login screen
-- even get or 404 thinsg are broken in logged out mode?
 
-- setup heroku and other computer with db again
 
-What steps for someone to set this up themself?
-1. install postgres
-2. createdb nutrtious
-3. syncdb (create admin), migrate
-4. create guest user
-What is missing?
-  pybible... can I rmeove more of these dependencies so it works out of the box?
-  need a deecent example that is not 
+- update documentation
+    What steps for someone to set this up themself?
+    1. install postgres
+    2. createdb nutrtious
+    3. syncdb (create admin), migrate
+    4. create guest user
+
+- remove unnecessary dependencies
+    pybible... can I rmeove more of these dependencies so it works out of the box?
+    need a deecent example that is not 
 
 - Need to secure admin password -- pw is in my settings, but this would be admin to my public site!!
 
 
 Inbox
 -----
-- angular footer in wrong place when context highlighted, and on
-  verses list (bad html?)
+- delete all
+  - delete all needs to take user to login screen
+  - even get or 404 thinsg are broken in logged out mode?
 
 
-Problems
---------
+Backlog
+=======
 
-- Look into how to using Angular $http instead of form post
-- Find out in general how to handle redirecting after ajax
-- Ask quetion about django post / get vs post problem again
+Todo
+----
+* move to github
+  - travis CI -- once I'm on github
+  - first pass documentation: readme, features, todos
+* more browser tests
+
 
 Testing
 -------
@@ -86,7 +90,7 @@ o power user
   o select lines and ctrl-t tag
   o ctrl-S to search
 }}}
-o import and export
+o import and export -- do roundtrip test
 o tags
 {{{
   - all tags
@@ -117,104 +121,6 @@ o test other kinds of resources
 
 }}}
 
-Todo
-----
-* move to github
-  - travis CI -- once I'm on github
-  - first pass documentation: readme, features, todos
-* more browser tests
-
-1.0
----
-- select, tag and copy from Search page and Tag Detail page
-  - create a directive for displaying verses to use in all 3+ places
-- random tags view
-+ parallel search
-{{{
-  - with a meta flag like @all, OR maybe aliases like @bible
-  which maps to a set of resources (stored in library), then search each. 
-  - search across all, but then render using current resource knowing that double
-  click can expand out to the other versions. (depends on parallel lookup)
-}}}
-+ parallel verse lookup
-{{{
-  - double click on a line to trigger a lookpu on all 
-  resources in the library with that reference, then display them below
-  in a collapse-like fold. Double click on the first again to close. Need
-  to display resource name somewhere on the line or beside it?
-  - figure out how to make this work with copy/paste range
-}}}
-* highlight search terms
-* make search case insensitive
-* add URLs as a resource type (export my delicious) (though immutable)
-* autocomplete for tag search (medium) (AJAX query for tags) angular UI select2 or "chosen" (has nice multi-select)
-* remove absolute paths (esp in view, try reverse())
-* figure out copyright issues with NIV, NLT
-* test for import / export and verify get input back again
-* open source resources -- pride and prejudice??
-* tag search with multiple tags and operators (+ = must have, - = can't have), default is disjunction.
-* tag list / search result set should allow multi-select of results, then ability to "add tag" to that set, or remove
-* D3 visualizations about tags
-* context should work for a linerange too
-* select search highlights all (can bootstrap do this?)
-* navigation: more breadcrumbs (book, chapter links)
-* Tag search: scope tags to certain resources/refs
-* auto detect or have multiple search boxes?
-* Style
-  * wider reference column
-  * how to handle when text spills over?
-  * put HR before first row as well
-  * streamline the left side references
-* Tech stories
-  * setup LESS
-* Design
-  * properly load library resources -- best place for that logic?
-  * return None rather than throwing, for easier inspection (text and children)
-* tests for view/controllers: input mock resources and intercept template call
-* paragraph markers
-* could put library / resources in a navbar dropdown
-* resource could provide some relative links for a navbar dropdown (OT/NT)
-* Manually test quotes for new features, and need auto tests for this too... Put tests into simple and make sure quotes and bible use those.
-  * quotes / any simple resource: needs a path test, indices test
-* validation for input
-  * such as friendly message when refernce for tagref is bad
-    * quotes wont show text for a person, yet we can create a reference to it.
-      how could we validate this earlier on?
-
-2.0
----
-* Mutability for resources like Quotes (and Bible) (database-backed pytbook)
-* Responsiveness: rendering in nice size fonts for mobile.  Also add features like dropdown beneath search with book names.
-* generalize to (bible, books, quotes, persons, webpages (page, video), gdocs)
-  * inefficiency of searching bible refs with aliases
-    * maybe one general ref endpoint takes guids but another specific one
-      (refs/bible/xxx) does alias lookups
-* plan/reorg around more apps (refs -> new app?)
-- metatags/tagsets: sets of other tags (and metas?), and can have color
-  - each account can have sets of tags, one for general, one for a
-    particular memory set. each tag can be in any number of sets. (many to
-    many). I think this should be pretty easy to add as columns in the
-    database. Seems really cool because just as my sets are meaningful to me
-    they can extend them and be a place for life to look to.
-- Comments: (noted elsewhere) the ability to attach comments. These are just
-  like tags, except don't have a topic but do have a longer text portion.
-- Index Notes (say google docs), tagging references there and creating
-  an index, so that you have footnotes into your own documents and studies.
-* UI
-  * auto-complete style box for searching on tags/refs
-  * general search box that searches both tags and references, or one or the other
-* Bible-specific
-  * add book type filters: OT/NT / Pauline, etc -- SimpleListFilter
-  * memorization logic like flash cards or even text reminders.
-* admin
-  * [template??] so admin columns not so wide
-* models
-  * timestamps of modifications and history view
-* misc technical debt
-  * upgrade to django 1.5
-* show related tags (lexically, semantically)
-* move bible-specific functionality into plugins
-
 
 Bugs
 ----
@@ -235,15 +141,89 @@ Bugs
 - getting index offsets, about 20 errors couldn't find references
 
 
+* properly load library resources -- best place for that logic?
+
+1.0
+---
+* select, tag and copy from Search page and Tag Detail page
+  * create a directive for displaying verses to use in all 3+ places
+* search
+  * parallel search
+  {{{
+    * with a meta flag like @all, OR maybe aliases like @bible
+    which maps to a set of resources (stored in library), then search each. 
+    * search across all, but then render using current resource knowing that double
+    click can expand out to the other versions. (depends on parallel lookup)
+  }}}
+  * tag search: scope tags to certain resources/refs with @x
+  * tag search with multiple tags and operators (+ = must have, - = can't have), default is disjunction.
+  * highlight search terms (textbites to return offsets)
+  * make search case insensitive
+* parallel lookup
+{{{
+  * double click on a line to trigger a lookpu on all 
+  resources in the library with that reference, then display them below
+  in a collapse-like fold. Double click on the first again to close. Need
+  to display resource name somewhere on the line or beside it?
+  * figure out how to make this work with copy/paste range
+}}}
+* custom 404 page
+* random tags view
+* add URLs as a resource type (export my delicious) (wait until mutable sources?)
+* figure out copyright issues 
+* open source resources -- pride and prejudice??
+* tag list / search result set should allow multi-select of results, then ability to "add tag" to that set, or remove
+* context should work for a linerange too
+* navigation: more breadcrumbs (book, chapter links)
+* paragraph markers
+* design for less views
+  * could put library / resources in a navbar dropdown
+* related tags and texts popover on text view
+* Manually test quotes for new features, and need auto tests for this too... Put tests into simple and make sure quotes and bible use those.
+  * quotes / any simple resource: needs a path test, indices test
+* validation for input
+  * such as friendly message when refernce for tagref is bad
+    * quotes wont show text for a person, yet we can create a reference to it.
+      how could we validate this earlier on?
+
+2.0
+---
+* Mutability for resources like Quotes, Links (database-backed textbites)
+* generalize to other resource types with attributes (bible, books, quotes, persons, webpages (page, video), gdocs)
+* metatags/tagsets: sets of other tags (and metas?), and can have color
+  * each account can have sets of tags, one for general, one for a
+    particular memory set. each tag can be in any number of sets. (many to
+    many). I think this should be pretty easy to add as columns in the
+    database. Seems really cool because just as my sets are meaningful to me
+    they can extend them and be a place for life to look to.
+  * memorization logic like flash cards or even text reminders
+* Comments: (noted elsewhere) the ability to attach comments. These are just
+  like tags, except don't have a topic but do have a longer text portion.
+* Index Notes (say google docs), tagging references there and creating
+  an index, so that you have footnotes into your own documents and studies.
+* D3 visualizations about tags
+* autocomplete for tag search (AJAX query for tags) angular UI select2 or "chosen" (has nice multi-select)
+* book groups with @xxx
+* historical view of tagref changes
+* upgrade to django 1.5
+* show related tags (lexically, semantically)
+* Responsiveness: rendering in nice size fonts for mobile.  Also add features like dropdown beneath search with book names.
+
+
+Discussion
+==========
+
 Tech Questions
 ---------
+- Look into how to using Angular $http instead of form post
+- Find out in general how to handle redirecting after ajax
 - can relative template paths be named like urls?
 - rename does a PUT and then is redirected with what should be a GET. The browser says its doing a GET but the server says it got a second PUT. Which is true? what is wrong?
 - how to have delete let server do the redirect? I think the AJAX eats it.  after deleting let controller say where to go.
-- How to go straight to a view method but change the path? Is a redirect required?
-  - For example how to in /lib?q=#tags go to /tagz/tags/... -- preferrably not with a redirect because I already have the list of things I want to show, I've done the serach at this point.
-  - so this problem occurs when an intermediate URL needs to do some of the work, and we dont want to redo that work.
-  - Figute out the best way to write my search method which redirects back to a resource if one was provided. Or if we wanted to do a scoped search with a tag, how would that work? My goal was that search should centralize the searching... Maybe it also needs to handle searches over resources.
+* How to go straight to a view method but change the path? Is a redirect required?
+  * For example how to in /lib?q=#tags go to /tagz/tags/... -- preferrably not with a redirect because I already have the list of things I want to show, I've done the serach at this point.
+  * so this problem occurs when an intermediate URL needs to do some of the work, and we dont want to redo that work.
+  * Figute out the best way to write my search method which redirects back to a resource if one was provided. Or if we wanted to do a scoped search with a tag, how would that work? My goal was that search should centralize the searching... Maybe it also needs to handle searches over resources.
 * how to have div (non-table) view but have dynamic column width, according to the longest items?
   - seems impossible to do a row-based approach like this because the rows are independent.  Could do a column layout with fixed height instead perhaps, but this sounds even worse.
 - divergences of ref simple ref and view ref, what to do? tests reflect actual
@@ -252,148 +232,144 @@ Tech Questions
   put code? If not in pybooks, does this make testing hard?
 
 
-Design Discussion
------------------
+Design
+------
 * more important to stay general to do other kinds of books, or to 
   be able to do more with this vertical?
-  - decision:  Seems fairly easy to generalize a bit, and then get books and
+  * decision:  Seems fairly easy to generalize a bit, and then get books and
     quotes in here.  If it's hard I won't do it.
 {{{
-    books: same a top level, just doesn't have any chapters
-      - need to allow tags of top level resources
-    quotation:
-      - a 'bible' (volume?) would have a bunch of quote references
-      - like a book: author, date?, text
+    * books: same a top level, just doesn't have any chapters
+      * need to allow tags of top level resources
+    * quotation:
+      * a 'bible' (volume?) would have a bunch of quote references
+      * like a book: author, date?, text
 }}}
 * do we really need "resource" separate from the top level ref?
 {{{
-  - decision: this would simplify the implementation, but the benefits
+  * decision: this would simplify the implementation, but the benefits
     won't outweight the drawbacks when I do need something stored there,
     such as name and type.
-  - why not make it a ref as well?
-  - then add reference as a method of the root reference class
+  * why not make it a ref as well?
+  * then add reference as a method of the root reference class
   * except for the Views implementation, we put a lot of logic at the top,
     so would have to see if I can put that in the root reference..
     (Maybe break them apart at this point)
 }}}
-Study my view and see how many attributes it has... 
-  Each reference:
+* Study my view and see how many attributes it has... 
+  * Each reference:
     - has a displayable / pretty form
     - is searchable
     - might have children
     - might have text
-- would like ability to get parents() including root reference()
 * add name, type to resource
   - why name?  what's wrong with the top reference's name?
   - well resources have a type
   - in any case top ref can also be a resoruce
-- Rest Endpoints
+* Rest Endpoints
   {{{
-  TAGS
-  x read:
-      GET /tags/<tag>
-  x create: (should just be implicit when a tagref is created)
-      POST /tags/createform
-  o update: rename the tag (could collapse?) *FORM*
-      PUT /tags/<tag>
-  x delete: remove all references
-      DEL /tags/<tag>
+  * TAGS
+    * read:
+        GET /tags/<tag>
+    * create: (should just be implicit when a tagref is created)
+        POST /tags/createform
+    * update: rename the tag (could collapse?) *FORM*
+        PUT /tags/<tag>
+    * delete: remove all references
+        DEL /tags/<tag>
 
-  TAGREFS
-  x read:
-      GET /tags/<tag>/refs/<id>
-  x create: associates a tag with a ref *FORM*
-      POST /tags/<tag>/refs/createform
-  x update: -- dont allow this  --
-      (none)
-  x delete: remove a reference
-      DEL /tags/<tag>/refs/<id>
+  * TAGREFS
+    * read:
+        GET /tags/<tag>/refs/<id>
+    * create: associates a tag with a ref *FORM*
+        POST /tags/<tag>/refs/createform
+    * update: -- dont allow this  --
+        (none)
+    * delete: remove a reference
+        DEL /tags/<tag>/refs/<id>
 
-    Currently:
-      Reference has book/chp/first/last, tag
-      Change to: resource, reference
+  * Currently:
+    * Reference has book/chp/first/last, tag
+    * Change to: resource, reference
 
-    FORM for creation of a tagref:
-      tag name -- select OR new input field
-        - validte: confirm creation of new
-      resource: pick
-      reference: freeform text input (could look it up through/valdiate)
-        - validate: check if ref exists
+  * FORM for creation of a tagref:
+    * tag name -- select OR new input field
+      * validte: confirm creation of new
+    * resource: pick
+    * reference: freeform text input (could look it up through/valdiate)
+      * validate: check if ref exists
   }}}
 
-Future Tech Stories
--------------------
-* install sublime text2 and django plugins
-  * CurrentScope, Djaneiro, SublimeCodeIntel, and SublimeLinter 
-  * http://sontek.net/blog/detail/turning-vim-into-a-modern-python-ide#django
 
-
-
-
+Version History
+===============
 
 0.1
------------------------------
-* [DONE] hosting with bitbucket
-* [DONE] rename the dirs
-* [DONE] load fixture data into database
-* [DONE] setup virtualenv: source ~/.venv/tagz/bin/activate
-* [DONE] switch to postgres (for heroku)
-* [DONE] setup DATABASE_URL correctly on Heroku 
-* [DONE] setup DATABASE_URL locally
-* [DONE] load data into heroku
-* [DONE] get it deployed to heroku and working
-* [DONE] timestamps for ref creation
-* [DONE] customize the admin
-* [DONE] View: tags alphabetically
-* [DONE] View: references by ref
-* [DONE] View: index 
-* [DONE] View: All Tags: for each show list of refs
-* [DONE] View: Single Tag: for each show other tags on that ref
-* [DONE] turn bible sources into a package as a support lib
-* [DONE] create API for my support libs
-* [DONE] show scripture on the tag page
-* [DONE] detail view for references
-* [DONE] style views with CSS
-* [DONE] add bootstrap styling
-* [DONE] heroku: database migrated
-* [DONE] heroku: pybible: as git+https from a read only account on bitbucket installed as package data
+---
+* hosting with bitbucket
+* rename the dirs
+* load fixture data into database
+* setup virtualenv: source ~/.venv/tagz/bin/activate
+* switch to postgres (for heroku)
+* setup DATABASE_URL correctly on Heroku 
+* setup DATABASE_URL locally
+* load data into heroku
+* get it deployed to heroku and working
+* timestamps for ref creation
+* customize the admin
+* View: tags alphabetically
+* View: references by ref
+* View: index 
+* View: All Tags: for each show list of refs
+* View: Single Tag: for each show other tags on that ref
+* turn bible sources into a package as a support lib
+* create API for my support libs
+* show scripture on the tag page
+* detail view for references
+* style views with CSS
+* add bootstrap styling
+* heroku: database migrated
+* heroku: pybible: as git+https from a read only account on bitbucket installed as package data
 
 0.2
 ---
-* [DONE] break into pages for different levels rather than 1 view for ALL
-* [DONE] going up from a book is broken beccause links are inconsistent
-* [DONE] let references generate their own full paths
-* [DONE] add a header: Tags | Resources | History | Search [ ... ]
-* [DONE] tags pages go to references
-* [DONE] re-done chapter view with refs "inline"
-* [DONE] nav bar
-* [DONE] use smoke background
-* [DONE] next/previous (child) links
-* [DONE] [1] widen context +-3 (say of single verse, or chapter and highlight)
+* break into pages for different levels rather than 1 view for ALL
+* going up from a book is broken beccause links are inconsistent
+* let references generate their own full paths
+* add a header: Tags | Resources | History | Search [ ... ]
+* tags pages go to references
+* re-done chapter view with refs "inline"
+* nav bar
+* use smoke background
+* next/previous (child) links
+* [1] widen context +-3 (say of single verse, or chapter and highlight)
 * pybooks support with endpoints for resource and reference within
-  - [DONE] navigate through 'references'
+  * navigate through 'references'
     * 2 dimensional indexes
-  - [DONE] search through book in bible
-* [DONE] search for tag reference first then query
-* [DONE] multiple tag results
+  * search through book in bible
+* search for tag reference first then query
+* multiple tag results
 
 0.3
 ---
-* [DONE] new restful operations on tag: create, delete, rename
-* [DONE] new restful operations on tag refs: create, delete
-* [DONE] forms for create and modify tag/tagrefs
-* [DONE] import TSV
-* [DONE] export TSV
-* [DONE] resources contain index/offsets
-* [DONE] new database schema, migrated and code updated
-* [DONE] more bible versions
-* [DONE] authentication to protect writes
-* [DONE] multi-user: data stored separately for each user
-* [DONE] guest account for not logged in users
-
+* new restful operations on tag: create, delete, rename
+* new restful operations on tag refs: create, delete
+* forms for create and modify tag/tagrefs
+* import TSV
+* export TSV
+* resources contain index/offsets
+* new database schema, migrated and code updated
+* more bible versions
+* authentication to protect writes
+* multi-user: data stored separately for each user
+* guest account for not logged in users
 * select verses and copy -- Cmd/Ctrl-C with ZClip
 * search
   * Ctrl-S shortcut key to do search
   * click search should select all to replace
 * select verses and tag -- Cmd/Ctrl-T (ideally a pop-up or modal)
 * setup LESS: http://stackoverflow.com/a/8726853/317110
+* rename projects to nutritious and textbites
+* split out texts app
+* rename tagz app to tags and rebuild databases
+* angular scenario test runner test
