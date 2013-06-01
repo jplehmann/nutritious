@@ -1,3 +1,4 @@
+import logging
 import traceback
 
 from django.shortcuts import render_to_response, get_object_or_404, redirect
@@ -22,8 +23,14 @@ from tags.models import get_export_tsv
 from tags.models import import_tsv_file
 
 
+log = logging.getLogger("nutritious." + __name__)
+
+
 def tag_search(request, query):
-  # tag search: currently only supports a single tag, and must begin with #
+  """ Searches for a tag with exact and fuzzy matching.
+
+  Currently only supports a single tag, and must begin with #.
+  """
   query = query.strip()
   if query.startswith("#"):
     # search the tags
@@ -37,7 +44,8 @@ def tag_search(request, query):
       matches = get_matching_tags(request.user, query)
       # render even if no tags found
       return render_tags(request, matches)
-  raise Http404 # ("Root search must contain only an #tag.")
+  # root search must contain only an #tag
+  raise Http404 
 
 
 def tags(request, tags=None):
@@ -65,7 +73,8 @@ def render_tags(request, tags):
 
 
 def tag(request, tag_name):
-  """ Single tag: show all references, and other tags on those refs."""
+  """ Show all references for single tag and related tags.
+  """
   if request.method == 'DELETE':
     return tag_delete(request, tag_name)
   elif request.method == 'PUT':
@@ -86,7 +95,7 @@ def tag(request, tag_name):
       text = pybook_ref.text()
       clean_ref = pybook_ref.pretty()
     except Exception:
-      print "Exception for " + ref.pretty_ref() + " = " + traceback.format_exc()
+      log.warning("Exception for " + ref.pretty_ref() + " = " + traceback.format_exc())
       text, clean_ref = ('unknown', ref.pretty_ref())
     clean_refs.append(clean_ref)
     texts.append(text)
@@ -103,8 +112,7 @@ def tag_delete(request, tag_name):
   """
   t = get_object_or_404(Tag, tag=tag_name, user=request.user)
   # clean up all associated references, since references only have 1 tag in them
-  # but this seems to not be necessary, maybe Django is cleaning up
-  # for me?
+  # but this seems to not be necessary, maybe Django is cleaning up for me?
   for ref in get_refs_with_tag(request.user, t):
     ref.delete()
   t.delete()
@@ -114,36 +122,35 @@ def tag_delete(request, tag_name):
 
 @login_required
 def tag_update(request, tag_name):
-  """ Rename a tag. If the tag name is exists already, it will merge them.
+  """ Rename a tag; if the tag name exists already, merge them.
   """
   t_old = get_object_or_404(Tag, tag=tag_name, user=request.user)
   try:
     new_name = request.GET.get('name', None)
   except:
-    print traceback.format_exc()
-    print "problem getting new name"
-  print "old name, new: " + tag_name + " " + new_name
+    log.debug("Problem renaming tag\n%s", traceback.format_exc())
+  log.debug("renamed tag: old name, new: %s, %s", tag_name, new_name)
   try:
     t_new = get_exact_tag(request.user, new_name)
-    print t_new
     for r in get_refs_with_tag(request.user, t_old):
       r.tag = t_new
-      print "updating ref: " + str(r)
+      log.debug("updating ref: " + str(r))
       r.save()
     t_old.delete()
   except:
-    print traceback.format_exc()
-    print "renaming tag"
+    log.error("Error renaming tag: %s", traceback.format_exc())
     t_old.tag = new_name
     t_old.save()
   return HttpResponseRedirect(reverse('tag', args=new_name));
 
 
 def tagref_detail(request, tag_name, id):
+  """ Show detail for a tagref.
+  """
   tagref = get_object_or_404(Reference, id=id, user=request.user)
   # make sure the tag with this id belongs under this path
   if (tag_name != tagref.tag.tag):
-    print "Mismatched tag name path with id '%s' '%s'" %( tag_name, tagref.tag.tag)
+    log.info("Mismatched tag name path with id '%s' '%s'", tag_name, tagref.tag.tag)
     raise Http404
   if request.method == 'DELETE':
     tagref.delete()
@@ -154,22 +161,25 @@ def tagref_detail(request, tag_name, id):
       {'tag_name': tag_name, 'tagref': tagref },
       context_instance=RequestContext(request))
 
+
 @login_required
 def tagref_createform(request, tag_name=None):
-  """ Form to create a single tag reference """
+  """ Form to create a single tag reference.
+  """
   return render_to_response('tags/tagref_create.html',
       {'tag_name': tag_name, 
        'resources': library.list(),
        'res_default': 'NASB'
        }, context_instance=RequestContext(request))
 
+
 @login_required
 def tagref_create(request, tag_name):
-  """ Create a single tag reference. The resource must exist and 
-      the reference must be valid, but if the tag doesn't exist, 
-      then then it is created. 
+  """ Create a single tag reference. 
+  
+  The resource must exist and the reference must be valid, but if the tag
+  doesn't exist, then then it is created. 
   """
-  print "Tagref create"
   try:
     # resource MUST exist
     res_str = request.POST['resource'].strip()
@@ -178,8 +188,7 @@ def tagref_create(request, tag_name):
     ref_str = request.POST['reference']
     ref = resource.reference(ref_str)
   except:
-    print "User provided bad resource or reference."
-    print traceback.format_exc()
+    log.info("User provided bad resource or reference.")
     raise Http404
   # if tag name doesn't exist, create it
   try:
@@ -188,7 +197,7 @@ def tagref_create(request, tag_name):
     # TODO: move to models
     t = Tag(tag=tag_name, user=request.user)
     t.save()
-  print "Saving be saving", ref_str, tag_name, t, ref.pretty()
+  log.debug("Saving new tag %s %s %s %s", ref_str, tag_name, t, ref.pretty())
   # TODO: move to models
   new_ref = Reference(tag=t, resource=res_str, reference=ref.pretty(), 
       offset_start=ref.indices().start, offset_end=ref.indices().end, 
@@ -198,17 +207,23 @@ def tagref_create(request, tag_name):
 
 
 def tags_export(request):
+  """ Export tags to a TSV.
+  """
   response = HttpResponse(get_export_tsv(request.user), content_type="application/tsv")
   response['Content-Disposition'] = 'attachment; filename=export.tsv'
   return response
 
 
 class ImportFileForm(forms.Form):
-    docfile = forms.FileField(label="Select a file to upload.")
+  """ Form for importint tags.
+  """
+  docfile = forms.FileField(label="Select a file to upload.")
 
 
 @login_required
 def tags_import(request):
+  """ Import tags from an uploaded TSV.
+  """
   if request.method == 'POST':
     form = ImportFileForm(request.POST, request.FILES)
     if form.is_valid():

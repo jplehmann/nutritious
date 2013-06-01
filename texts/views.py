@@ -1,3 +1,4 @@
+import logging
 import traceback
 
 from django.shortcuts import render_to_response
@@ -14,10 +15,13 @@ from tags.views import tag_search
 
 
 library.load_resources()
+log = logging.getLogger("nutritious." + __name__)
+
 
 def lib(request):
   """ Library root.
-      Also receives searches performed when no resource is selected.
+
+  Also receives searches performed when no resource is selected.
   """
   query = request.GET.get('q', None)
   # generic library response
@@ -32,21 +36,16 @@ def lib(request):
 def lib_resource_search(request, resource, res_name, ref_obj, query, ref_str):
   """ Search a resource given a query.
   """
-  # temporarily redirect tag search to root
+  # redirect tag search to root for now
   query = query.strip()
   if query.startswith("#"):
     return redirect(reverse('tags') + '?q=' + urlquote(query))
-    #return tag_search(request, query)
   # first see if this is a reference in this resource
   try:
     new_ref = resource.reference(query)
-    # we don't pass the request back because we don't want
-    # it to find the search parameters
     return render_resource(request, res_name, new_ref.pretty())
-  except Exception as e:
-    print traceback.format_exc()
-    print e
-    pass
+  except Exception:
+    log.warning("Problem searching resource: %s", traceback.format_exc())
   hits = ref_obj.search(query)
   title = ("Search of '%s' for '%s' (%d hits)" % 
       (ref_obj.pretty(), query, len(hits)))
@@ -62,24 +61,19 @@ def lib_resource_search(request, resource, res_name, ref_obj, query, ref_str):
       context_instance=RequestContext(request))
 
 
-def nasb(request):
-  """ Must redirect instead of simply serving the resource, otherwise
-      relative links built up will be wrong.
-  """
-  return HttpResponseRedirect(reverse('resource', kwargs={'res_name':'NASB'}))
-  
-
 def get_resource(request, res_name, ref_str=None, highlights=None):
-  """ Display a resource. If a reference is given within
-  that resource, then it shows that particular scope.
-  This handler is also used to front-end searches, which
+  """ Top-level function for displaying a textbites resource.
+
+  If a reference is given within that resource, then it shows that 
+  particular scope. This handler is also used to front-end searches, which
   are redirected to another handler.
-  @param Request may be None in the case where search is calling back
-  to here, in order to display a reference.
-  @param ref_str from the path, if given. The reference within the resource
-  to be retrieved like 'John 5:1'
-  @param highlights are reference strings which should be highlighted,
-  which should be 'sub-references' to make sense.
+
+    @param Request may be None in the case where search is calling back
+                   to here, in order to display a reference.
+    @param ref_str from the path, if given. The reference within the resource
+                   to be retrieved like 'John 5:1'
+    @param highlights are reference strings which should be highlighted,
+                      which should be 'sub-references' to make sense.
   """
   try:
     resource = library.get(res_name)
@@ -93,14 +87,17 @@ def get_resource(request, res_name, ref_str=None, highlights=None):
       if query:
         return lib_resource_search(request, resource, res_name, ref_obj, query, ref_str)
     return render_resource(request, res_name, ref_str, highlights)
-  except Exception as e:
-    print "Exception: " + str(e)
-    print traceback.format_exc()
+  except Exception:
+    log.warning("Problem getting resource: %s", traceback.format_exc())
     raise Http404
 
 
 def render_resource(request, res_name, ref_str=None, highlights=None):
-  """ Doesn't check for query parameters.
+  """ Render a textbites resource.
+
+  Uses one of several templates depending on what kind of a reference it is
+  based on its attributes (e.g. book, chapter, line). Doesn't check for query
+  parameters for search, see get_resource.
   """
   try:
     resource = library.get(res_name)
@@ -108,7 +105,7 @@ def render_resource(request, res_name, ref_str=None, highlights=None):
       ref_obj = resource.reference(ref_str)
     else:
       ref_obj = resource.top_reference()
-    # inspect if the referene has children
+    # inspect if the reference has children
     # should return None if it doesn't have them. 
     children = ref_obj.children()
     # inspect if the children have text
@@ -132,7 +129,7 @@ def render_resource(request, res_name, ref_str=None, highlights=None):
           return render_resource(
               request, res_name, context.pretty(), [ref_obj.pretty()])
         except Exception as e:
-          print e
+          log.warning("Problem rendering with context: %s", e)
     # navigation references
     parent_ref, previous_ref, next_ref = None, None, None
     res_path = (reverse('resource', kwargs={'res_name':res_name}))
@@ -152,7 +149,7 @@ def render_resource(request, res_name, ref_str=None, highlights=None):
          'highlights': highlights,
          'text': text, 'sub_ref': ref_str if ref_str else ""
     }
-    # determine which view to use
+    # determine which template to use
     if children:
       if show_child_text:
         return render_to_response('texts/ref_text_list.html', context,
@@ -163,11 +160,19 @@ def render_resource(request, res_name, ref_str=None, highlights=None):
     else:
       return render_to_response('texts/ref_detail.html', context,
           context_instance=RequestContext(request))
-  except Exception as e:
-    print "Exception: " + str(e)
-    print traceback.format_exc()
+  except Exception:
+    log.warning("Problem rendering resource: %s", traceback.format_exc())
     raise Http404
 
+
+def nasb(request):
+  """ Example of view pointing to a particular resource.
+
+  Must redirect instead of simply serving the resource, otherwise
+  relative links built up will be wrong.
+  """
+  return HttpResponseRedirect(reverse('resource', kwargs={'res_name':'NASB'}))
+  
 
 def safe_int(val):
   return int(val) if val != None else val

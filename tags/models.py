@@ -1,6 +1,15 @@
-from django.db import models
+import logging
+import traceback
 from cStringIO import StringIO
+
+from django.db import models
 from django.contrib.auth.models import User
+
+from textbites import library
+
+
+
+log = logging.getLogger("nutritious." + __name__)
 
 
 class Tag(models.Model):
@@ -102,10 +111,6 @@ def get_overlapping_refs(user, ref):
       offset_start__gte=ref.offset_start, offset_end__lte=ref.offset_end)
 
 
-# XXX todo remove this
-from textbites import library
-import traceback
-
 def get_export_tsv(user):
   out = StringIO()
   for ref in Reference.objects.filter(user=user_pk(user)):
@@ -118,13 +123,12 @@ def get_export_tsv(user):
       try:
         pybook_ref = library.get(resource).reference(ref_str)
       except:
-        print "Couldn't find refernce: ", ref_str
+        log.info("Couldn't find refernce: %s", ref_str)
         continue
       try:
         offset_start, offset_end = pybook_ref.indices()
       except:
-        print "Problem with index for ", ref_str
-        print traceback.format_exc()
+        log.warning("Problem with index: %s  %s", ref_str, traceback.format_exc())
     print >>out, '\t'.join(
         [ref.tag.tag, resource, ref_str, str(offset_start), str(offset_end)])
   return out.getvalue()
@@ -149,7 +153,7 @@ def import_tsv_file(user, f):
       # with or without offsets
       if (len(vals) != 3 and len(vals) != 5):
         errors += 1
-        print "Wrong number of values on line #%d = %d" % (line_num, len(vals))
+        log.info("Wrong number of values on line #%d = %d", line_num, len(vals))
         continue
       try:
         tag_name = extract(vals[0])
@@ -158,22 +162,21 @@ def import_tsv_file(user, f):
         offset_start = int(extract(vals[3])) if len(vals) == 5 else None
         offset_end = int(extract(vals[4])) if len(vals) == 5 else None
       except:
-        print "Bad value on line #%d" % line_num
+        log.info("Bad value on line #%d", line_num)
         errors += 1
         continue
       # see if tag exists
       try:
         tag = get_exact_tag(user, tag_name)
       except:
-        #print traceback.format_exc()
-        print "Creating new tag: " + tag_name
+        log.debug("Creating new tag: %s", tag_name)
         tag = Tag(tag=tag_name, user=user)
         tag.save()
       # check for duplicates
       dups = Reference.objects.filter(tag=tag, resource=res, 
           reference=ref_str, user=user_pk(user));
       if (dups):
-        print "Skipping duplicate. with " + str(dups)
+        log.debug("Skipping duplicate. with %s", str(dups))
         continue
       if offset_start == None:
         ref = Reference(tag=tag, resource=res, reference=ref_str, user=user)
@@ -181,7 +184,7 @@ def import_tsv_file(user, f):
         ref = Reference(tag=tag, resource=res, reference=ref_str, 
             offset_start=offset_start, offset_end=offset_end, user=user)
       ref.save()
-      print "Created new tagref:", tag, res, ref_str
+      log.debug("Created new tagref: %s %s %s", tag, res, ref_str)
       successes += 1
   return (errors, successes)
       
