@@ -1,5 +1,5 @@
-from tagz.models import Tag
-from tagz.models import Reference
+from tags.models import Tag
+from tags.models import Reference
 from django.contrib import admin
 #from django.db import models
 #from django.forms import TextInput

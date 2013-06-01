@@ -10,7 +10,7 @@ from django.utils.http import urlquote
 
 from pybooks import library
 
-from tagz.views import tag_search
+from tags.views import tag_search
 
 
 library.load_resources()

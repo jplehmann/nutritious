@@ -25,7 +25,7 @@ urlpatterns = patterns('',
   (r'^favicon\.ico$', 'django.views.generic.simple.redirect_to', {'url': '/static/img/favicon.ico'})
 )
 
-urlpatterns += patterns('tagz.views',
+urlpatterns += patterns('tags.views',
     # TAG REFERENCE
     # tag detail (GET, DEL)
     url(r'^tags/(?P<tag_name>[^\/]+)/refs/(?P<id>\d+)$', view='tagref_detail', name='tagref_detail'),

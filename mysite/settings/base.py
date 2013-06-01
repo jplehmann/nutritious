@@ -16,7 +16,7 @@ PROJECT_ROOT = Path(__file__).ancestor(3)
 
 
 DATABASES = {
-    'default': dj_database_url.config(default="postgres://john:djadmin@localhost/tagz")
+    'default': dj_database_url.config(default="postgres://john:djadmin@localhost/nutritious")
 }
 
 
@@ -132,7 +132,7 @@ INSTALLED_APPS = (
     "less",
    
     # local apps
-    "tagz",
+    "tags",
 )
 
 # A sample logging configuration. The only tangible logging

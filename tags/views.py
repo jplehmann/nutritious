@@ -11,15 +11,15 @@ from django.contrib.auth.decorators import login_required
 
 from pybooks import library
 
-from tagz.models import Tag
-from tagz.models import Reference
-from tagz.models import get_all_tags
-from tagz.models import get_tags_for_ref
-from tagz.models import get_exact_tag
-from tagz.models import get_matching_tags
-from tagz.models import get_refs_with_tag
-from tagz.models import get_export_tsv
-from tagz.models import import_tsv_file
+from tags.models import Tag
+from tags.models import Reference
+from tags.models import get_all_tags
+from tags.models import get_tags_for_ref
+from tags.models import get_exact_tag
+from tags.models import get_matching_tags
+from tags.models import get_refs_with_tag
+from tags.models import get_export_tsv
+from tags.models import import_tsv_file
 
 
 def tag_search(request, query):
