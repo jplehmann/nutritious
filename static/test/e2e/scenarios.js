@@ -75,7 +75,7 @@ xdescribe('Run one test', function() {
 //
 function search(query, resource, sleepTime) {
   if (resource) {
-    browser().navigateTo('../../../res/' + resource);
+    browser().navigateTo('../../../texts/' + resource);
   }
   inputElement('#search-input').enter(query);
   element("#search-submit").click();

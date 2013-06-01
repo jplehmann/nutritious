@@ -53,7 +53,7 @@ urlpatterns += patterns('tags.views',
 
 urlpatterns += patterns('texts.views',
     # resources
-    url(r'^res/$', view='lib', name="library"),
-    url(r'^res/(?P<res_name>[^\/]+)/(?P<ref_str>[^\/]+)?$', view='get_resource', name='resource'),
+    url(r'^texts/$', view='lib', name="library"),
+    url(r'^texts/(?P<res_name>[^\/]+)/(?P<ref_str>[^\/]+)?$', view='get_resource', name='resource'),
 )
 
