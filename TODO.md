@@ -1,12 +1,19 @@
+- delete all needs to take user to login screen
+- even get or 404 thinsg are broken in logged out mode?
+
+- setup heroku and other computer with db again
 
 What steps for someone to set this up themself?
+1. install postgres
+2. createdb nutrtious
+3. syncdb (create admin), migrate
+4. create guest user
 What is missing?
   pybible... can I rmeove more of these dependencies so it works out of the box?
   need a deecent example that is not 
 
-recreating the database
-- create it, create the admin, ... 
-- can i move stuff?
+- Need to secure admin password -- pw is in my settings, but this would be admin to my public site!!
+
 
 Inbox
 -----
@@ -112,9 +119,6 @@ o test other kinds of resources
 
 Todo
 ----
-- reorganization
-  - rename package tagz -> tags
-  - rename packages "Nutricious" and "Textbites"
 * move to github
   - travis CI -- once I'm on github
   - first pass documentation: readme, features, todos
@@ -233,6 +237,7 @@ Bugs
 
 Tech Questions
 ---------
+- can relative template paths be named like urls?
 - rename does a PUT and then is redirected with what should be a GET. The browser says its doing a GET but the server says it got a second PUT. Which is true? what is wrong?
 - how to have delete let server do the redirect? I think the AJAX eats it.  after deleting let controller say where to go.
 - How to go straight to a view method but change the path? Is a redirect required?
