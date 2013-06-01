@@ -1,5 +1,5 @@
 {
-  "name": "node-for-tagz",
+  "name": "node-for-nutritious",
   "version": "0.0.1",
   "dependencies": {
     "less": ">=1.3"

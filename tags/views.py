@@ -59,7 +59,7 @@ def render_tags(request, tags):
     refs = get_refs_with_tag(request.user, t)
     counts.append(refs.count())
   counted_tags = zip(tags, counts)
-  return render_to_response('tagz/tag_index.html', 
+  return render_to_response('tags/tag_index.html',
       {'counted_tags': counted_tags},
       context_instance=RequestContext(request))
 
@@ -92,7 +92,7 @@ def tag(request, tag_name):
     texts.append(text)
     ref_paths.append(reverse('resource', args=(resource, ref.pretty_ref())))
   related_refs_n_tags = zip(ids, clean_refs, ref_paths, related_tags, texts)
-  return render_to_response('tagz/tag_detail.html', 
+  return render_to_response('tags/tag_detail.html',
       {'tag': t, 'related_refs_n_tags': related_refs_n_tags},
       context_instance=RequestContext(request))
 
@@ -150,14 +150,14 @@ def tagref_detail(request, tag_name, id):
     # TODO: if this is the last ref for this tag, delete the tag?
     # not doing anything when called from AJAX request b/c response eats it
     return HttpResponseRedirect(reverse('tags'));
-  return render_to_response('tagz/tagref_detail.html',
+  return render_to_response('tags/tagref_detail.html',
       {'tag_name': tag_name, 'tagref': tagref },
       context_instance=RequestContext(request))
 
 @login_required
 def tagref_createform(request, tag_name=None):
   """ Form to create a single tag reference """
-  return render_to_response('tagz/tagref_create.html',   
+  return render_to_response('tags/tagref_create.html',
       {'tag_name': tag_name, 
        'resources': library.list(),
        'res_default': 'NASB'
@@ -217,7 +217,7 @@ def tags_import(request):
       return HttpResponseRedirect(reverse('tags'))
   else:
     form = ImportFileForm()
-  return render_to_response('tagz/tags_import.html', {'form': form},
+  return render_to_response('tags/tags_import.html', {'form': form},
       context_instance=RequestContext(request))
 
 

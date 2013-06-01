@@ -20,7 +20,6 @@ urlpatterns = patterns('',
       kwargs={'template_name': 'accounts/login.html'}, name='login'),
     # logout
     url(r'^accounts/logout/$', view=logout_then_login, name='logout'),
-    #url(r'^accounts/logout/$', 'tagz.views.logout')
 
   (r'^favicon\.ico$', 'django.views.generic.simple.redirect_to', {'url': '/static/img/favicon.ico'})
 )
