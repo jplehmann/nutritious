@@ -8,7 +8,6 @@ from django.contrib.auth.models import User
 from textbites import library
 
 
-
 log = logging.getLogger("nutritious." + __name__)
 
 

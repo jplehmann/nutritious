@@ -183,11 +183,11 @@ LOGGING = {
             'propagate': True,
         },
         # Catch all logger
-        #'': {
-        #    'handlers': ['console'],
-        #    'level': 'DEBUG',
-        #    'propagate': True,
-        #},
+        '': {
+            'handlers': ['console'],
+            'level': 'WARNING',
+            'propagate': True,
+        },
     }
 }
 
