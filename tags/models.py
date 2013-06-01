@@ -165,14 +165,13 @@ def import_tsv_file(user, f):
       try:
         tag = get_exact_tag(user, tag_name)
       except:
-        print traceback.format_exc()
+        #print traceback.format_exc()
         print "Creating new tag: " + tag_name
         tag = Tag(tag=tag_name, user=user)
         tag.save()
       # check for duplicates
       dups = Reference.objects.filter(tag=tag, resource=res, 
           reference=ref_str, user=user_pk(user));
-      print "found " + str(len(dups))
       if (dups):
         print "Skipping duplicate. with " + str(dups)
         continue
@@ -182,7 +181,7 @@ def import_tsv_file(user, f):
         ref = Reference(tag=tag, resource=res, reference=ref_str, 
             offset_start=offset_start, offset_end=offset_end, user=user)
       ref.save()
-      print "Creating new tagref"
+      print "Created new tagref:", tag, res, ref_str
       successes += 1
   return (errors, successes)
       
