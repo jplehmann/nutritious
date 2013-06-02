@@ -18,16 +18,19 @@ PROJECT_ROOT = Path(__file__).ancestor(3)
 
 # into your settings, but ImproperlyConfigured is an exception.
 from django.core.exceptions import ImproperlyConfigured
-def get_env_variable(var_name):
+def get_env_variable(var_name, quiet=False):
     """ Get the environment variable or return exception """
     try: 
         return os.environ[var_name]
     except KeyError:
         error_msg = "Set the %s environment variable" % var_name
-        raise ImproperlyConfigured(error_msg)
+        print error_msg
+        if not quiet:
+          raise ImproperlyConfigured(error_msg)
 
 DATABASES = {
-    'default': dj_database_url.config(default=get_env_variable("NUTRITIOUS_DATABASE_URL"))
+    'default': dj_database_url.config(
+        default=get_env_variable("NUTRITIOUS_DATABASE_URL", quiet=True))
 }
 
 #
