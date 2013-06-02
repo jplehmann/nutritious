@@ -1,11 +1,11 @@
 
+- update home page with instructions
 
 Backlog
 =======
 
 Todo
 ----
-* Need to secure admin and testing passwords -- pw is in my settings, but this would be admin to my public site!!
 * dependency on pybible: remove dependency by rewriting code
 {{{
   - relies on reference parsing and normalization and book list.
@@ -25,6 +25,7 @@ Todo
 }}}
 * properly load library resources -- best place for that logic?
   - library can be moved wherever... to texts app.
+- need to secure any writes (e.g. length of write) so I can make integration test pw insecure
 
 * move to github
   - travis CI -- once I'm on github

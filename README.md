@@ -48,10 +48,12 @@ Installing locally:
   * Create nutritious database.
   * Run ./manage.py with syncdb and migrate.
 * Using the admin interface create "guest" user.
+* Set environment variables NUTRITIOUS_SECRET_KEY, NUTRITIOUS_TESTING_PW, NUTRITIOUS_DATABASE_URL
 
 Deploying to Heroku:
-
+ 
 * For LESS CSS, configure buildpack as a 'multi':
    * `heroku config:add BUILDPACK_URL=https://github.com/ddollar/heroku-buildpack-multi.git`
 * Sync and migrate the database using `heroku run python manage.py ...`.
+* Set passwords in environment variables with `heroku config:add XXX=YYY`
 

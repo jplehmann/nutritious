@@ -1,3 +1,4 @@
+import os
 from unipath import Path
 import dj_database_url
 
@@ -15,10 +16,19 @@ PROJECT_ROOT = Path(__file__).ancestor(3)
 #print("db: ", PROJECT_ROOT.child("db").child("sqlite3.db"))
 
 
-DATABASES = {
-    'default': dj_database_url.config(default="postgres://john:djadmin@localhost/nutritious")
-}
+# into your settings, but ImproperlyConfigured is an exception.
+from django.core.exceptions import ImproperlyConfigured
+def get_env_variable(var_name):
+    """ Get the environment variable or return exception """
+    try: 
+        return os.environ[var_name]
+    except KeyError:
+        error_msg = "Set the %s environment variable" % var_name
+        raise ImproperlyConfigured(error_msg)
 
+DATABASES = {
+    'default': dj_database_url.config(default=get_env_variable("NUTRITIOUS_DATABASE_URL"))
+}
 
 #
 # Local time zone for this installation. Choices can be found here:
@@ -94,7 +104,10 @@ STATICFILES_FINDERS = (
 )
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = 'gfpg4q6-a)uemee14%6903%o5x9gx=m+573wgn#*=o6=adpzz#'
+SECRET_KEY = get_env_variable("NUTRITIOUS_SECRET_KEY")
+
+# Integration testing account 'testing' password
+TESTING_PW = get_env_variable("NUTRITIOUS_TESTING_PW")
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
