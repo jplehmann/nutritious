@@ -2,6 +2,8 @@
  
 /* http://docs.angularjs.org/guide/dev_guide.e2e-testing */
 
+var resource = "NKJV";
+
 describe('Nutritious home', function() {
 
   beforeEach(function() {
@@ -12,11 +14,11 @@ describe('Nutritious home', function() {
     expect(element('title').text()).toContain('Nutritious - Home');
   });
 
-  it('library should contain NASB', function() {
+  it('library should contain NKJV', function() {
     element('#lib-link').click();
-    expect(element('.content a').text()).toContain('NASB');
-    element('#res-NASB').click();
-    expect(element('.content h2').text()).toContain('NASB');
+    expect(element('.content a').text()).toContain(resource);
+    element('#res-NKJV').click();
+    expect(element('.content h2').text()).toContain(resource);
   });
 });
 
@@ -27,28 +29,28 @@ describe('Nutritious search', function() {
   });
 
   it('with Keywords should find hits', function() {
-    search('Adam', 'NASB');
-    expect(element('.content h2').text()).toContain("Search of 'NASB' for 'Adam' (21 hits)");
+    search('Adam', resource);
+    expect(element('.content h2').text()).toContain("Search of '"+resource+"' for 'Adam' (28 hits)");
     expect(element('.row-fluid span').text())
-        .toContain("It was also about these men that Enoch");
+        .toContain("Now Enoch, the seventh from Adam,");
   });
 
   it('with Reference should find a Line', function() {
-    search('jn 3:16', 'NASB');
+    search('jn 3:16', resource);
     expect(element('.content div').text())
-        .toContain("For God so loved the world,");
+        .toContain("For God so loved the world");
   });
   
   it('with Reference should find a Chapter', function() {
-    search('jn 3', 'NASB');
+    search('jn 3', resource);
     expect(element('.content div').text())
-        .toContain("Now there was a man of the Pharisees");
+        .toContain("There was a man of the Pharisees named Nicodemus");
     expect(element('.content div').text())
-        .toContain("He who believes in the Son has eternal life");
+        .toContain("He who believes in the Son has everlasting life");
   });
   
   it('with Reference should find a Book', function() {
-    search('jn', 'NASB');
+    search('jn', resource);
     expect(element('.content a').text()).toContain("John 1");
     expect(element('.content a').text()).toContain("John 21");
   });
