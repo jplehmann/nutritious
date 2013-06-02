@@ -1,39 +1,28 @@
 
-- update home page with instructions
-
 Backlog
 =======
 
 Todo
 ----
-* dependency on pybible: remove dependency by rewriting code
-{{{
-  - relies on reference parsing and normalization and book list.
-  - textbites dependency
-  - integration test dependency
-  * what if i used the format used by simplebooks? -- still wouldn't get alises...
 
-  - getting rid of pybible dependecy: loading and aliases, would fix my problem
-    - loading straight to sipmel_book is easy.
-    - what about alias normalization?
-    - advantage: avoid this problem, plus provide bible format for everyone (and other books?)
-      - and i already have code to reuse?
-      - seems like the reference code i alreayd have could eb good enough?
-      - try to factor it out of pybible, and then move it all together
+- docs
+  - update home page with instructions; create tags, etc. (hotkeys)
+  - readme
+    - currently loading resources in textbites.data package.
 
-
-}}}
-* properly load library resources -- best place for that logic?
-  - library can be moved wherever... to texts app.
 - need to secure any writes (e.g. length of write) so I can make integration test pw insecure
 
 * move to github
   - travis CI -- once I'm on github
   - first pass documentation: readme, features, todos
+
 * more browser tests
   * delete all
     - delete all needs to take user to login screen
     - even get or 404 thinsg are broken in logged out mode?
+
+- how to store other resources in a protected way and load when deploying
+  (dependency, or EWS with password but cache)
 
 
 Testing
