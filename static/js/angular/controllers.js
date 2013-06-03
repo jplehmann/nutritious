@@ -16,7 +16,7 @@ angular.module('myApp.controllers', []).
       $(document).bind('keydown', function (e) {
         if ((e.ctrlKey || e.metaKey) && e.which === "S".charCodeAt(0)) {
           // go to search 
-          $('#search_input').focus().select();
+          $('#search-input').focus().select();
           e.preventDefault();
         }
       });
