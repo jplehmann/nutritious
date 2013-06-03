@@ -7,26 +7,40 @@
 <h2>Nutritious</h2>
 
 <p>
-Nutritious is a Django-based web application for browsing and tagging textual content, inspired by Delicious.  It generalizes tagging beyond webpages to within-document bookmark-like tags, and can apply to arbitrary collections of text, such as a quotation library.  In addition it provides navigation within these resources as well as regex-based search.
-<p>
-A live demo can be seen at <a href="http://nutritious.herokuapps.com">nutritious.herokuapps.com</a>
-<p>
-
-<h3>Details</h3>
-Nutritious enables the browsing and tagging of <a href="http://github.com/jplehmann/textbites">Textbites</a> resources. Textbites provides a Python API for a textual resource. 
+Browse, search, and tag textual content.
 
 <ul>
-  <li> Tags are persisted in a Postgres DB.</li>
-  <li> Currently all Textbite are static, though this is a future feature.</li>
-  <li> Nutritious does not currently support multiple users.</li>
+  <li> Search with keywords or <a href="http://en.wikipedia.org/wiki/Regular_expression">regular expressions</a>.
+<li> Build your own collection of topical tags of quotations in text.
+<li> Standard browsing and navigation.
 </ul>
 
-<h3>Features</h3>
+<h4>Tips</h4>
+
 <ul>
-  <li> Tags are persisted in a Postgres DB.</li>
-  <li> Currently all Textbite are static, though this is a future feature.</li>
-  <li> Nutritious does not currently support multiple users.</li>
+<li>Visit the Library to see resources available for browsing.
+  <ul>
+    <li>Currently resources are limited to a fixed, shared set.
+    <li>In the future users might upload and share their own.
+  </ul>
+<li>Search over textual content currently being viewed (e.g. current book or chapter).
+<ul>
+  <li>Use keywords or patterns: "Adam.*ate".
+  <li>Search for tags with the hash sign: "#funny"
+  <li>Jump to the search bar with Ctrl-S.
 </ul>
+<li>Copy selected text from books with Ctrl-C.
+<li>Create tags by highlighting text and pressing Ctrl-T.
+  <ul>
+    <li>View tags in the "guest" account, or contact  <a href="http://www.jplehmann.com">me</a> to request an account to create your own tag collection.
+    <li>Bulk import or export entire sets of tags.
+  </ul>
+</ul>
+
+<p>
+<h4>Disclaimer</h4>
+<p>This is a work in progress. 
+<p>View source code, plans, and technical details at <a href="http://www.github.com/jplehmann/nutritious">github</a>.
 
 {{ block.super }}
 {% endblock main_content %}

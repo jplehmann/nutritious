@@ -1,28 +1,36 @@
 Nutritious
 ==========
-Nutritious is a Django-based web application for browsing and tagging textual content.  It generalizes beyond "delicious"-style tagging of webpages to within-document bookmark-like tags on arbitrary collections of text (e.g., a quotations library).  It also provides navigation within these resources as well as regex-based search.
+Nutritious is a Django-based web application for browsing and tagging textual
+content.  It generalizes beyond "delicious"-style tagging of webpages to
+within-document bookmark-like tags on arbitrary collections of text (e.g., a
+quotations library).  It also provides navigation within these resources as
+well as regex-based search.
 
 A live demo can be seen at [nutritious.herokuapps.com][1].
 
 Features
 --------
 * Browsing of textual resources.
-* Search by keyword/regex, textbite reference, or tag name (#tag).
+* Search by keyword/regex, book reference, or tag name (#tag).
 * Highlighted context expansion.
 * RESTful access to textual resources and tag data
 * Create/delete/rename of tags and their references.
 * Import and export of tag data from/to TSV.
 * User accounts (though currently admin creates new users).
 * Unauthenticated read-only access to "guest" account.
-* Hotkeys for search (Ctrl-S) and copying (Ctrl-C) and tagging (Ctrl-T) of selected lines.
+* Hotkeys for search (Ctrl-S) and copying (Ctrl-C) and tagging (Ctrl-T) of
+  selected lines of text.
 * Integration tests with Angular Scenario Test Runner.
 
 Details
 -------
-Nutritious enables the browsing and tagging of [Textbites][2] resources. Textbites provides a Python API for a textual resource. 
-
-* Tag data are persisted in a Postgres DB.
-* Textbites are currently limited to static resources.
+Nutritious enables the browsing and tagging of [Textbites][2] resources.
+Textbites provides a Python API for a textual resource. This layer of
+abstraction was used in order to require that Nutritious be general
+enough to handle many kinds of textual resources.  Presently all Textbite 
+implementations are static (immutable), but this could be extended in
+the future. Tag data (tags and their references into resources) are persisted
+in a Postgres database.
 
 [1]: http://nutritious.herokuapps.com
 [2]: http://github.com/jplehmann/textbites
@@ -36,7 +44,7 @@ Dependencies
 
 Usage
 -----
-Installing Nutritious should be mostly similar to any Django app, but here are some tips.
+Setup of Nutritious is similar to any Django app, but here are some tips.
 
 Installing locally:
 

@@ -5,12 +5,6 @@ Backlog
 Todo
 ----
 
-- docs
-  - update home page with instructions; create tags, etc. (hotkeys)
-  - readme
-    - currently loading resources in textbites.data package.
-
-- need to secure any writes (e.g. length of write) so I can make integration test pw insecure
 
 * move to github
   - travis CI -- once I'm on github
@@ -20,6 +14,8 @@ Todo
   * delete all
     - delete all needs to take user to login screen
     - even get or 404 thinsg are broken in logged out mode?
+
+- need to secure any writes (e.g. length of write) so I can make integration test pw insecure
 
 - how to store other resources in a protected way and load when deploying
   (dependency, or EWS with password but cache)
