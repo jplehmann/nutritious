@@ -67,6 +67,9 @@ Deploying to Heroku:
 
 Testing
 -------
-Integration tests are implemented with AngularJS's scenario test runner. To execute, click on
-the Angular logo at the bottom of any page.
+Integration tests are implemented with AngularJS's scenario test runner. To execute, click [here][3] or on
+the Angular logo at the bottom of any page. Some tests require authentication with a testing account and 
+will currently fail, but this will be addressed soon.
+
+[3]: http://nutritious.herokuapp.com/static/test/e2e/runner.html
 
