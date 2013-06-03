@@ -65,3 +65,8 @@ Deploying to Heroku:
 * Sync and migrate the database using `heroku run python manage.py ...`.
 * Set passwords in environment variables with `heroku config:add XXX=YYY`
 
+Testing
+-------
+Integration tests are implemented with AngularJS's scenario test runner. To execute, click on
+the Angular logo at the bottom of any page.
+
