@@ -196,7 +196,7 @@ LOGGING = {
         'nutritious': {
             'handlers': ['console'],
             'level': 'DEBUG',
-            'propagate': True,
+            'propagate': False,
         },
         # Catch all logger
         '': {

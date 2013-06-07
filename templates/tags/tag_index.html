@@ -8,6 +8,8 @@
 
   <h2>Total number of tags: {{ counted_tags|length }}</h2>
   <a href="createform">Create new tagref</a>
+  <br>
+  <a ng-click="deleteAllTags();">Delete all tags</a>
   {% if counted_tags %}
       <ul>
       {% for tag, count in counted_tags %}

@@ -146,10 +146,23 @@ angular.module('myApp.controllers', []).
                 // TODO: redirect
         };
 
-        $scope.deleteTag = function(tagName) {
+        $scope.deleteAllTags = function() {
+            console.log("delete all called");
+            // FIXME get link from server
+            $http.delete()
+                .success(function () {
+                    console.log("delete successful");
+                    $window.location.reload(true);
+                }).error(function() {
+                        console.log("delete failed");
+                    });
+                // TODO: redirect
+        };
+
+        $scope.deleteTag = function(tagName, id) {
             console.log("delete called: " + tagName);
             // FIXME get link from server
-            $http.delete(tagName)
+            $http.delete(tagName+ '/refs/'+ id)
                 .success(function () {
                     console.log("delete successful");
                     $window.location.reload(true);

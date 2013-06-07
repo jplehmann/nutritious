@@ -4,6 +4,7 @@ from cStringIO import StringIO
 
 from django.db import models
 from django.contrib.auth.models import User
+from django.shortcuts import get_object_or_404
 
 from textbites import library
 
@@ -188,3 +189,20 @@ def import_tsv_file(user, f):
   return (errors, successes)
       
 
+def delete_tags(user, tag_names):
+  for t in tag_names:
+    delete_tag(user, t)
+
+
+def delete_tag(user, tag_name):
+  # NOTE: do we want to 404 here? this would be a 500 if we are the 
+  # one who got this list of tags.  TODO: use try catch then 404 in 
+  # the view instead
+  t = get_object_or_404(Tag, tag=tag_name, user=user_pk(user))
+  # clean up all associated references, since references only have 1 tag in them
+  # but this seems to not be necessary, maybe Django is cleaning up
+  # for me?
+  for ref in get_refs_with_tag(user, t):
+    ref.delete()
+  log.debug("Deleting tag and all refs for: %s", t.tag)
+  t.delete()

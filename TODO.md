@@ -1,6 +1,10 @@
 
 Backlog
 =======
+- search term lost after search
+- search should link straight to context
+- tag on context page gets wrong resource; get from url?
+- put nav at bottom of verses too
 
 Todo
 ----
@@ -20,6 +24,10 @@ Todo
 - how to store other resources in a protected way and load when deploying
   (dependency, or EWS with password but cache)
 
+- delete all
+  - move 404 to view?
+  - why getting error on purl sometimes?, also createform
+  - need double check: are you sure?
 
 Testing
 -------

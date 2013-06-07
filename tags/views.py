@@ -1,7 +1,9 @@
 import logging
 import traceback
 
-from django.shortcuts import render_to_response, get_object_or_404, redirect
+from django.shortcuts import render_to_response
+from django.shortcuts import get_object_or_404
+from django.shortcuts import redirect
 from django.core.urlresolvers  import reverse
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
@@ -20,6 +22,8 @@ from tags.models import get_exact_tag
 from tags.models import get_matching_tags
 from tags.models import get_refs_with_tag
 from tags.models import get_export_tsv
+from tags.models import delete_tags
+from tags.models import delete_tag
 from tags.models import import_tsv_file
 
 
@@ -51,12 +55,23 @@ def tag_search(request, query):
 def tags(request, tags=None):
   """ Show tags. If no tags are provided, shows all tags.
   """
+  log.info("/tags endpoint");
   if request:
     query = request.GET.get('q', None)
     if query:
       return tag_search(request, query)
-  all_tags = get_all_tags(request.user) if tags == None else tags
-  return render_tags(request, all_tags)
+  tags = get_all_tags(request.user) if tags == None else tags
+  if request.method == 'DELETE':
+    tags_delete(request, tags)
+  return render_tags(request, tags)
+
+
+# TODO name better
+@login_required
+def tags_delete(request, tags):
+  """ Delete all tags and associated tagrefs.
+  """
+  return delete_tags(request.user, tags)
 
 
 def render_tags(request, tags):
@@ -110,12 +125,7 @@ def tag(request, tag_name):
 def tag_delete(request, tag_name):
   """ Delete a tag and all associated tagrefs.
   """
-  t = get_object_or_404(Tag, tag=tag_name, user=request.user)
-  # clean up all associated references, since references only have 1 tag in them
-  # but this seems to not be necessary, maybe Django is cleaning up for me?
-  for ref in get_refs_with_tag(request.user, t):
-    ref.delete()
-  t.delete()
+  delete_tag(request.user, tag_name)
   # FIXME: not doing anything when called from AJAX request b/c response eats it
   return HttpResponseRedirect(reverse('tags'));
 
@@ -169,7 +179,7 @@ def tagref_createform(request, tag_name=None):
   return render_to_response('tags/tagref_create.html',
       {'tag_name': tag_name, 
        'resources': library.list(),
-       'res_default': 'NASB'
+       'res_default': 'NKJV'
        }, context_instance=RequestContext(request))
 
 
@@ -188,7 +198,7 @@ def tagref_create(request, tag_name):
     ref_str = request.POST['reference']
     ref = resource.reference(ref_str)
   except:
-    log.info("User provided bad resource or reference.")
+    log.info("User provided bad resource or reference. (res: %s; ref: )", res_str, ref_str)
     raise Http404
   # if tag name doesn't exist, create it
   try:
