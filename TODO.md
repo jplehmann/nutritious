@@ -1,4 +1,5 @@
 
+
 Backlog
 =======
 - search term lost after search
@@ -8,12 +9,6 @@ Backlog
 
 Todo
 ----
-
-
-* move to github
-  - travis CI -- once I'm on github
-  - first pass documentation: readme, features, todos
-
 * more browser tests
   * delete all
     - delete all needs to take user to login screen
@@ -22,6 +17,7 @@ Todo
 - need to secure any writes (e.g. length of write) so I can make integration test pw insecure
 
 - how to store other resources in a protected way and load when deploying
+  - Somehow dl on deploy, via dependcy or save and cache
   (dependency, or EWS with password but cache)
 
 - delete all
@@ -183,6 +179,7 @@ Smaller
 
 Larger
 ------
+* Crowd feats: see others pub tags, follow ppl to combine tags, combined mode with voting
 * Mutability for resources like Quotes, Links (database-backed textbites)
 * generalize to other resource types with attributes (bible, books, quotes, persons, webpages (page, video), gdocs)
 * metatags/tagsets: sets of other tags (and metas?), and can have color
