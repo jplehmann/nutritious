@@ -6,4 +6,6 @@
 
 cd $HOME/git/nutritious
 
+source $HOME/.venv/tagz/bin/activate
+
 ./manage.py runserver
