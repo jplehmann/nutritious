@@ -1,4 +1,7 @@
 
++ be able to put in multiple verses separated by ";", and show mixture of results; I guess like the tag view
+- from tags -> verse range ; no context option given
+- sort order for merging
 
 Backlog
 =======
@@ -173,9 +176,18 @@ Smaller
     * quotes wont show text for a person, yet we can create a reference to it.
       how could we validate this earlier on?
 * D3 visualizations about tags
-* autocomplete for tag search (AJAX query for tags) angular UI select2 or "chosen" (has nice multi-select)
+* autocomplete for tag search (AJAX query for tags) angular UI select2 (UI-select) or "chosen" (has nice multi-select)
+  - https://github.com/angular-ui/ui-select
+    - https://github.com/localytics/angular-chosen (jquery chosen)
+  - https://select2.github.io/ (jquery replacement for select)
+  - https://twitter.github.io/typeahead.js/examples/
+    - http://stackoverflow.com/questions/12662824/twitter-bootstrap-typeahead-multiple-values
+  - https://github.com/max-favilli/tagmanager -- I like
+  - http://loopj.com/jquery-tokeninput/
 * book groups with @xxx
 * historical view of tagref changes
+
+This is the independent heavy duty version: https://github.com/twitter/typeahead.js
 
 Larger
 ------
