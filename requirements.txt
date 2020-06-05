@@ -1,6 +1,6 @@
 django-less
 Unipath==0.2.1
-Django==1.4.4
+Django==1.11.29
 psycopg2==2.4.6
 dj-database-url==0.2.1
 South==0.7.6
